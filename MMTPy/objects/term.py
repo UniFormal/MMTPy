@@ -23,7 +23,7 @@ class OMA(utils.caseClass("OMA", Term, [Term]), Term):
         self.fun = fun
         self.args = args
 
-class OMV(utils.caseClass("OMV", LocalName), Term):
+class OMV(utils.caseClass("OMV", path.LocalName), Term):
     def __init__(self, name):
         super(OMV, self).__init__(name)
         self.name = name

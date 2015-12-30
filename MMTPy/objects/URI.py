@@ -41,7 +41,8 @@ class URI(utils.caseClass("URI", (utils.stringcls,), (utils.stringcls,), [utils.
     def __repr__(self):
         return "URI(%r)" % str(self)
     
-    def fromstring(uri):
+    @staticmethod
+    def parse(uri):
         m = uriexpr.match(uri)
         if not m:
             raise ValueError("%s is not a malformed URI")
@@ -54,7 +55,7 @@ class URI(utils.caseClass("URI", (utils.stringcls,), (utils.stringcls,), [utils.
         jpath = m.group(5)
         
         # and check if it is absolute
-        (pathString, absolute) = (jpath[1:], True) if jpath[0] == "/" else (jpath, False)
+        (pathString, absolute) = (jpath[1:], True) if jpath.startswith("/") else (jpath, False)
         
         # split the path components
         path = pathString.split("/")

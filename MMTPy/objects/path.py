@@ -18,24 +18,181 @@ from . import URI
         | GlobalName (module : MPath, name: LocalName)
 """
 
-class LNStep(): pass
+class LNStep(): 
+    @staticmethod
+    def parse(s):
+        s = str(s)
+        if s.startswith("[") and s.endswith("]"):
+            return ComplexStep(Path.parseM(s[1:-1]))
+        else:
+            return SimpleStep(s)
 
 class SimpleStep(utils.caseClass("SimpleStep", utils.stringcls), LNStep):
     def __init__(self, name):
         super(SimpleStep, self).__init__(name)
         self.name = name
+    def __str__(self):
+        return self.name
 
 class LocalName(utils.caseClass("LocalName", [LNStep])):
     def __init__(self, steps):
         super(LocalName, self).__init__(steps)
         self.steps = steps
+    def __str__(self):
+        return "/".join(map(str, self.steps))
+    
+    @staticmethod
+    def split(s):
+        
+        # if we have the empty string, we have an empty segment
+        if s == "":
+            return [""]
+        
+        # if we start with a "[", we need to start a sub-segment
+        # TODO: Handle sub-segments properly
+        if s.startswith("["):
+            try:
+                idx = s.index("]")
+            except ValueError:
+                raise ValueError("Unclosed [ found")
+            if not s[idx+1:].startswith("/"):
+                return [s[:idx+1]]
+            else:
+                return [s[:idx+1]] + LocalName.split(s[idx+2:])
+        # in the other cases we just find the next /
+        else:
+            try:
+                idx = s.index("/")
+            except ValueError:
+                return [s]
+            return [s[:idx]] + LocalName.split(s[idx+1:])
+            
+            
+            
+    @staticmethod
+    def parse(s):
+        """
+            Parses a string into a LocalName. 
+        """
+        # split into segments
+        segments = LocalName.split(s)
+        
+        # and return that
+        return LocalName(list(map(lambda s: LNStep.parse(s), segments)))
 
-class Path(): pass
-
+class Path(): 
+    @staticmethod
+    def split(s):
+        """
+            Splits a path represented by a string into a tuple of
+            (documentURI, moduleURI, symbolName, componentName)
+        """
+        # make sure the thing to split is a string
+        left = str(s)
+        
+        # have an array of return values
+        comp = ["", "", "", ""] # (uri, mod, name, comp)
+        
+        # the current component
+        current = 0
+        
+        # iterate character by character
+        while (left != ""):
+            c = left[0]
+            
+            # ? starts a new component
+            if c == "?":
+                if current == 3:
+                    raise ValueError("MMT-URI may have at most three ?s: " + s)
+                current += 1
+            # there may not be #s
+            elif c == "#":
+                raise ValueError("MMT-URI may not have fragment: " + s)
+            
+            # we treat [s start a subcomponent
+            elif c == "[" and current == 2:
+                try:
+                    pos = left.index("]")
+                except ValueError:
+                    pos = -1
+                
+                if pos == -1:
+                     comp[current] += '[' # unclosed [ not treated specially
+                else:
+                    comp[current] += left[0:pos+1]
+                    left = left[pos:] # one more character chopped below
+            else:
+                comp[current] += c
+            left = left[1:]
+        return tuple(comp)
+    
+    @staticmethod
+    def parse(s):
+        """
+            Parses a string representing a uri into a tuple of (dpath, mpath, spath, cpath) objects
+        """
+        (documentURI, moduleURI, symbolName, componentName) = Path.split(s)
+        
+        # parse all the proper objects
+        dpath = DPath(URI.URI.parse(documentURI)) if documentURI else None
+        mpath = MPath(dpath, LocalName.parse(moduleURI)) if (documentURI and moduleURI) else None
+        spath = GlobalName(mpath, LocalName.parse(symbolName)) if (documentURI and moduleURI and symbolName) else None
+        cpath = CPath(spath if spath else mpath, componentName) if componentName else None
+        
+        # and return a tuple
+        return (dpath, mpath, spath, cpath)
+        
+    @staticmethod
+    def parseD(s):
+        """
+            Parses a string representing a uri into a DPath or returns a value error
+        """
+        (dpath, mpath, spath, cpath) = Path.parse(s)
+        
+        if not dpath or mpath:
+            raise ValueError("Given string does not represent a DPath. ")
+        
+        return dpath
+    @staticmethod
+    def parseM(s):
+        """
+            Parses a string representing a uri into a MPath or returns a value error
+        """
+        (dpath, mpath, spath, cpath) = Path.parse(s)
+        
+        if not mpath or spath:
+            raise ValueError("Given string does not represent a MPath. ")
+        
+        return mpath
+    @staticmethod
+    def parseS(s):
+        """
+            Parses a string representing a uri into a SPath or returns a value error
+        """
+        (dpath, mpath, spath, cpath) = Path.parse(s)
+        
+        if not spath or cpath:
+            raise ValueError("Given string does not represent a SPath. ")
+        
+        return spath
+    @staticmethod
+    def parseC(s):
+        """
+            Parses a string representing a uri into a SPath or returns a value error
+        """
+        (dpath, mpath, spath, cpath) = Path.parse(s)
+        
+        if not cpath:
+            raise ValueError("Given string does not represent a CPath. ")
+        
+        return cpath
+        
 class DPath(utils.caseClass("DPath", URI.URI), Path):
     def __init__(self, uri):
         super(DPath, self).__init__(uri)
         self.uri = uri
+    def __str__(self):
+        return "%s" % self.uri
 
 class ContentPath(DPath): pass
 
@@ -44,19 +201,28 @@ class CPath(utils.caseClass("CPath", ContentPath, utils.stringcls), Path):
         super(CPath, self).__init__(parent, component)
         self.parent = parent
         self.component = component
+    def __str__(self):
+        return "%s?%s" % (self.parent, self.component)
 
 class MPath(utils.caseClass("MPath", DPath, LocalName), ContentPath):
     def __init__(self, parent, name):
         super(MPath, self).__init__(parent, name)
         self.parent = parent
         self.name = name
+    def __str__(self):
+        return "%s?%s" % (self.parent, self.name)
         
 class GlobalName(utils.caseClass("GlobalName", MPath, LocalName), ContentPath):
     def __init__(self, module, name):
         super(GlobalName, self).__init__(module, name)
         self.module = module
         self.name = name
+    def __str__(self):
+        return "%s?%s" % (self.module, self.name)
 
 class ComplexStep(utils.caseClass("ComplexStep", MPath), LNStep):
-    def __init__(self, name):
-        super(ComplexStep, self).__init__(name)
+    def __init__(self, path):
+        super(ComplexStep, self).__init__(path)
+        self.path = path
+    def __str__(self):
+        return "[%s]" % self.path

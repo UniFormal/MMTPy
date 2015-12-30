@@ -1,16 +1,7 @@
-from MMTPy.objects.path import SimpleStep, LocalName, DPath, MPath, GlobalName
-from MMTPy.objects.URI import URI
-from MMTPy.objects.term import OMID
+from MMTPy.objects.path import Path
 
-m1 = MPath(DPath(URI.fromstring("helloworld")), LocalName([SimpleStep("f")]))
-m2 = MPath(DPath(URI.fromstring("helloworld")), LocalName([SimpleStep("f")]))
-m3 = MPath(DPath(URI.fromstring("hello")), LocalName([SimpleStep("f")]))
-idp = OMID(m3)
-
-print(m1)
-print(m2)
-print(m3)
-print(idp)
-print(m1 == m2) # True
-print(m1 == m3) # False
-
+s1 = Path.parseS("http://cds.omdoc.org/urtheories?example?[http://cds.omdoc.org/urtheories?examples]")
+s2 = Path.parseS("http://cds.omdoc.org/urtheories?example?[http://cds.omdoc.org/urtheories?examples]/2/3")
+print(s1)
+print(s2)
+print(s2 == Path.parseS(s1))
