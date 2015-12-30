@@ -8,6 +8,7 @@ from . import path
     Abstractly speaking a term is represented as: 
     
     Term = OMA (fun : Term, args : List[Term])
+         | OMV (name : LocalName)
          | OMID (path : ContentPath)
          | OMLIT (value : Object )
          | OMATTR (arg : Term, key : OMID, value : Term)
@@ -21,6 +22,11 @@ class OMA(utils.caseClass("OMA", Term, [Term]), Term):
         super(OMA, self).__init__(fun, args)
         self.fun = fun
         self.args = args
+
+class OMV(utils.caseClass("OMV", LocalName), Term):
+    def __init__(self, name):
+        super(OMV, self).__init__(name)
+        self.name = name
 
 class OMID(utils.caseClass("OMID", path.ContentPath), Term):
     def __init__(self, path):
