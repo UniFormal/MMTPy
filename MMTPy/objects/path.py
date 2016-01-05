@@ -127,11 +127,15 @@ class Path():
         return tuple(comp)
     
     @staticmethod
-    def parse(s):
+    def parse(s, isSplit = False):
         """
             Parses a string representing a uri into a tuple of (dpath, mpath, spath, cpath) objects
         """
-        (documentURI, moduleURI, symbolName, componentName) = Path.split(s)
+        
+        if isSplit:
+            (documentURI, moduleURI, symbolName, componentName) = s
+        else:
+            (documentURI, moduleURI, symbolName, componentName) = Path.split(s)
         
         # parse all the proper objects
         dpath = DPath(URI.URI.parse(documentURI)) if documentURI else None
@@ -141,46 +145,65 @@ class Path():
         
         # and return a tuple
         return (dpath, mpath, spath, cpath)
+    
+    @staticmethod
+    def parseBest(s, isSplit = False):
+        """
+            Parses up to the deepest level possible. 
+        """
+        
+        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
+        
+        if cpath != None:
+            return cpath
+        elif spath != None:
+            return spath
+        elif mpath != None:
+            return mpath
+        else:
+            return dpath
+        
+        
         
     @staticmethod
-    def parseD(s):
+    def parseD(s, isSplit = False):
         """
             Parses a string representing a uri into a DPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s)
+        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
         
         if not dpath or mpath:
             raise ValueError("Given string does not represent a DPath. ")
         
         return dpath
     @staticmethod
-    def parseM(s):
+    def parseM(s, isSplit = False):
         """
             Parses a string representing a uri into a MPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s)
+        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
         
         if not mpath or spath:
             raise ValueError("Given string does not represent a MPath. ")
         
         return mpath
     @staticmethod
-    def parseS(s):
+    def parseS(s, isSplit = False):
         """
             Parses a string representing a uri into a SPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s)
+        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
         
         if not spath or cpath:
             raise ValueError("Given string does not represent a SPath. ")
         
         return spath
     @staticmethod
-    def parseC(s):
+    def parseC(s, isSplit = False):
         """
             Parses a string representing a uri into a SPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s)
+        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
         
         if not cpath:
             raise ValueError("Given string does not represent a CPath. ")
@@ -208,7 +231,10 @@ class MPath(utils.caseClass("MPath", DPath, LocalName), ContentPath):
     def __init__(self, parent, name):
         super(MPath, self).__init__(parent, name)
         self.parent = parent
+        self.module = self
         self.name = name
+    def toMPath(self):
+        return self
     def __str__(self):
         return "%s?%s" % (self.parent, self.name)
         
