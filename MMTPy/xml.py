@@ -1,6 +1,6 @@
-from lxml import etree
+from MMTPy.dependencies import etree
 
-from . import utils
+from MMTPy import utils
 
 def match_tag(node, pattern):
     """
@@ -111,13 +111,36 @@ def make_element(tag, *children, **attributes):
     """
         Makes a new XML Element
     """
-    me = etree.Element(tag)
+    
+    
+    if isinstance(tag, etree.Element):
+        me = tag
+    elif isinstance(tag, Tuple):
+        me = etree.Element(tag[0])
+        me.text = str(tag[1])
+    else:
+        me = etree.Element(tag)
     
     for (a, v) in attributes.items():
-        me.set(a, v)
+        me.set(a, str(v))
     
     for c in children:
-        me.append(make_element(c))
+        
+        if isinstance(c, Tuple):
+            if len(c) == 1:
+                (ct,) = c
+                (cc, ca) = ([], {})
+            elif len(c) == 2:
+                (ct,cc) = c
+                ca = {}
+            else:
+                (ct,cc,ca) = c
+        else:
+            (ct,) = c
+            (cc, ca) = ([], {})
+        
+        
+        me.append(make_element(c, *cc, **ca))
     
     return me
 

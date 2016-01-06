@@ -1,6 +1,6 @@
 import re
 
-from .. import utils
+from MMTPy import utils
 
 """
     This file defines a basic URI wrapper for MMT. 

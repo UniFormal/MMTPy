@@ -1,6 +1,6 @@
-from .. import utils
+from MMTPy import utils
 
-from . import URI
+from MMTPy.objects import URI
 
 """
     This file defines Paths for MMT. 

@@ -20,16 +20,16 @@ def caseClass(name, *args):
             for (a, t) in zip(cargs, args):
                 if isinstance(t, list):
                     if not isinstance(a, list):
-                        raise ValueError("'%s' is not of type List[%s]" % (a, t[0]))
+                        raise TypeError("'%s' is not of type List[%s]" % (a, t[0]))
                     for e in a:
                         if not isinstance(e, t[0]):
-                            raise ValueError("'%s' is not of type List[%s]" % (a, t[0]))
+                            raise TypeError("'%s' is not of type List[%s]" % (a, t[0]))
                 elif isinstance(t, tuple):
                     if a != None and not isinstance(a, t[0]):
-                        raise ValueError("'%s' is not of type Option[%s]" % (a, t[0]))
+                        raise TypeError("'%s' is not of type Option[%s]" % (a, t[0]))
                 else:
                     if not isinstance(a, t):
-                        raise ValueError("'%s' is not of type %s" % (a, t))
+                        raise TypeError("'%s' is not of type %s" % (a, t))
             self.__classargs__ = cargs
         def __eq__(self, other):
             

@@ -1,7 +1,7 @@
 from MMTPy.objects.URI import URI
 
-import requests
-import xml.etree.ElementTree as ET
+from MMTPy.dependencies import requests
+from MMTPy import xml
 
 class Connection():
     """
