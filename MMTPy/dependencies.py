@@ -1,4 +1,4 @@
-# Load any etree implementation. 
+# Load any etree implementation.
 # adapted from http://lxml.de/tutorial.html
 try:
   from lxml import etree
@@ -25,6 +25,8 @@ except ImportError:
           etree_implementation = "ElementTree"
         except ImportError:
           print("Unable to import any known ElementTree implementation. Please install lxml or a similar module. Some functionality might not work. ")
+etree_type = type(etree.Element("dummy"))
+
 # Load requests
 try:
     import requests

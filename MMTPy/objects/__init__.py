@@ -3,7 +3,7 @@ from MMTPy import xml
 class Object(object):
     def __init__(self):
         self.metadata = None
-    def toMetaDataXML():
+    def toMetaDataXML(self):
         return xml.make_element("metadata")
     @staticmethod
     def parseMetaDataXML(node):
