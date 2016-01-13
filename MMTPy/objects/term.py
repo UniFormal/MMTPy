@@ -1,8 +1,10 @@
 from MMTPy import utils
 
-from MMTPy.objects import Object
+from MMTPy.objects import obj
 from MMTPy.objects import path
 from MMTPy import xml
+
+from MMTPy import metadata
 
 """
     This file defines Terms for MMT.
@@ -13,11 +15,11 @@ from MMTPy import xml
          | OMID (path : ContentPath)
          | OMA (fun : Term, args : List[Term])
          | OMATTR (arg : Term, key : OMID, value : Term)
-         | OMBINDC (binder : Term, [context: Context], scopes : List[Term])
+         | OMBINDC (binder : Term, context: Context, scopes : List[Term])
 """
 # TODO: OMLIT, OMFOREIGN
 
-class Term(Object):
+class Term(obj.Obj):
     def __init__(self):
         super(Term, self).__init__()
 
@@ -46,9 +48,17 @@ class Term(Object):
         if m:
             return OMA.fromXML(node)
 
+        # in case of OMATTR
         (m, omattr) = xml.match(node, xml.omt("OMATTR"))
         if m:
             return OMATTR.fromXML(node)
+
+        # in case of OMBINDC
+        (m, ombindc) = xml.match(node, xml.omt("OMBINDC"))
+        if m:
+            return OMBINDC.fromXML(node)
+        
+        raise ValueError("Either not a well-formed term or unsupported")
 
 class OMV(utils.caseClass("OMV", path.LocalName), Term):
     def __init__(self, name):
@@ -58,8 +68,8 @@ class OMV(utils.caseClass("OMV", path.LocalName), Term):
         return xml.make_element(xml.omt("OMV"), self.toMetaDataXML(), name=self.name)
 
     @staticmethod
-    def fromXML(node):
-        md = Object.parseMetaDataXML(node)
+    def fromXML(onode):
+        (md, node) = obj.Obj.parseMetaDataXML(onode)
         (m, omv) = xml.match(node, xml.omt("OMV"))
         if m:
             pth = path.LocalName.parse(node.attrib.get("name"))
@@ -69,7 +79,7 @@ class OMV(utils.caseClass("OMV", path.LocalName), Term):
 
             return parsed
         else:
-            raise ValueError("not a well-formed value")
+            raise ValueError("Not a well-formed <OMV/>")
 
 class OMID(utils.caseClass("OMID", path.ContentPath), Term):
     def __init__(self, path):
@@ -79,8 +89,8 @@ class OMID(utils.caseClass("OMID", path.ContentPath), Term):
         return xml.make_element(xml.omt("OMS"), self.toMetaDataXML(), base=self.path.module.parent, module=self.path.module.name, name=self.path.name)
 
     @staticmethod
-    def fromXML(node):
-        md = Object.parseMetaDataXML(node)
+    def fromXML(onode):
+        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
         (m, oms) = xml.match(node, xml.omt("OMS"))
         if m:
             pth = path.Path.parseBest((node.attrib.get("base"), node.attrib.get("module"), node.attrib.get("name"), ""), isSplit=True)
@@ -90,7 +100,7 @@ class OMID(utils.caseClass("OMID", path.ContentPath), Term):
 
             return parsed
         else:
-            raise ValueError("not a well-formed idenitifer")
+            raise ValueError("Not a well-formed <OMS/>")
 
 class OMA(utils.caseClass("OMA", Term, [Term]), Term):
     def __init__(self, fun, args):
@@ -101,20 +111,20 @@ class OMA(utils.caseClass("OMA", Term, [Term]), Term):
         return xml.make_element(xml.omt("OMA"), self.toMetaDataXML(), self.fun.toXML(), *map(lambda a:a.toXML(), self.args))
 
     @staticmethod
-    def fromXML(node):
-        md = Object.parseMetaDataXML(node)
+    def fromXML(onode):
+        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
         (m, (oma, omac)) = xml.match(node, (xml.omt("OMA"), None))
         if m:
             if len(omac) == 0:
                 raise ValueError("No operator given")
-                (fun, args) = (omac[0], omac[1:])
+            (fun, args) = (omac[0], omac[1:])
 
             parsed = OMA(Term.__parse__(fun), list(map(Term.__parse__, args)))
             parsed.metadata = md
 
             return parsed
         else:
-            raise ValueError("not a well-formed application")
+            raise ValueError("Not a well-formed <OMA/>")
 
 class OMATTR(utils.caseClass("OMATTR", Term, OMID, Term), Term):
     def __init__(self, arg, key, value):
@@ -130,8 +140,8 @@ class OMATTR(utils.caseClass("OMATTR", Term, OMID, Term), Term):
         )
 
     @staticmethod
-    def fromXML(node):
-        md = Object.parseMetaDataXML(node)
+    def fromXML(onode):
+        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
         (m, (omattr, (omatp, (omkey, omval), omarg))) = xml.match(node,
             (xml.omt("OMATTR"),
                 [
@@ -147,7 +157,7 @@ class OMATTR(utils.caseClass("OMATTR", Term, OMID, Term), Term):
 
             return parsed
         else:
-            raise ValueError("Malformed <OMATTR>")
+            raise ValueError("Not a well-formed <OMATTR/>")
 
 from MMTPy.objects import context
 class OMBINDC(utils.caseClass("OMBINDC", Term, context.Context, [Term]), Term):
@@ -156,3 +166,24 @@ class OMBINDC(utils.caseClass("OMBINDC", Term, context.Context, [Term]), Term):
         self.binder = binder
         self.ctx = ctx
         self.scopes = scopes
+    def toXML(self):
+        return xml.make_element(xml.omt("OMBINDC"), self.toMetaDataXML(), self.binder.toXML(), self.ctx.toXML(), *map(lambda s:s.toXML(), self.scopes))
+    @staticmethod
+    def fromXML(onode):
+        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+
+        (m, (ombindc, childs)) = xml.match(node, (xml.omt("OMBINDC"), None))
+        if m:
+            if len(childs) < 2:
+                raise ValueError("Not a well-formed <OMBINDC/>, needed at least 2 children")
+
+            bnd = Term.fromXML(childs[0])
+            ctx = context.Context.fromXML(childs[1])
+            scopes = list(map(Term.fromXML, childs[2:]))
+
+            parsed = OMBINDC(bnd, ctx, scopes)
+            parsed.metadata = md
+
+            return parsed
+        else:
+            raise ValueError("Not a well-formed <OMBINDC/>")

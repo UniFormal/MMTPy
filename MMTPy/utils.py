@@ -3,6 +3,29 @@ try:
 except:
     stringcls = str
 
+def verifyTypes(args, types):
+    """
+    Verifies types of arguments and throws an exception if they do not match.
+
+    args -- Arguments to check.
+    types -- Types of parameters. Use (tp) for Option[tp] and [tp] for List[tp]
+    """
+
+    for (a, t) in zip(args, types):
+        if isinstance(t, list):
+            if not isinstance(a, list):
+                raise TypeError("'%s' is not of type List[%s]" % (a, t[0]))
+            for e in a:
+                if not isinstance(e, t[0]):
+                    raise TypeError("'%s' is not of type List[%s]" % (a, t[0]))
+        elif isinstance(t, tuple):
+            if a != None and not isinstance(a, t[0]):
+                raise TypeError("'%s' is not of type Option[%s]" % (a, t[0]))
+        else:
+            if not isinstance(a, t):
+                raise TypeError("'%s' is not of type %s" % (a, t))
+
+    return True
 def caseClass(name, *args):
     """
     Creates a meta-class for a scala-like case class.
@@ -17,19 +40,10 @@ def caseClass(name, *args):
             if len(cargs) != len(args):
                 raise TypeError("__init__() takes %d positional argument(s) but %d were given" % (len(args) + 1, len(cargs + 1)))
 
-            for (a, t) in zip(cargs, args):
-                if isinstance(t, list):
-                    if not isinstance(a, list):
-                        raise TypeError("'%s' is not of type List[%s]" % (a, t[0]))
-                    for e in a:
-                        if not isinstance(e, t[0]):
-                            raise TypeError("'%s' is not of type List[%s]" % (a, t[0]))
-                elif isinstance(t, tuple):
-                    if a != None and not isinstance(a, t[0]):
-                        raise TypeError("'%s' is not of type Option[%s]" % (a, t[0]))
-                else:
-                    if not isinstance(a, t):
-                        raise TypeError("'%s' is not of type %s" % (a, t))
+            # check that we have the right types
+            verifyTypes(cargs, args)
+
+            # and set a variable
             self.__classargs__ = cargs
         def __eq__(self, other):
 

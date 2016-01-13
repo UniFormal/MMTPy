@@ -2,6 +2,8 @@ from MMTPy.dependencies import etree, etree_type
 
 from MMTPy import utils
 
+from copy import deepcopy
+
 def match_tag(node, pattern):
     """
     Matches a node against a string pattern.
@@ -23,7 +25,9 @@ def match_tag(node, pattern):
 
 def match(node, pattern):
     """
-    Matches a node against a pattern.
+    Matches a node against a pattern. Returns a pair of (matching, nodes) where
+    matching is a boolean that indicates if the pattern matches and nodes a tuple
+    of nodes corresponding to the structure of the matched nodes.
 
     A pattern must be one of the following two:
 
@@ -52,6 +56,14 @@ def match(node, pattern):
             return False, __empty_match__(pattern)
     else:
         return False, __empty_match__(pattern)
+
+def matches(node, pattern):
+    """
+    Same as match(node, pattern) except that it only returns a boolean
+    indicating if the node is matched.
+    """
+    (matches, _) = match(node, pattern)
+    return matches
 
 
 def match_tag_list(nodes, patterns):
@@ -163,6 +175,13 @@ def make_element(tag, *children, **attributes):
 
     # finally return the generated element
     return me
+
+def copy(node):
+    """
+    Returns a deep copy of an xml node.
+    """
+
+    return deepcopy(node)
 
 openmath_ns = "http://www.openmath.org/OpenMath"
 

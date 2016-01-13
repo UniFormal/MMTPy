@@ -42,7 +42,7 @@ class URI(utils.caseClass("URI", (utils.stringcls,), (utils.stringcls,), [utils.
     @staticmethod
     def parse(uri):
         """
-        Parses a string into a URI object.
+        Parses a string into a URI obj.Obj
         """
         m = uriexpr.match(uri)
         if not m:
