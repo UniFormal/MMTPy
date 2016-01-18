@@ -28,7 +28,7 @@ class Theory(utils.caseClass("Theory", path.DPath, path.LocalName, (path.MPath,)
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
 
         if xml.matches(node, "theory"):
             base = path.Path.parseD(node.attrib.get("base"))

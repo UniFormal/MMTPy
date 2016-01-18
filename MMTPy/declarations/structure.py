@@ -17,7 +17,7 @@ class Structure(utils.caseClass("Structure", path.MPath), declaration.Declaratio
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         if xml.matches(node, "import"):
 
             parsed = Structure(path.Path.parseM(node.attrib.get("name")))

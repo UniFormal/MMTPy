@@ -29,7 +29,7 @@ class View(utils.caseClass("View", path.DPath, path.LocalName, path.MPath, path.
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
 
         if xml.matches(node, "view"):
             base = path.Path.parseD(node.attrib.get("base"))

@@ -29,7 +29,7 @@ class Constant(utils.caseClass("Constant", path.LocalName, (term.Term,), (term.T
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         (m, cst) = xml.match(node, "constant")
         if m:
             name = path.LocalName.parse(cst.attrib.get("name"))

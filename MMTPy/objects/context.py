@@ -25,7 +25,7 @@ class VarDecl(utils.caseClass("VarDecl", path.LocalName, (term.Term,), (term.Ter
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         (m, omv) = xml.match(node, xml.omt("OMV"))
         if m:
             name = path.LocalName.parse(omv.attrib.get("name"))
@@ -60,7 +60,7 @@ class Context(utils.caseClass("Context", [VarDecl]), obj.Obj):
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
 
         (m, (omv, decls)) = xml.match(node, (xml.omt("OMBVAR"), None))
         if m:

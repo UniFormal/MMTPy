@@ -57,7 +57,7 @@ class Term(obj.Obj):
         (m, ombindc) = xml.match(node, xml.omt("OMBINDC"))
         if m:
             return OMBINDC.fromXML(node)
-        
+
         raise ValueError("Either not a well-formed term or unsupported")
 
 class OMV(utils.caseClass("OMV", path.LocalName), Term):
@@ -69,7 +69,7 @@ class OMV(utils.caseClass("OMV", path.LocalName), Term):
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = obj.Obj.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         (m, omv) = xml.match(node, xml.omt("OMV"))
         if m:
             pth = path.LocalName.parse(node.attrib.get("name"))
@@ -90,7 +90,7 @@ class OMID(utils.caseClass("OMID", path.ContentPath), Term):
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         (m, oms) = xml.match(node, xml.omt("OMS"))
         if m:
             pth = path.Path.parseBest((node.attrib.get("base"), node.attrib.get("module"), node.attrib.get("name"), ""), isSplit=True)
@@ -112,7 +112,7 @@ class OMA(utils.caseClass("OMA", Term, [Term]), Term):
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         (m, (oma, omac)) = xml.match(node, (xml.omt("OMA"), None))
         if m:
             if len(omac) == 0:
@@ -141,7 +141,7 @@ class OMATTR(utils.caseClass("OMATTR", Term, OMID, Term), Term):
 
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         (m, (omattr, (omatp, (omkey, omval), omarg))) = xml.match(node,
             (xml.omt("OMATTR"),
                 [
@@ -170,7 +170,7 @@ class OMBINDC(utils.caseClass("OMBINDC", Term, context.Context, [Term]), Term):
         return xml.make_element(xml.omt("OMBINDC"), self.toMetaDataXML(), self.binder.toXML(), self.ctx.toXML(), *map(lambda s:s.toXML(), self.scopes))
     @staticmethod
     def fromXML(onode):
-        (md, node) = metadata.MetaData.parseMetaDataXML(onode)
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
 
         (m, (ombindc, childs)) = xml.match(node, (xml.omt("OMBINDC"), None))
         if m:

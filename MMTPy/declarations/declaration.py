@@ -30,4 +30,9 @@ class Declaration(metadata.MetaData):
             from MMTPy.declarations import constant
             return constant.Constant.fromXML(node)
 
+        # parse a rule constant
+        if xml.matches(node, "ruleconstant"):
+            from MMTPy.declarations import ruleconstant
+            return ruleconstant.RuleConstant.fromXML(node)
+
         raise ValueError("Not a well-formed declaration")
