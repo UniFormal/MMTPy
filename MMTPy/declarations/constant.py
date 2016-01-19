@@ -36,14 +36,14 @@ class Constant(utils.caseClass("Constant", path.LocalName, (term.Term,), (term.T
 
             tp_node = cst.find("type")
 
-            if tp_node:
+            if len(tp_node) > 0:
                 tp = term.Term.fromXML(list(tp_node)[0])
             else:
                 tp = None
 
             df_node = cst.find("definition")
 
-            if df_node:
+            if len(df_node) > 0:
                 df = term.Term.fromXML(list(df_node)[0])
             else:
                 df = None

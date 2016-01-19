@@ -134,6 +134,7 @@ def make_element(tag, *children, **attributes):
             2. (tag,)
             3. (tag, children)
             4. (tag, children, attributes)
+        attributes -- List of attributes to create. Use the empty attribute for text content
     """
 
     # Create the element first.
@@ -151,7 +152,10 @@ def make_element(tag, *children, **attributes):
 
     # set the attributes
     for (a, v) in attributes.items():
-        me.set(a, str(v))
+        if a == "":
+            me.text = str(v)
+        else:
+            me.set(a, str(v))
 
     # now iterate through the children
     for c in children:

@@ -30,16 +30,23 @@ class Connection():
         """
         (code, txt) = self.get(pth)
         return (code, etree.fromstring(txt))
+    def getDeclarationXML(self, pth):
+        """
+        Gets the XML of a declaration from the MMT HTTP API
+        """
+        # build the path to request from MMT
+        s_path = ":mmt?get "+str(pth)+" present xml respond"
+
+        # make the request and return it
+        return self.getXML(s_path)
+
     def getDeclaration(self, pth):
         """
         Gets a declaration of an object the MMT API.
         """
 
-        # build the path to request from MMT
-        s_path = ":mmt?get "+str(pth)+" present xml respond"
-
         # make the request
-        (code, pxml) = self.getXML(s_path)
+        (code, pxml) = self.getDeclarationXML(pth)
 
         # if we were not ok, return NOthing
         if code != 200:

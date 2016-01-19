@@ -4,6 +4,8 @@ from MMTPy.objects import obj
 from MMTPy.objects import path
 from MMTPy import xml
 
+from MMTPy.dependencies import etree
+
 from MMTPy import metadata
 
 """
@@ -16,8 +18,9 @@ from MMTPy import metadata
          | OMA (fun : Term, args : List[Term])
          | OMATTR (arg : Term, key : OMID, value : Term)
          | OMBINDC (binder : Term, context: Context, scopes : List[Term])
+         | OMLIT (type: Term, value : string)
 """
-# TODO: OMLIT, OMFOREIGN
+# TODO: OMFOREIGN
 
 class Term(obj.Obj):
     def __init__(self):
@@ -57,6 +60,11 @@ class Term(obj.Obj):
         (m, ombindc) = xml.match(node, xml.omt("OMBINDC"))
         if m:
             return OMBINDC.fromXML(node)
+
+        # in case of OMLIT
+        (m, omlit) = xml.match(node, xml.omt("OMLIT"))
+        if m:
+            return OMLIT.fromXML(node)
 
         raise ValueError("Either not a well-formed term or unsupported")
 
@@ -158,6 +166,41 @@ class OMATTR(utils.caseClass("OMATTR", Term, OMID, Term), Term):
             return parsed
         else:
             raise ValueError("Not a well-formed <OMATTR/>")
+
+class OMLIT(utils.caseClass("OMLIT", Term, utils.stringcls), Term):
+    def __init__(self, tp, value):
+        super(OMLIT, self).__init__(tp, value)
+        self.tp = tp
+        self.value = value
+    def toXML(self):
+        attrs = {"value": self.value}
+        children = []
+        if isinstance(self.tp, OMID):
+            attrs["type"] = self.tp.path
+        else:
+            children = [self.tp.toXML()]
+
+        return xml.make_element(xml.omt("OMLIT"), self.toMetaDataXML(), *children, **attrs)
+    @staticmethod
+    def fromXML(onode):
+        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
+
+        (m, omlit) = xml.match(node, xml.omt("OMLIT"))
+        if m:
+            value = omlit.attrib.get("value")
+
+            if "type" in omlit.attrib != "":
+                tp = OMID(path.Path.parseBest(omlit.attrib.get("type")))
+            else:
+                tp = Term.fromXML(omlit[0])
+
+            parsed = OMLIT(tp, value)
+            parsed.metadata = md
+
+            return parsed
+        else:
+            raise ValueError("Not a well-formed <OMLIT/>")
+
 
 from MMTPy.objects import context
 class OMBINDC(utils.caseClass("OMBINDC", Term, context.Context, [Term]), Term):
