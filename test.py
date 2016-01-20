@@ -48,7 +48,7 @@ sample2 = etree.fromstring("""
 </link>
     </metadata>
     <notations>
-      <notation dimension="1" precedence="-10000" fixity="mixfix" arguments="{ V1T,… } 2">
+      <notation dimension="1" precedence="-10000" fixity="mixfix" arguments="{ V1T,... } 2">
         <scope languages="" priority="0"/>
       </notation>
     </notations>
@@ -60,7 +60,7 @@ sample2 = etree.fromstring("""
 </link>
     </metadata>
     <notations>
-      <notation dimension="1" precedence="-10000" fixity="mixfix" arguments="[ V1T,… ] 2">
+      <notation dimension="1" precedence="-10000" fixity="mixfix" arguments="[ V1T,... ] 2">
         <scope languages="" priority="0"/>
       </notation>
     </notations>
@@ -72,7 +72,7 @@ sample2 = etree.fromstring("""
 </link>
     </metadata>
     <notations>
-      <notation dimension="1" precedence="-10" fixity="mixfix" arguments="1%w…">
+      <notation dimension="1" precedence="-10" fixity="mixfix" arguments="1%w...">
         <scope languages="" priority="0"/>
       </notation>
     </notations>
@@ -84,7 +84,7 @@ sample2 = etree.fromstring("""
 </link>
     </metadata>
     <notations>
-      <notation dimension="1" precedence="-9990" fixity="mixfix" arguments="1→…">
+      <notation dimension="1" precedence="-9990" fixity="mixfix" arguments="1->...">
         <scope languages="" priority="0"/>
       </notation>
     </notations>

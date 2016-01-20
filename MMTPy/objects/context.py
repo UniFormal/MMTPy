@@ -1,12 +1,8 @@
-from MMTPy import utils
-from MMTPy import xml
-from MMTPy import metadata
+from MMTPy import xml, metadata
+from MMTPy.caseclass import caseclass
+from MMTPy.objects import obj, term, path
 
-from MMTPy.objects import obj
-from MMTPy.objects import term
-from MMTPy.objects import path
-
-class VarDecl(utils.caseClass("VarDecl", path.LocalName, (term.Term,), (term.Term,), type(None)), obj.Obj):
+class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), obj.Obj):
     def __init__(self, name, tp, df, nt):
         super(VarDecl, self).__init__(name, tp, df, nt)
         self.name = name
@@ -51,7 +47,7 @@ class VarDecl(utils.caseClass("VarDecl", path.LocalName, (term.Term,), (term.Ter
         else:
             raise ValueError("Not a well-formed variable declaration")
 
-class Context(utils.caseClass("Context", [VarDecl]), obj.Obj):
+class Context(caseclass.make([VarDecl]), obj.Obj):
     def __init__(self, variables):
         super(Context, self).__init__(variables)
         self.variables = variables

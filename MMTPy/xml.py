@@ -1,6 +1,7 @@
 from MMTPy.dependencies import etree, etree_type
 
-from MMTPy import utils
+from MMTPy.caseclass import caseclass
+from MMTPy.caseclass import types
 
 from copy import deepcopy
 
@@ -37,7 +38,7 @@ def match(node, pattern):
     """
 
     # matching a single pattern
-    if isinstance(pattern, utils.stringcls):
+    if isinstance(pattern, types.strtype):
         if match_tag(node, pattern):
             return True, node
         else:
@@ -102,7 +103,7 @@ def __empty_match__(pattern):
     """
 
     # matching a single pattern
-    if isinstance(pattern, utils.stringcls):
+    if isinstance(pattern, types.strtype):
         return None
 
     # matching a composite pattern

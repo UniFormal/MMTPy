@@ -1,4 +1,4 @@
-from MMTPy import utils
+from MMTPy.caseclass import caseclass
 from MMTPy.objects import context
 from MMTPy import metadata
 
@@ -8,7 +8,7 @@ from MMTPy import xml
 
 from MMTPy.declarations import declaration
 
-class Constant(utils.caseClass("Constant", path.LocalName, (term.Term,), (term.Term,), type(None)), declaration.Declaration):
+class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), declaration.Declaration):
     def __init__(self, name, tp, df, nt):
         super(Constant, self).__init__(name, tp, df, nt)
         self.__initmd__()

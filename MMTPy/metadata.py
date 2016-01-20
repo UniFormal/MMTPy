@@ -1,7 +1,8 @@
 from MMTPy import xml
-from MMTPy import utils
 from MMTPy.objects import URI
 from MMTPy.objects import path
+
+from MMTPy.caseclass import caseclass
 
 class MetaData(object):
     def __init__(self):
@@ -48,7 +49,7 @@ class MetaDatum(object):
             return Meta.fromXML(node)
 
         raise ValueError("Not a valid meta-datum")
-class Link(utils.caseClass("Link", path.GlobalName, URI.URI), MetaDatum):
+class Link(caseclass.make(path.GlobalName, URI.URI), MetaDatum):
     def __init__(self, key, uri):
         super(Link, self).__init__(key, uri)
         self.key = key
@@ -68,7 +69,7 @@ class Link(utils.caseClass("Link", path.GlobalName, URI.URI), MetaDatum):
         # and create a link object
         return Link(key, uri)
 
-class Tag(utils.caseClass("Tag", path.GlobalName), MetaDatum):
+class Tag(caseclass.make(path.GlobalName), MetaDatum):
     def __init__(self, key):
         super(Tag, self).__init__(key)
         self.key = key
@@ -85,7 +86,7 @@ class Tag(utils.caseClass("Tag", path.GlobalName), MetaDatum):
         # and create a link object
         return Tag(key)
 
-class Meta(utils.caseClass("Meta", path.GlobalName, object), MetaDatum):
+class Meta(caseclass.make(path.GlobalName, object), MetaDatum):
     def __init__(self, key, value):
         super(Meta, self).__init__(key, uri)
         self.key = key

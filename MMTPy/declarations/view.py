@@ -1,11 +1,11 @@
 from MMTPy.declarations import declaration
-from MMTPy import utils
+from MMTPy.caseclass import caseclass
 from MMTPy import xml
 from MMTPy import metadata
 
 from MMTPy.objects import path
 
-class View(utils.caseClass("View", path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration]), declaration.Declaration):
+class View(caseclass.make(path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration]), declaration.Declaration):
     def __init__(self, base, name, frm, to, decls):
         super(View, self).__init__(base, name, frm, to, decls)
         self.__initmd__()

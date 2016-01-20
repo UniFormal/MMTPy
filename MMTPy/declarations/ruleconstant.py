@@ -3,9 +3,9 @@ from MMTPy.objects import path
 
 from MMTPy import metadata
 from MMTPy import xml
-from MMTPy import utils
+from MMTPy.caseclass import caseclass
 
-class RuleConstant(utils.caseClass("RuleConstant", path.LocalName), declaration.Declaration):
+class RuleConstant(caseclass.make(path.LocalName), declaration.Declaration):
     def __init__(self, name):
         super(RuleConstant, self).__init__(name)
         self.__initmd__()

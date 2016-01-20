@@ -1,32 +1,30 @@
-typetype = type(object) # the type of a type
-typefunc = type(lambda x:x) # the funciton type
+from . import types
 
-def match(o, pattern):
+def matches(o, pattern):
     """
-    Checks if an object o matches a pattern. 
-    
+    Checks if an object o matches a pattern.
+
     Returns a pair of (matches, )
     """
-    
-    from caseclass import caseclass
-    
+
+    from . import caseclass
+
     # for a case class, use the appropriate method
-    if isinstance(o, caseclass.StaticCaseClass):
-        return o.__match__(pattern)
-    
-    # Simple Pattern matching:
-    
+    if isinstance(pattern, caseclass.StaticCaseClass):
+        return pattern.__matches__(o)
+
     # VALUE matching
     if o == pattern:
-        return (True, o)
-    
+        return True
+
     # instance checking
-    if isinstance(pattern, typetype):
-        return (isinstance(o, pattern), o)
-    
-    # function checking
-    if isinstance(pattern, typefunc):
-        return (True if pattern(o) else False, o)
-    
-    # if the pattern is None, we always match
-    return (pattern == None, o)
+    if isinstance(pattern, types.typetype):
+        return isinstance(o, pattern)
+
+    # if the pattern is MatchEverything(), we always match
+    return pattern == MatchEverything()
+
+from . import caseclass
+class MatchEverything(caseclass.make()):
+    def __init__(self):
+        super(MatchEverything, self).__init__()

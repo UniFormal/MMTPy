@@ -1,11 +1,11 @@
 from MMTPy.declarations import declaration
-from MMTPy import utils
+from MMTPy.caseclass import caseclass
 from MMTPy import xml
 from MMTPy import metadata
 
 from MMTPy.objects import path
 
-class Theory(utils.caseClass("Theory", path.DPath, path.LocalName, (path.MPath,), [declaration.Declaration]), declaration.Declaration):
+class Theory(caseclass.make(path.DPath, path.LocalName, (path.MPath,), [declaration.Declaration]), declaration.Declaration):
     def __init__(self, base, name, meta, decls):
         super(Theory, self).__init__(base, name, meta, decls)
         self.__initmd__()

@@ -1,12 +1,8 @@
-from MMTPy import utils
-
-from MMTPy.objects import obj
-from MMTPy.objects import path
-from MMTPy import xml
+from MMTPy import xml, metadata
 
 from MMTPy.dependencies import etree
-
-from MMTPy import metadata
+from MMTPy.objects import obj, path
+from MMTPy.caseclass import caseclass, types
 
 """
     This file defines Terms for MMT.
@@ -68,7 +64,7 @@ class Term(obj.Obj):
 
         raise ValueError("Either not a well-formed term or unsupported")
 
-class OMV(utils.caseClass("OMV", path.LocalName), Term):
+class OMV(caseclass.make(path.LocalName), Term):
     def __init__(self, name):
         super(OMV, self).__init__(name)
         self.name = name
@@ -89,7 +85,7 @@ class OMV(utils.caseClass("OMV", path.LocalName), Term):
         else:
             raise ValueError("Not a well-formed <OMV/>")
 
-class OMID(utils.caseClass("OMID", path.ContentPath), Term):
+class OMID(caseclass.make(path.ContentPath), Term):
     def __init__(self, path):
         super(OMID, self).__init__(path)
         self.path = path
@@ -110,7 +106,7 @@ class OMID(utils.caseClass("OMID", path.ContentPath), Term):
         else:
             raise ValueError("Not a well-formed <OMS/>")
 
-class OMA(utils.caseClass("OMA", Term, [Term]), Term):
+class OMA(caseclass.make(Term, [Term]), Term):
     def __init__(self, fun, args):
         super(OMA, self).__init__(fun, args)
         self.fun = fun
@@ -134,7 +130,7 @@ class OMA(utils.caseClass("OMA", Term, [Term]), Term):
         else:
             raise ValueError("Not a well-formed <OMA/>")
 
-class OMATTR(utils.caseClass("OMATTR", Term, OMID, Term), Term):
+class OMATTR(caseclass.make(Term, OMID, Term), Term):
     def __init__(self, arg, key, value):
         super(OMATTR, self).__init__(arg, key, value)
         self.arg = arg
@@ -167,7 +163,8 @@ class OMATTR(utils.caseClass("OMATTR", Term, OMID, Term), Term):
         else:
             raise ValueError("Not a well-formed <OMATTR/>")
 
-class OMLIT(utils.caseClass("OMLIT", Term, utils.stringcls), Term):
+class OMLIT(caseclass.make(Term, types.strtype), Term):
+    type_bigint = path.Path.parseBest("http://cds.omdoc.org/examples?bigint") # TODO: Figure out the proper type of this one
     def __init__(self, tp, value):
         super(OMLIT, self).__init__(tp, value)
         self.tp = tp
@@ -201,9 +198,9 @@ class OMLIT(utils.caseClass("OMLIT", Term, utils.stringcls), Term):
         else:
             raise ValueError("Not a well-formed <OMLIT/>")
 
-
 from MMTPy.objects import context
-class OMBINDC(utils.caseClass("OMBINDC", Term, context.Context, [Term]), Term):
+
+class OMBINDC(caseclass.make(Term, context.Context, [Term]), Term):
     def __init__(self, binder, ctx, scopes):
         super(OMBINDC, self).__init__(binder, scopes)
         self.binder = binder

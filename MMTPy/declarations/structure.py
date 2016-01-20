@@ -3,9 +3,9 @@ from MMTPy.objects import path
 
 from MMTPy import metadata
 from MMTPy import xml
-from MMTPy import utils
+from MMTPy.caseclass import caseclass
 
-class Structure(utils.caseClass("Structure", path.MPath), declaration.Declaration):
+class Structure(caseclass.make(path.MPath), declaration.Declaration):
     def __init__(self, frm):
         super(Structure, self).__init__(frm)
         self.__initmd__()

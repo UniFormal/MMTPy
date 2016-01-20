@@ -1,9 +1,10 @@
 import re
-from MMTPy import utils
+from MMTPy.caseclass import caseclass
+from MMTPy.caseclass import types
 
 uriexpr = re.compile(r"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?")
 
-class URI(utils.caseClass("URI", (utils.stringcls,), (utils.stringcls,), [utils.stringcls], bool, (utils.stringcls,), (utils.stringcls,))):
+class URI(caseclass.make((types.strtype,), (types.strtype,), [types.strtype], bool, (types.strtype,), (types.strtype,))):
     """
     An object version of a URI
     """
