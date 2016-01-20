@@ -1,9 +1,8 @@
-from MMTPy.declarations import declaration
-from MMTPy.objects import path
+from MMTPy import xml, metadata
 
-from MMTPy import metadata
-from MMTPy import xml
+from MMTPy.objects import path
 from MMTPy.caseclass import caseclass
+from MMTPy.declarations import declaration
 
 class Structure(caseclass.make(path.MPath), declaration.Declaration):
     def __init__(self, frm):

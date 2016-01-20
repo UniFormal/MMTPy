@@ -1,6 +1,7 @@
 from MMTPy import xml, metadata
 from MMTPy.caseclass import caseclass
-from MMTPy.objects import obj, term, path
+from MMTPy.objects import obj, path
+from MMTPy.objects.terms import term
 
 class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), obj.Obj):
     def __init__(self, name, tp, df, nt):

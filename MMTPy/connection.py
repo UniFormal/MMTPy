@@ -1,8 +1,8 @@
+from MMTPy import xml
+
 from MMTPy.objects.URI import URI
 from MMTPy.declarations import declaration
-
 from MMTPy.dependencies import requests, etree
-from MMTPy import xml
 
 class Connection():
     """

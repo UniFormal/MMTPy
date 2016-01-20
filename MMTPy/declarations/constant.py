@@ -1,11 +1,8 @@
+from MMTPy import xml, metadata
+
+from MMTPy.objects import path, context
+from MMTPy.objects.terms import term
 from MMTPy.caseclass import caseclass
-from MMTPy.objects import context
-from MMTPy import metadata
-
-from MMTPy.objects import path
-from MMTPy.objects import term
-from MMTPy import xml
-
 from MMTPy.declarations import declaration
 
 class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), declaration.Declaration):
@@ -36,14 +33,14 @@ class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(N
 
             tp_node = cst.find("type")
 
-            if len(tp_node) > 0:
+            if tp_node != None:
                 tp = term.Term.fromXML(list(tp_node)[0])
             else:
                 tp = None
 
             df_node = cst.find("definition")
 
-            if len(df_node) > 0:
+            if df_node != None:
                 df = term.Term.fromXML(list(df_node)[0])
             else:
                 df = None

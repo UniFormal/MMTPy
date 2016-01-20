@@ -1,7 +1,6 @@
 from MMTPy import xml
-from MMTPy.objects import URI
-from MMTPy.objects import path
 
+from MMTPy.objects import URI, path
 from MMTPy.caseclass import caseclass
 
 class MetaData(object):
@@ -101,8 +100,8 @@ class Meta(caseclass.make(path.GlobalName, object), MetaDatum):
         # parse key and value
         key = path.ContentPath.parseBest(node.attrib.get("property"))
 
-        from MMTPy.objects import term
-        value = term.fromXML(node[0])
+        from MMTPy.objects.terms import term
+        value = term.Term.fromXML(node[0])
 
         # and create a link object
         return Meta(key, value)

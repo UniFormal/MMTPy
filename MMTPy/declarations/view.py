@@ -1,9 +1,8 @@
-from MMTPy.declarations import declaration
-from MMTPy.caseclass import caseclass
-from MMTPy import xml
-from MMTPy import metadata
+from MMTPy import xml, metadata
 
 from MMTPy.objects import path
+from MMTPy.caseclass import caseclass
+from MMTPy.declarations import declaration
 
 class View(caseclass.make(path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration]), declaration.Declaration):
     def __init__(self, base, name, frm, to, decls):

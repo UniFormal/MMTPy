@@ -1,7 +1,5 @@
+from MMTPy.caseclass import types, caseclass
 from MMTPy.dependencies import etree, etree_type
-
-from MMTPy.caseclass import caseclass
-from MMTPy.caseclass import types
 
 from copy import deepcopy
 

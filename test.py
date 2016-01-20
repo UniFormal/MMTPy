@@ -7,7 +7,7 @@ print(s1)
 print(s2)
 print(s2 == Path.parseS(s1)) # should be false
 
-from MMTPy.objects.term import Term
+from MMTPy.objects.terms import term
 from MMTPy.dependencies import etree
 from MMTPy import xml
 
