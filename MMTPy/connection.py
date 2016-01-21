@@ -4,6 +4,8 @@ from MMTPy.objects.URI import URI
 from MMTPy.declarations import declaration
 from MMTPy.dependencies import requests, etree
 
+from MMTPy.query import builder 
+
 class Connection():
     """
     Represents a connection to MMT
@@ -16,12 +18,17 @@ class Connection():
         # and extract only the parts we want
         self.base = uriobj.scheme + "://" + uriobj.authority + "/"
 
-    def get(self, pth):
+    def get(self, pth, post_xml=None):
         """
-        Makes a GET request to MMT and returns (statusCode, text).
+        Makes a GET or POST request to the given pth
         """
+        
         fullpth = self.base + pth
-        res = requests.get(fullpth)
+        
+        if post_xml == None:
+            res = requests.get(fullpth)
+        else:
+            res = requests.post(fullpth, headers={'Content-Type': 'application/xml'}, data=post_xml)
         return (res.status_code, res.text)
 
     def getXML(self, pth):
@@ -39,18 +46,16 @@ class Connection():
 
         # make the request and return it
         return self.getXML(s_path)
+    
+    def query(self, query):
+        """
+        Sends a query object to the MMT API and returns a string representing the response. 
+        """
+        
+        return self.get(":query", post_xml=etree.tostring(query.toXML()))
 
     def getDeclaration(self, pth):
         """
         Gets a declaration of an object the MMT API.
         """
-
-        # make the request
-        (code, pxml) = self.getDeclarationXML(pth)
-
-        # if we were not ok, return NOthing
-        if code != 200:
-            return None
-
-        # else return the theory
-        return declaration.Declaration.fromXML(pxml)
+        return self.query(builder.declaration(pth))

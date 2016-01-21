@@ -1,6 +1,6 @@
 from MMTPy import xml
 
-from MMTPy.caseclass import caseclass
+from MMTPy.caseclass import caseclass, types
 from MMTPy.objects import componentkey
 
 from MMTPy.query.query import Query
@@ -138,6 +138,22 @@ class Projection(caseclass.make(Query, int), Query):
             return Projection(Query.fromXML(node[0]), int(node.attrib.get("index")))
         else:
             raise ValueError("not a valid <projection/>")
+
+class QueryFunctionApply(caseclass.make(types.strtype, Query, [types.strtype]), Query):
+    def __init__(self, function, argument, params):
+        super(Projection, self).__init__(function, argument, params)
+        self.function = function
+        self.argument = argument
+        self.params = params
+    def toXML(self):
+        return xml.make_element("function", self.argument.toXML(), name=self.function, param=",".join(self.params))
+    @staticmethod
+    def fromXML(node):
+        if xml.matches(node, ("function", (None, ))):
+            return QueryFunctionApply(node.attrib.get("name"), Query.fromXML(node[0]), node.attrib.get("param").split(","))
+        else:
+            raise ValueError("not a valid <projection/>")
+
 
 class Related(caseclass.make(Query, RelationExp), Query):
     def __init__(self, to, by):

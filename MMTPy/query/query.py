@@ -10,7 +10,7 @@ Query =
     // UNIMPLEMENTED Literals[T <: BaseType](literals: T*)
     Paths(tp: Unary)
     Projection(of: Query, index: Int)
-    // UNIMPLEMENTED : QueryFunctionApply(function: QueryExtension, argument: Query, params: List[String])
+    // TODO: QueryFunctionApply(function: String, argument: Query, params: List[String])
     Related(to: Query, by: RelationExp)
     Singleton(e: Query)
     SubObject(of: Query, position: Position)
@@ -58,6 +58,10 @@ class Query(object):
         if xml.matches(node, "projection"):
             from MMTPy.query.queries import Projection
             return Projection.fromXML(node)
+        
+        if xml.matches(node, "function"):
+            from MMTPy.query.queries import QueryFunctionApply
+            return QueryFunctionApply.fromXML(node)
         
         if xml.matches(node, "related"):
             from MMTPy.query.queries import Related
