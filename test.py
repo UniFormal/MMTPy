@@ -711,3 +711,6 @@ from MMTPy.objects import path
 lf = path.Path.parseBest("http://cds.omdoc.org/urtheories?LF")
 
 c = connection.Connection("http://localhost:8080/")
+
+
+from MMTPy.query import queries, relationexps, props, binary, unary
