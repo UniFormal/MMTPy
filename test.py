@@ -708,7 +708,7 @@ from="http://foswiki.cs.uu.nl/foswiki/IFIP21/Goteborg/MMT-tutorial-final?Monad" 
 from MMTPy import connection
 from MMTPy.objects import path
 
-lf = path.Path.parseBest("http://cds.omdoc.org/urtheories?LF?")
+lf = path.Path.parseBest("http://cds.omdoc.org/urtheories?LF")
 
 c = connection.Connection("http://localhost:8080/")
 

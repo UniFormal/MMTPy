@@ -9,6 +9,6 @@ class Obj(metadata.MetaData):
         return xml.make_element(xml.omt("OMOBJ"), nowrapnode)
     @staticmethod
     def fromXML(node):
-        from MMTPy.objects import term
-        return Term.fromXML(node)
+        from MMTPy.objects.terms import term
+        return term.Term.fromXML(node)
         

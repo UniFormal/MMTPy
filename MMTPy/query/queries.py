@@ -141,7 +141,7 @@ class Projection(caseclass.make(Query, int), Query):
 
 class QueryFunctionApply(caseclass.make(types.strtype, Query, [types.strtype]), Query):
     def __init__(self, function, argument, params):
-        super(Projection, self).__init__(function, argument, params)
+        super(QueryFunctionApply, self).__init__(function, argument, params)
         self.function = function
         self.argument = argument
         self.params = params

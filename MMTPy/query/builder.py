@@ -1,6 +1,6 @@
 def declaration(pth):
-    from MMTPy.query.queries import Related, Literal
-    from MMTPy.query.relationexps import ToObject
-    from MMTPy.query.binary import Declares
-    
-    return Related(Literal(pth), ToObject(Declares()))
+    """
+    Builds a declaration query for a given path
+    """
+    from MMTPy.query.queries import QueryFunctionApply, Literal
+    return QueryFunctionApply("presentDecl", Literal(pth), ["xml"])

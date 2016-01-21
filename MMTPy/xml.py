@@ -119,7 +119,7 @@ def __empty_match_list__(patterns):
     if patterns == None:
         return None
 
-    return tuple(list(map(empty_match, patterns)))
+    return tuple(list(map(__empty_match__, patterns)))
 
 def make_element(tag, *children, **attributes):
     """
