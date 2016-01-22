@@ -9,6 +9,7 @@ from MMTPy.query.unary import Unary
 from MMTPy.query.relationexp import RelationExp
 
 from MMTPy.objects import obj, path, position
+from MMTPy.dependencies import etree_type
 
 class BigUnion(caseclass.make(Query, Query), Query):
     def __init__(self, domain, of):
@@ -97,17 +98,39 @@ class Literal(caseclass.make(object), Query):
         self.literal = literal
     def toXML(self):
         if isinstance(self.literal, path.Path):
-            return xml.make_element("literal", uri=self.literal)
+            lox = xml.make_element("uri", path=self.literal)
+        elif isinstance(self.literal, types.strtype):
+            lox = xml.make_element("string")
+            lox.text = self.literal
+        elif isinstance(self.literal, obj.Obj):
+            lox = xml.make_element("object", self.literal.toXML())
+        elif isinstance(self.literal, etree_type):
+            lox = xml.make_element("xml", xml.copy(self.literal))
         else:
-            gx = xml.make_element("literal")
-            gx.text = literal
-            return gx
+            raise ValueError("unknown literal type %s" % type(self.literal))
+
+        return xml.make_element("literal", lox)
     @staticmethod
     def fromXML(node):
         if xml.matches(node, "literal"):
             if "uri" in node.attrib:
-                return Literal(path.Path.parseBest(node.attrib.get("uri")))
+                # backward compatibility
+                return Literal(path.Path.parse(node.attrib.get("uri")))
+            elif len(node) > 0:
+                lox = node[0]
+
+                if xml.matches(lox, "uri"):
+                    return Literal(path.Path.parse(lox.attrib.get("path")))
+                elif xml.matches(lox, "string"):
+                    return Literal(lox.text)
+                elif xml.matches(lox, "object"):
+                    return Literal(obj.Obj.fromXML(lox[0]))
+                elif xml.matches(lox, "xml"):
+                    return Literal(lox[0])
+                else:
+                    raise ValueError("unknown literal type")
             else:
+                # backward compatibility
                 return Literal(node.text)
         else:
             raise ValueError("not a valid <literal/>")

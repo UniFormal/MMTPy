@@ -6,6 +6,8 @@ from MMTPy.objects.terms import term, omid
 class OMATTR(caseclass.make(term.Term, omid.OMID, term.Term), term.Term):
     def __init__(self, arg, key, value):
         super(OMATTR, self).__init__(arg, key, value)
+        self.__initmd__()
+        
         self.arg = arg
         self.key = key
         self.value = value

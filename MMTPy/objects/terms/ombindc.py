@@ -7,6 +7,8 @@ from MMTPy.objects.terms import term
 class OMBINDC(caseclass.make(term.Term, context.Context, [term.Term]), term.Term):
     def __init__(self, binder, ctx, scopes):
         super(OMBINDC, self).__init__(binder, scopes)
+        self.__initmd__()
+        
         self.binder = binder
         self.ctx = ctx
         self.scopes = scopes

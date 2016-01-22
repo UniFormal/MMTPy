@@ -131,7 +131,7 @@ class Path():
         return tuple(comp)
 
     @staticmethod
-    def parse(s, isSplit = False):
+    def __parse__(s, isSplit = False):
         """
             Parses a string representing a uri into a tuple of (dpath, mpath, spath, cpath) objects
         """
@@ -151,12 +151,12 @@ class Path():
         return (dpath, mpath, spath, cpath)
 
     @staticmethod
-    def parseBest(s, isSplit = False):
+    def parse(s, isSplit = False):
         """
-            Parses up to the deepest level possible.
+        Parses up to the deepest level possible.
         """
 
-        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
+        (dpath, mpath, spath, cpath) = Path.__parse__(s, isSplit = isSplit)
 
         if cpath != None:
             return cpath
@@ -174,7 +174,7 @@ class Path():
         """
             Parses a string representing a uri into a DPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
+        (dpath, mpath, spath, cpath) = Path.__parse__(s, isSplit = isSplit)
 
         if not dpath or mpath:
             raise ValueError("Given string does not represent a DPath. ")
@@ -185,7 +185,7 @@ class Path():
         """
             Parses a string representing a uri into a MPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
+        (dpath, mpath, spath, cpath) = Path.__parse__(s, isSplit = isSplit)
 
         if not mpath or spath:
             raise ValueError("Given string does not represent a MPath. ")
@@ -196,7 +196,7 @@ class Path():
         """
             Parses a string representing a uri into a SPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
+        (dpath, mpath, spath, cpath) = Path.__parse__(s, isSplit = isSplit)
 
         if not spath or cpath:
             raise ValueError("Given string does not represent a SPath. ")
@@ -207,7 +207,7 @@ class Path():
         """
             Parses a string representing a uri into a SPath or returns a value error
         """
-        (dpath, mpath, spath, cpath) = Path.parse(s, isSplit = isSplit)
+        (dpath, mpath, spath, cpath) = Path.__parse__(s, isSplit = isSplit)
 
         if not cpath:
             raise ValueError("Given string does not represent a CPath. ")

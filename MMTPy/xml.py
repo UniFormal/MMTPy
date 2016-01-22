@@ -186,6 +186,17 @@ def copy(node):
 
     return deepcopy(node)
 
+def textcontent(node):
+    """
+    Gets text content of a node
+    """
+
+    pretext =  "" if node.text == None else node.text
+    posttext = "" if node.tail == None else node.tail
+
+    return pretext + "\n".join(node.itertext()) + posttext
+
+
 openmath_ns = "http://www.openmath.org/OpenMath"
 
 def omt(tag = ""):

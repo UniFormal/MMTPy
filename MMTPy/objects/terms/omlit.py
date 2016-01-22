@@ -7,6 +7,8 @@ from MMTPy.objects.terms import term, omid
 class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
     def __init__(self, tp, value):
         super(OMLIT, self).__init__(tp, value)
+        self.__initmd__()
+        
         self.tp = tp
         self.value = value
     def toXML(self):
@@ -15,7 +17,7 @@ class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
         if isinstance(self.tp, omid.OMID):
             attrs["type"] = self.tp.path
         else:
-            children = [self.tp.toXML()]
+            children = [xml.make_element("type", self.tp.toXML())]
 
         return xml.make_element(xml.omt("OMLIT"), self.toMetaDataXML(), *children, **attrs)
     @staticmethod
@@ -27,7 +29,7 @@ class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
             value = omlit.attrib.get("value")
 
             if "type" in omlit.attrib:
-                tp = omid.OMID(path.Path.parseBest(omlit.attrib.get("type")))
+                tp = omid.OMID(path.Path.parse(omlit.attrib.get("type")))
             else:
                 tp = term.Term.fromXML(omlit[0][0])
 

@@ -7,6 +7,8 @@ from MMTPy.caseclass import caseclass
 class OMV(caseclass.make(path.LocalName), term.Term):
     def __init__(self, name):
         super(OMV, self).__init__(name)
+        self.__initmd__()
+        
         self.name = name
     def toXML(self):
         return xml.make_element(xml.omt("OMV"), self.toMetaDataXML(), name=self.name)

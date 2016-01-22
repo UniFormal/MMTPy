@@ -8,6 +8,8 @@ from MMTPy.objects.terms import term
 class OML(caseclass.make(context.VarDecl), term.Term):
     def __init__(self, vd):
         super(OML, self).__init__(vd)
+        self.__initmd__()
+        
         self.vd = vd
     def toXML(self):
         vdx = self.vd.toXML()
@@ -20,7 +22,7 @@ class OML(caseclass.make(context.VarDecl), term.Term):
         (m, oml) = xml.match(node, xml.omt("OML"))
         if m:
             oml.tag = xml.omt("OMV")
-            
+
             parsed = OML(context.VarDecl.fromXML(oml))
             parsed.metadata = md
 
