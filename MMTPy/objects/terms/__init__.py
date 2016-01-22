@@ -9,4 +9,5 @@
          | OMATTR (arg : Term, key : OMID, value : Term)
          | OMBINDC (binder : Term, context: Context, scopes : List[Term])
          | OMLIT (type: Term, value : string)
+         | OML (decl : VarDecl)
 """

@@ -15,7 +15,7 @@ class Result(object):
         return str(self.objects)
     def __repr__(self):
         return "Result%r" % (self.objects)
-    
+
     @staticmethod
     def fromXML(node):
         if xml.matches(node, "results"):
@@ -24,11 +24,11 @@ class Result(object):
             return Result([Result.fromSingleXML(node[0])])
         else:
             raise ValueError("not a valid <results/>")
-        
-    
+
+
     @staticmethod
     def fromSingleXML(node):
-        
+
         if xml.matches(node, "uri"):
             from MMTPy.objects import path
             return path.parseBest(node.attrib.get("path"))
@@ -46,8 +46,8 @@ class Result(object):
                 return declaration.Declaration.fromXML(node[0])
             except ValueError:
                 pass
-            
-            return node[0]            
+
+            return node[0]
         elif xml.matches(node, "string"):
             return node.text
         else:

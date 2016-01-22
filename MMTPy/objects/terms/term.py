@@ -52,4 +52,10 @@ class Term(obj.Obj):
             from MMTPy.objects.terms import omlit
             return omlit.OMLIT.fromXML(node)
 
+        # in case of an OML
+        (m, oml) = xml.match(node, xml.omt("OML"))
+        if m:
+            from MMTPy.objects.terms import oml
+            return oml.OML.fromXML(node)
+
         raise ValueError("Either not a well-formed term or unsupported")

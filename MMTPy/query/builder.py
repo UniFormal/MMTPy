@@ -4,3 +4,11 @@ def declaration(pth):
     """
     from MMTPy.query.queries import QueryFunctionApply, Literal
     return QueryFunctionApply("presentDecl", Literal(pth), ["xml"])
+
+def simplification(obj, thy):
+    """
+    Builds a declaration query for an object relative to a given theory
+    """
+    raise NotImplementedError
+    from MMTPy.query.queries import QueryFunctionApply
+    return QueryFunctionApply("simplify", Literal(pth), ["xml"])

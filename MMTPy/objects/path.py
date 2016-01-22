@@ -34,6 +34,8 @@ class SimpleStep(caseclass.make(types.strtype), LNStep):
         self.name = name
     def __str__(self):
         return self.name
+    def __repr__(self):
+        return "SimpleStep[%s]" % (self)
 
 class LocalName(caseclass.make([LNStep])):
     def __init__(self, steps):
@@ -41,7 +43,8 @@ class LocalName(caseclass.make([LNStep])):
         self.steps = steps
     def __str__(self):
         return "/".join(map(str, self.steps))
-
+    def __repr__(self):
+        return "LocalName[%s]" % (self)
     @staticmethod
     def split(s):
 
@@ -217,6 +220,8 @@ class DPath(caseclass.make(URI.URI), Path):
         self.uri = uri
     def __str__(self):
         return "%s" % self.uri
+    def __repr__(self):
+        return "DPath[%s]" % (self)
 
 class ContentPath(DPath): pass
 
@@ -227,6 +232,8 @@ class CPath(caseclass.make(ContentPath, types.strtype), Path):
         self.component = component
     def __str__(self):
         return "%s?%s" % (self.parent, self.component)
+    def __repr__(self):
+        return "CPath[%s]" % (self)
 
 class MPath(caseclass.make(DPath, LocalName), ContentPath):
     def __init__(self, parent, name):
@@ -238,6 +245,8 @@ class MPath(caseclass.make(DPath, LocalName), ContentPath):
         return self
     def __str__(self):
         return "%s?%s" % (self.parent, self.name)
+    def __repr__(self):
+        return "MPath[%s]" % (self)
 
 class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
     def __init__(self, module, name):
@@ -246,6 +255,8 @@ class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
         self.name = name
     def __str__(self):
         return "%s?%s" % (self.module, self.name)
+    def __repr__(self):
+        return "GlobalName[%s]" % (self)
 
 class ComplexStep(caseclass.make(MPath), LNStep):
     def __init__(self, path):
@@ -253,3 +264,5 @@ class ComplexStep(caseclass.make(MPath), LNStep):
         self.path = path
     def __str__(self):
         return "[%s]" % self.path
+    def __repr__(self):
+        return "ComplexStep[%s]" % (self)

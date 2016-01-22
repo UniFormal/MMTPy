@@ -12,7 +12,7 @@ class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
     def toXML(self):
         attrs = {"value": self.value}
         children = []
-        if isinstance(self.tp, OMID):
+        if isinstance(self.tp, omid.OMID):
             attrs["type"] = self.tp.path
         else:
             children = [self.tp.toXML()]
@@ -26,10 +26,10 @@ class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
         if m:
             value = omlit.attrib.get("value")
 
-            if "type" in omlit.attrib != "":
+            if "type" in omlit.attrib:
                 tp = omid.OMID(path.Path.parseBest(omlit.attrib.get("type")))
             else:
-                tp = term.Term.fromXML(omlit[0])
+                tp = term.Term.fromXML(omlit[0][0])
 
             parsed = OMLIT(tp, value)
             parsed.metadata = md

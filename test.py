@@ -709,8 +709,6 @@ from MMTPy import connection
 from MMTPy.objects import path
 
 lf = path.Path.parseBest("http://cds.omdoc.org/urtheories?LF")
+odktets = path.Path.parseBest("http://www.lmfdb.org/?elliptic_curves?11a1")
 
 c = connection.Connection("http://localhost:8080/")
-
-
-from MMTPy.query import queries, relationexps, props, binary, unary

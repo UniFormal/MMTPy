@@ -29,14 +29,14 @@ class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(No
 
             tp_node = omv.find("type")
 
-            if tp_node:
+            if tp_node != None:
                 tp = term.Term.fromXML(list(tp_node)[0])
             else:
                 tp = None
 
             df_node = omv.find("definition")
 
-            if df_node:
+            if df_node != None:
                 df = term.Term.fromXML(list(df_node)[0])
             else:
                 df = None
