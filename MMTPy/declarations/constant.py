@@ -14,6 +14,11 @@ class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(N
         self.tp = tp
         self.df = df
         self.nt = nt
+    def map(self, fn):
+        ctp = self.tp.map(fn) if self.tp != None else None
+        cdf = self.df.map(fn) if self.df != None else None
+
+        return fn(Constant(self.name, ctp, cdf, self.nt))
     def toXML(self):
         nodes = []
 

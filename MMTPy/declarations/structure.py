@@ -10,7 +10,8 @@ class Structure(caseclass.make(path.MPath), declaration.Declaration):
         self.__initmd__()
 
         self.frm = frm
-
+    def map(self, fn):
+        return fn(Structure(self.frm))
     def toXML(self):
         return xml.make_element("import", self.toMetaDataXML(), **{"from": self.frm})
 

@@ -14,6 +14,11 @@ class Theory(caseclass.make(path.DPath, path.LocalName, (path.MPath,), [declarat
         self.meta = meta
         self.decls = decls
 
+    def map(self, fn):
+        tpds = map(lambda d:d.map(fn), self.decls)
+
+        return fn(Theory(self.base, self.name, self.meta, list(tpds)))
+
     def toXML(self):
         attrs = {
             "base": self.base,

@@ -15,6 +15,10 @@ class View(caseclass.make(path.DPath, path.LocalName, path.MPath, path.MPath, [d
         self.base = base
         self.name = name
         self.decls = decls
+    def map(self, fn):
+        vds = map(lambda d:d.map(fn), self.decls)
+
+        return fn(View(self.base, self.name, self.frm, self.to, list(vds)))
 
     def toXML(self):
         attrs = {

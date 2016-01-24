@@ -6,7 +6,7 @@ odk_elliptic_curves = path.Path.parse("http://www.lmfdb.org/?elliptic_curves")
 odk_elliptic_curves_35a2 = path.Path.parse("http://www.lmfdb.org/?elliptic_curves?35a2")
 odk_elliptic_curves_11a1 = path.Path.parse("http://www.lmfdb.org/?elliptic_curves?11a1")
 
-# create a QMT Client
+# create a QMT Clienth d
 q = qmtclient.QMTClient("http://localhost:8080/")
 
 # get two definitions from the API

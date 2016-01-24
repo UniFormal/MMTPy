@@ -5,6 +5,28 @@ from MMTPy.objects import obj
 class Declaration(metadata.MetaData):
     def __init__(self):
         super(Declaration, self).__init__()
+    def map(self, fn):
+        """
+        Applies a function to each subcomponent of this VarDecl in a depth-first
+        approach
+        """
+
+        raise NotImplementedError
+
+    def __iter__(self):
+        """
+        Iterates over all subcomponents of this VarDecl in a depth first manner
+        """
+        components = []
+
+        def getitems(x):
+            components.append(x)
+            return x
+
+        self.map(getitems)
+
+        for c in components:
+            yield c
     @staticmethod
     def fromXML(node):
 

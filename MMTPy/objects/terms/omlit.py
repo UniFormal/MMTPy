@@ -8,9 +8,11 @@ class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
     def __init__(self, tp, value):
         super(OMLIT, self).__init__(tp, value)
         self.__initmd__()
-        
+
         self.tp = tp
         self.value = value
+    def map(self, fn):
+        return fn(OMLIT(self.tp.map(fn), self.value)
     def toXML(self):
         attrs = {"value": self.value}
         children = []

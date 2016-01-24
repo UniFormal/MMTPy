@@ -81,13 +81,6 @@ class QMTClient(object):
 
         return self.queryOne(builder.analyzing(obj, thy))
 
-    def analyze(self, obj, thy):
-        """
-        Reconstructs the type of an object relative to a theory.
-        """
-
-        return self.queryOne(builder.analyzing(obj, thy))
-
     def simplify(self, obj, thy):
         """
         Simplifies an object with respect to a certain theory.

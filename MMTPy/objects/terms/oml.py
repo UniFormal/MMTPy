@@ -9,8 +9,10 @@ class OML(caseclass.make(context.VarDecl), term.Term):
     def __init__(self, vd):
         super(OML, self).__init__(vd)
         self.__initmd__()
-        
+
         self.vd = vd
+    def map(self, fn):
+        return fn(OML(self.vd.map(fn))
     def toXML(self):
         vdx = self.vd.toXML()
         vdx.tag = xml.omt("OML")

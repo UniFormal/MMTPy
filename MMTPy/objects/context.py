@@ -10,6 +10,31 @@ class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(No
         self.tp = tp
         self.df = df
         self.nt = nt
+    def map(self, fn):
+        """
+        Applies a function to each subcomponent of this VarDecl in a depth-first
+        approach
+        """
+
+        vtp = self.tp.map(fn) if self.tp != None else None
+        vdf = self.df.map(fn) if self.df != None else None
+
+        return fn(self.name, vtp, vdf, self.nt)
+
+    def __iter__(self):
+        """
+        Iterates over all subcomponents of this VarDecl in a depth first manner
+        """
+        components = []
+
+        def getitems(x):
+            components.append(x)
+            return x
+
+        self.map(getitems)
+
+        for c in components:
+            yield c
     def toXML(self):
         nodes = []
 

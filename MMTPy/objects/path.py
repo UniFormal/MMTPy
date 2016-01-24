@@ -214,16 +214,23 @@ class Path():
 
         return cpath
 
+    def __repr__(self):
+        return "%s[%r]" % (self.__class__.__name__, str(self))
+
 class DPath(caseclass.make(URI.URI), Path):
     def __init__(self, uri):
         super(DPath, self).__init__(uri)
         self.uri = uri
     def __str__(self):
         return "%s" % self.uri
-    def __repr__(self):
-        return "DPath[%s]" % (self)
 
-class ContentPath(DPath): pass
+class ContentPath(DPath):
+    def toTerm(self):
+        """
+        Turns this ContentPath into a term by wrapping it in an OMID
+        """
+        from MMTPy.objects.terms import omid
+        return omid.OMID(self)
 
 class CPath(caseclass.make(ContentPath, types.strtype), Path):
     def __init__(self, parent, component):
@@ -232,8 +239,6 @@ class CPath(caseclass.make(ContentPath, types.strtype), Path):
         self.component = component
     def __str__(self):
         return "%s?%s" % (self.parent, self.component)
-    def __repr__(self):
-        return "CPath[%s]" % (self)
 
 class MPath(caseclass.make(DPath, LocalName), ContentPath):
     def __init__(self, parent, name):
@@ -245,8 +250,6 @@ class MPath(caseclass.make(DPath, LocalName), ContentPath):
         return self
     def __str__(self):
         return "%s?%s" % (self.parent, self.name)
-    def __repr__(self):
-        return "MPath[%s]" % (self)
 
 class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
     def __init__(self, module, name):
@@ -255,8 +258,6 @@ class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
         self.name = name
     def __str__(self):
         return "%s?%s" % (self.module, self.name)
-    def __repr__(self):
-        return "GlobalName[%s]" % (self)
 
 class ComplexStep(caseclass.make(MPath), LNStep):
     def __init__(self, path):

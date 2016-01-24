@@ -7,10 +7,16 @@ class OMATTR(caseclass.make(term.Term, omid.OMID, term.Term), term.Term):
     def __init__(self, arg, key, value):
         super(OMATTR, self).__init__(arg, key, value)
         self.__initmd__()
-        
+
         self.arg = arg
         self.key = key
         self.value = value
+    def map(self, fn):
+        aa = self.arg.map(fn)
+        ak = self.key.map(fn)
+        av = self.value.map(fn)
+
+        return fn(OMATTR(aa, ak, av))
     def toXML(self):
         return xml.make_element(xml.omt("OMATTR"),
             self.toMetaDataXML(),

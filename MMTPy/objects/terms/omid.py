@@ -12,7 +12,8 @@ class OMID(caseclass.make(path.ContentPath), term.Term):
         self.path = path
     def toXML(self):
         return xml.make_element(xml.omt("OMS"), self.toMetaDataXML(), base=self.path.module.parent, module=self.path.module.name, name=self.path.name)
-
+    def map(self, fn):
+        return fn(OMID(self.path))
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)

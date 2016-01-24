@@ -8,11 +8,12 @@ class OMV(caseclass.make(path.LocalName), term.Term):
     def __init__(self, name):
         super(OMV, self).__init__(name)
         self.__initmd__()
-        
+
         self.name = name
+    def map(self, fn):
+        return fn(OMV(self.name))
     def toXML(self):
         return xml.make_element(xml.omt("OMV"), self.toMetaDataXML(), name=self.name)
-
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)

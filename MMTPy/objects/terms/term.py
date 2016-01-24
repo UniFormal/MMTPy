@@ -6,6 +6,27 @@ class Term(obj.Obj):
     def __init__(self):
         super(Term, self).__init__()
 
+    def map(self, fn):
+        """
+        Applies a function to each subcomponent of this term in a depth-first
+        approach
+        """
+        raise NotImplementedError
+    def __iter__(self):
+        """
+        Iterates over all subterms of this term in a depth first manner
+        """
+        components = []
+
+        def getitems(x):
+            components.append(x)
+            return x
+
+        self.map(getitems)
+
+        for c in components:
+            yield c
+
     @staticmethod
     def fromXML(node):
         # if we are an OMOBJ we need to ignore the first layer

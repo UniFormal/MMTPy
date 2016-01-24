@@ -10,6 +10,8 @@ class RuleConstant(caseclass.make(path.LocalName), declaration.Declaration):
         self.__initmd__()
 
         self.name = name
+    def map(self, fn):
+        return fn(RuleConstant(self.name))
 
     def toXML(self):
         return xml.make_element("ruleconstant", self.toMetaDataXML(), **{"name": self.name})
