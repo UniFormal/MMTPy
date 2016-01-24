@@ -35,7 +35,7 @@ class SimpleStep(caseclass.make(types.strtype), LNStep):
     def __str__(self):
         return self.name
     def __repr__(self):
-        return "SimpleStep[%s]" % (self)
+        return "SimpleStep[%r]" % (str(self))
 
 class LocalName(caseclass.make([LNStep])):
     def __init__(self, steps):
@@ -44,7 +44,7 @@ class LocalName(caseclass.make([LNStep])):
     def __str__(self):
         return "/".join(map(str, self.steps))
     def __repr__(self):
-        return "LocalName[%s]" % (self)
+        return "LocalName[%r]" % (str(self))
     @staticmethod
     def split(s):
 
@@ -217,6 +217,9 @@ class Path():
     def __repr__(self):
         return "%s[%r]" % (self.__class__.__name__, str(self))
 
+    def __add__(self, other):
+        return Path.parse("%s%s" %(self, other))
+
 class DPath(caseclass.make(URI.URI), Path):
     def __init__(self, uri):
         super(DPath, self).__init__(uri)
@@ -231,6 +234,11 @@ class ContentPath(DPath):
         """
         from MMTPy.objects.terms import omid
         return omid.OMID(self)
+    def __invert__(self):
+        """
+        Alias of toTerm(self)
+        """
+        return self.toTerm()
 
 class CPath(caseclass.make(ContentPath, types.strtype), Path):
     def __init__(self, parent, component):
@@ -266,4 +274,4 @@ class ComplexStep(caseclass.make(MPath), LNStep):
     def __str__(self):
         return "[%s]" % self.path
     def __repr__(self):
-        return "ComplexStep[%s]" % (self)
+        return "ComplexStep[%r]" % (str(self))

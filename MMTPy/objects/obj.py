@@ -14,7 +14,14 @@ class Obj(metadata.MetaData):
     def __call__(self, *args):
         """
         Applies this term to a list of other terms. Quivalent to
-        oma.OMA(self, *args). 
+        oma.OMA(self, *args).
         """
         from MMTPy.objects.terms import oma
         return oma.OMA(self, *args)
+    def toTerm(self):
+        return self
+    def __invert__(self):
+        """
+        Alias of toTerm(self)
+        """
+        return self.toTerm()

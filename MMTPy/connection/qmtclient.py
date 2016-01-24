@@ -23,7 +23,7 @@ class QMTClient(object):
         """
 
         (status, x) = self.connection.getXML(":query", post_xml=query.toXML())
-
+        
         if status == 200:
             return result.Result.fromXML(x)
         else:

@@ -2,7 +2,7 @@ from MMTPy.objects import path
 from MMTPy.connection import qmtclient
 
 # declare all the paths to MMT
-odk_elliptic_curves = path.Path.parse("http://www.lmfdb.org/?elliptic_curves")
+odk_elliptic_curves = path.Path.parse("http://www.lmfdb.org/db/elliptic_curves?curves")
 odk_elliptic_curves_35a2 = path.Path.parse("http://www.lmfdb.org/?elliptic_curves?35a2")
 odk_elliptic_curves_11a1 = path.Path.parse("http://www.lmfdb.org/?elliptic_curves?11a1")
 
