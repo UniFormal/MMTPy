@@ -6,11 +6,11 @@ from MMTPy.objects.terms import term
 
 class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
     def __init__(self, fun, *args):
-        super(OMA, self).__init__(fun, args)
+        super(OMA, self).__init__(fun, list(args))
         self.__initmd__()
 
         self.fun = fun
-        self.args = args
+        self.args = list(args)
     def map(self, fn):
         f = self.fun.map(fn)
         a = map(lambda s:s.map(fn))

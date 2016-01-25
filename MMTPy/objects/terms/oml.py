@@ -12,7 +12,7 @@ class OML(caseclass.make(context.VarDecl), term.Term):
 
         self.vd = vd
     def map(self, fn):
-        return fn(OML(self.vd.map(fn))
+        return fn(OML(self.vd.map(fn)))
     def toXML(self):
         vdx = self.vd.toXML()
         vdx.tag = xml.omt("OML")

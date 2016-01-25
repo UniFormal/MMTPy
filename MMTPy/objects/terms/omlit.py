@@ -12,7 +12,7 @@ class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
         self.tp = tp
         self.value = value
     def map(self, fn):
-        return fn(OMLIT(self.tp.map(fn), self.value)
+        return fn(OMLIT(self.tp.map(fn), self.value))
     def toXML(self):
         attrs = {"value": self.value}
         children = []

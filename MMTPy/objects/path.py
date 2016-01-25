@@ -217,7 +217,22 @@ class Path():
     def __repr__(self):
         return "%s[%r]" % (self.__class__.__name__, str(self))
 
-    def __add__(self, other):
+    def __mod__(self, other):
+        """
+        Adds a new component with a "?" at the end of this
+        """
+        return Path.parse("%s?%s" %(self, other))
+
+    def __div__(self, other):
+        """
+        Adds a new component with a "/" at the end of this
+        """
+        return Path.parse("%s/%s" %(self, other))
+
+    def __mul__(self, other):
+        """
+        Adds a path at the end of this
+        """
         return Path.parse("%s%s" %(self, other))
 
 class DPath(caseclass.make(URI.URI), Path):
