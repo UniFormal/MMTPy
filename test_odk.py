@@ -27,6 +27,3 @@ omfdb_literals = realization.RealizedContext([
 # and parse the literals
 o1l = omfdb_literals(o1)
 o2l = omfdb_literals(o2)
-
-bt = ~path.Path.parse("http://www.opendreamkit.org/?Logic?bool")
-bt2 = ~path.Path.parse("http://www.opendreamkit.org/?Logic?bool")

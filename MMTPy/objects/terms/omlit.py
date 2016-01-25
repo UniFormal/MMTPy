@@ -42,7 +42,7 @@ class UnknownOMLIT(caseclass.make(term.Term, types.strtype), term.Term):
 
             parsed = UnknownOMLIT(tp, value)
             parsed.metadata = md
-
+            
             return parsed
         else:
             raise ValueError("Not a well-formed <OMLIT/>")
