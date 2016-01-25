@@ -28,7 +28,7 @@ class StaticCaseClass(object):
 
         # check if the arguments are the same
         for (ow, ot) in zip(self.__cc_args__, other.__cc_args__):
-            if ow != ot:
+            if not (ow == ot):
                 return False
 
         # check if the keyword arguments are the same
