@@ -4,24 +4,29 @@ from MMTPy.objects import path
 from MMTPy.caseclass import caseclass, types
 from MMTPy.objects.terms import term, omid
 
-class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
-    def __init__(self, tp, value):
-        super(OMLIT, self).__init__(tp, value)
+from MMTPy.literals import semantic
+
+class UnknownOMLIT(caseclass.make(term.Term, types.strtype), term.Term):
+    def __init__(self, syntp, value):
+        super(UnknownOMLIT, self).__init__(syntp, value)
         self.__initmd__()
 
-        self.tp = tp
+        self.syntp = syntp
         self.value = value
     def map(self, fn):
-        return fn(OMLIT(self.tp.map(fn), self.value))
+        return fn(UnknownOMLIT(self.syntp.map(fn), self.value))
     def toXML(self):
         attrs = {"value": self.value}
         children = []
-        if isinstance(self.tp, omid.OMID):
-            attrs["type"] = self.tp.path
+        if isinstance(self.syntp, omid.OMID):
+            attrs["type"] = self.syntp.path
         else:
-            children = [xml.make_element("type", self.tp.toXML())]
+            children = [xml.make_element("type", self.syntp.toXML())]
 
         return xml.make_element(xml.omt("OMLIT"), self.toMetaDataXML(), *children, **attrs)
+    def toOMLIT(self, semtype):
+        o = semtype.fromString(self.value)
+        return OMLIT(semtype, self.syntp, o)
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)
@@ -35,9 +40,29 @@ class OMLIT(caseclass.make(term.Term, types.strtype), term.Term):
             else:
                 tp = term.Term.fromXML(omlit[0][0])
 
-            parsed = OMLIT(tp, value)
+            parsed = UnknownOMLIT(tp, value)
             parsed.metadata = md
 
             return parsed
         else:
             raise ValueError("Not a well-formed <OMLIT/>")
+
+class OMLIT(caseclass.make(semantic.SemanticType, term.Term, object), UnknownOMLIT):
+    def __init__(self, semtp, syntp, o):
+        super(OMLIT, self).__init__(semtp, syntp, o)
+        self.__initmd__()
+
+        if not semtp.valid(o):
+            raise ValueError("SemanticType is not valid for the given object")
+
+        self.o = o
+        self.semtp = semtp
+        self.syntp = syntp
+
+        self.value = self.semtp.toString(o)
+
+    def map(self, fn):
+        return fn(OMLIT(self.semtp, self.syntp.map(fn), obj))
+
+    def __repr__(self):
+        return "OMLIT[%s, %r]" % (self.semtp.name, self.o)

@@ -249,6 +249,11 @@ class ContentPath(DPath):
         """
         from MMTPy.objects.terms import omid
         return omid.OMID(self)
+    def __call__(self, *args, **kwargs):
+        """
+        Equivalent to self.toTerm().call
+        """
+        return self.toTerm().__call__(*args, **kwargs)
     def __invert__(self):
         """
         Alias of toTerm(self)

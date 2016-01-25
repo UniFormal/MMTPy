@@ -71,7 +71,7 @@ class Term(obj.Obj):
         (m, omlit) = xml.match(node, xml.omt("OMLIT"))
         if m:
             from MMTPy.objects.terms import omlit
-            return omlit.OMLIT.fromXML(node)
+            return omlit.UnknownOMLIT.fromXML(node)
 
         # in case of an OML
         (m, oml) = xml.match(node, xml.omt("OML"))

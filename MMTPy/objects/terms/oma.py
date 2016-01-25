@@ -13,7 +13,7 @@ class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
         self.args = list(args)
     def map(self, fn):
         f = self.fun.map(fn)
-        a = map(lambda s:s.map(fn))
+        a = list(map(lambda s:s.map(fn), self.args))
 
         return fn(OMA(f, *a))
 

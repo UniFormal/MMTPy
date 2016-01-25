@@ -6,6 +6,8 @@ from MMTPy.objects.terms import term
 class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), obj.Obj):
     def __init__(self, name, tp, df, nt):
         super(VarDecl, self).__init__(name, tp, df, nt)
+        self.__initmd__()
+        
         self.name = name
         self.tp = tp
         self.df = df
@@ -19,7 +21,7 @@ class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(No
         vtp = self.tp.map(fn) if self.tp != None else None
         vdf = self.df.map(fn) if self.df != None else None
 
-        return fn(self.name, vtp, vdf, self.nt)
+        return fn(VarDecl(self.name, vtp, vdf, self.nt))
 
     def __iter__(self):
         """
