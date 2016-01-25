@@ -17,13 +17,14 @@ o2 = q.getDefinition(paths.odk_elliptic_curves_35a2)
 o1s = q.simplify(o1, paths.lmfdb_elliptic_curves)
 o2s = q.simplify(o2, paths.lmfdb_elliptic_curves)
 
-# the literals we have
-omfdb_lit = realization.RealizedContext([
+# we want to understand the literals
+omfdb_literals = realization.RealizedContext([
     realization.RealizedType(semantic.StandardBool(), ~paths.bl),
     realization.RealizedType(semantic.StandardNat(), ~paths.nat),
     realization.RealizedType(semantic.StandardInt(), ~paths.it),
     realization.RealizedType(semantic.StandardString(), ~paths.string)
 ])
 
-o1l = omfdb_lit.applyR(o1)
-o2l = omfdb_lit.applyR(o2)
+# and parse the literals
+o1l = omfdb_literals(o1)
+o2l = omfdb_literals(o2)

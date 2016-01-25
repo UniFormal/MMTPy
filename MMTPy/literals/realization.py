@@ -19,6 +19,8 @@ class RealizedType(object):
             return tm
     def applyR(self, tm):
         return tm.map(self.tryApply)
+    def __call__(self, tm):
+        return self.applyR(tm)
 
 class RealizedContext(object):
     def __init__(self, lrts):
@@ -42,3 +44,5 @@ class RealizedContext(object):
             return tm
     def applyR(self, tm):
         return tm.map(self.tryApply)
+    def __call__(self, tm):
+        return self.applyR(tm)
