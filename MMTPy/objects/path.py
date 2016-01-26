@@ -84,7 +84,7 @@ class LocalName(caseclass.make([LNStep])):
         # and return that
         return LocalName(list(map(lambda s: LNStep.parse(s), segments)))
 
-class Path():
+class Path(object):
     @staticmethod
     def split(s):
         """
@@ -214,9 +214,6 @@ class Path():
 
         return cpath
 
-    def __repr__(self):
-        return "%s[%r]" % (self.__class__.__name__, str(self))
-
     def __mod__(self, other):
         """
         Adds a new component with a "?" at the end of this
@@ -229,11 +226,51 @@ class Path():
         """
         return Path.parse("%s/%s" %(self, other))
 
+    def __truediv__(self, other):
+        return self.__div__(other)
+
     def __mul__(self, other):
         """
         Adds a path at the end of this
         """
         return Path.parse("%s%s" %(self, other))
+
+class PathBuilder(Path, object):
+    """
+    Represents a path builder object that wraps around a standard Path object
+    """
+
+    def __init__(self, built):
+        self.__built__ = built if isinstance(built, Path) else Path.parse(built)
+        setattr(self, "__mro__", (PathBuilder, self.__built__.__class__, Path, object))
+
+    def __getattr__(self, key):
+        if hasattr(self.__built__, key):
+            return getattr(self.__built__, key)
+        else:
+            return self[key]
+    def __getitem__(self, key):
+        return PathBuilder(self.__built__ % key)
+
+    # pseudo-inherited methods
+    def __eq__(self, other):
+        return self.__built__ == other
+    def __call__(self, *args, **kwargs):
+        return self.__built__(*args, **kwargs)
+    def __div__(self, key):
+        return PathBuilder(self.__built__ / key)
+    def __invert__(self):
+        return ~self.__built__
+    def __repr__(self):
+        return repr(self.__built__)+"*"
+    def __str__(self):
+        return str(self.__built__)
+
+def m(base):
+    """
+    Alias for PathBuilder(base)
+    """
+    return PathBuilder(base)
 
 class DPath(caseclass.make(URI.URI), Path):
     def __init__(self, uri):
@@ -241,6 +278,8 @@ class DPath(caseclass.make(URI.URI), Path):
         self.uri = uri
     def __str__(self):
         return "%s" % self.uri
+    def __repr__(self):
+        return "DPath[%r]" % (str(self))
 
 class ContentPath(DPath):
     def toTerm(self):
@@ -267,6 +306,8 @@ class CPath(caseclass.make(ContentPath, types.strtype), Path):
         self.component = component
     def __str__(self):
         return "%s?%s" % (self.parent, self.component)
+    def __repr__(self):
+        return "CPath[%r]" % (str(self))
 
 class MPath(caseclass.make(DPath, LocalName), ContentPath):
     def __init__(self, parent, name):
@@ -278,6 +319,8 @@ class MPath(caseclass.make(DPath, LocalName), ContentPath):
         return self
     def __str__(self):
         return "%s?%s" % (self.parent, self.name)
+    def __repr__(self):
+        return "MPath[%r]" % (str(self))
 
 class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
     def __init__(self, module, name):
@@ -286,6 +329,8 @@ class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
         self.name = name
     def __str__(self):
         return "%s?%s" % (self.module, self.name)
+    def __repr__(self):
+        return "GlobalName[%r]" % (str(self))
 
 class ComplexStep(caseclass.make(MPath), LNStep):
     def __init__(self, path):

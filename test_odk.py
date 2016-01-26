@@ -4,9 +4,9 @@ from MMTPy.connection import qmtclient
 from MMTPy.odk import literals, codecs, paths
 
 # paths to the elliptic curves
-lmfdb_elliptic_curves = path.Path.parse("http://www.lmfdb.org/db/elliptic_curves?curves")
-odk_elliptic_curves_11a1 = lmfdb_elliptic_curves % "11a1"
-odk_elliptic_curves_35a2 = lmfdb_elliptic_curves % "35a2"
+lmfdb_elliptic_curves = path.m("http://www.lmfdb.org/db/elliptic_curves")
+odk_elliptic_curves_11a1 = lmfdb_elliptic_curves.curves["11a1"]
+odk_elliptic_curves_35a2 = lmfdb_elliptic_curves.curves["35a2"]
 
 # create a QMT Clienth
 q = qmtclient.QMTClient("http://localhost:8080/")
