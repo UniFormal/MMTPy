@@ -3,6 +3,11 @@
 ```
 python setup.py install
 ```
+Note: If you want to use it with Sage, use
+```
+sage -python setup.py install
+```
+instead.
 
 ## Installing the Jupyter Kernel
 ```
@@ -10,9 +15,7 @@ python -m MMTPy.kernel.install
 ```
 ## Installing the Jupyter Kernel in Sage
 ```
-sage
-sage: from MMTPy.kernel import install
-sage: install.main()
+sage -python -c 'from MMTPy.kernel.install import main; main()'
 ```
 
 ## License
