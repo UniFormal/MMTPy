@@ -1,4 +1,5 @@
 from MMTPy.objects.terms import oma, omid
+from MMTPy.objects import path
 
 class RealizedCodec(object):
     """
@@ -22,6 +23,8 @@ class CodecContext(object):
     """
     def __init__(self, codecs):
         self.codecs = codecs
+        self.record = path.m("http://cds.omdoc.org/urtheories").Records.record
+        self.codec = path.m("http://www.lmfdb.org/").Metadata.codec
     def getSingleCodec(self, tm):
         """
         Retrieves a single RealizedCodec (non-composite) from this CodecContext.
@@ -41,7 +44,12 @@ class CodecContext(object):
         # if we have an OMID only, we have a single codec to apply
         # so we can simply retrieve the codec and initalise it.
         if isinstance(tm, omid.OMID):
-            return self.getSingleCodec(tm)()
+            sc = self.getSingleCodec(tm)
+            if sc != None:
+                return sc()
+            else:
+                from MMTPy.codecs import codec
+                return RealizedCodec(codec.IdentityCodec, None, None)
         # if we have an OMA, we are applying some realisedCodec operator to an
         # an actual codec
         elif isinstance(tm, oma.OMA):
@@ -54,3 +62,36 @@ class CodecContext(object):
         else:
             # must be either omid or oma
             raise ValueError("given term does not represent a codec")
+    def encodeRecord(self, val, thy):
+        """
+        Encodes a record into an MMT term
+        """
+        pass
+    def decodeRecord(self, tm, thy):
+        """
+        Decodes a record into native python object.
+        """
+
+        # not a record
+        if not isinstance(tm, oma.OMA):
+            raise ValueError("not a record (not am OMA)")
+
+        # the output json we want to produce
+        out = {}
+
+        # unapply the arguments
+        (f, args) = tm.uncall()
+
+        # we need to apply the record to some theory
+        # at least, there might be more
+        if f != ~self.record or len(args) == 0:
+            raise ValueError("not a record (wrong application or not enough arguments)")
+
+        # TODO: Check the theory name
+
+        for d in args[1:]:
+            name = d.vd.name
+            cd = thy.getConstantDeclaration(name).getMeta(self.codec)
+            out[str(name)] = self.get(cd.value).decode(d.vd.df)
+
+        return out

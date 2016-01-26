@@ -26,7 +26,12 @@ class UnknownOMLIT(caseclass.make(term.Term, types.strtype), term.Term):
         return xml.make_element(xml.omt("OMLIT"), self.toMetaDataXML(), *children, **attrs)
     def toOMLIT(self, semtype):
         o = semtype.fromString(self.value)
-        return OMLIT(semtype, self.syntp, o)
+
+        # create the omlit and ransfer meta data
+        lit = OMLIT(semtype, self.syntp, o)
+        lit.metadata = self.metadata
+        
+        return lit
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)
@@ -42,7 +47,7 @@ class UnknownOMLIT(caseclass.make(term.Term, types.strtype), term.Term):
 
             parsed = UnknownOMLIT(tp, value)
             parsed.metadata = md
-            
+
             return parsed
         else:
             raise ValueError("Not a well-formed <OMLIT/>")

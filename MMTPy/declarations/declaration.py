@@ -5,6 +5,7 @@ from MMTPy.objects import obj
 class Declaration(metadata.MetaData):
     def __init__(self):
         super(Declaration, self).__init__()
+        self.decls = []
     def map(self, fn):
         """
         Applies a function to each subcomponent of this VarDecl in a depth-first
@@ -12,6 +13,17 @@ class Declaration(metadata.MetaData):
         """
 
         raise NotImplementedError
+    def getConstantDeclaration(self, ln):
+        """
+        Gets a constant declaration of the specific name
+        """
+
+        from MMTPy.declarations import constant
+
+        for d in self.decls:
+            if isinstance(d, constant.Constant):
+                if d.name == ln:
+                    return d
 
     def __iter__(self):
         """

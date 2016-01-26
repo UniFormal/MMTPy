@@ -17,10 +17,11 @@ class StaticCaseClass(object):
 
         #: The keyword arguments given to this case class
         self.__cc_kwargs__ = kcwargs
-
-        #: Indiciator if this class is a pattern that can be pattern matched.
-        # should be overwritten by any subclass
-        self.__cc_pattern__ = False
+    def __uninit__(self):
+        """
+        Unpacks the parameters originally given to this case class.
+        """
+        return tuple(self.__cc_args__)
     def __eq__(self, other):
         """
         Implements equality between case classes. Two case class instances are
@@ -65,30 +66,6 @@ class StaticCaseClass(object):
 
         # and put them after the name of the class
         return "%s(%s)" % (self.__cc_name__, arepr)
-
-    def __matches__(self, other):
-        """
-        Matches this pattern against a case class instance.
-        """
-
-        # if we are not a pattern, we can simply check equality
-        if not self.__cc_pattern__:
-            return self == other
-
-        from . import matching
-
-        # check if the arguments are the same
-        for (ow, ot) in zip(self.__cc_args__, other.__cc_args__):
-            if not matching.match(ow, ot):
-                return False
-
-        # check if the keyword arguments are the same
-        for (ow, ot) in zip(self.__cc_kwargs__, other.__cc_kwargs__):
-            if not matching.match(ow, ot):
-                return False
-
-        return True
-
 def make(*args, **kwargs):
     """
     Creates a meta-class for a scala-like case class.
@@ -110,6 +87,7 @@ def make(*args, **kwargs):
         StaticCaseClass.__init__(self, cargs, kcargs)
 
         # check that we have the right types
-        self.__cc_pattern__ = types.verify(cargs, args) or types.verifyK(kcargs, kwargs)
+        types.verify(cargs, args)
+        types.verifyK(kcargs, kwargs)
 
     return type("DynamicCaseClass", (StaticCaseClass, ), {"__init__":__init__})

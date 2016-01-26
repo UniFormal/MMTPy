@@ -38,7 +38,7 @@ class BoolAsInt(codec.Codec):
         raise codec.CodingError()
 
 class StandardList(codec.CodecOperator):
-    def __init__(self, syntp, tc):
+    def __init__(self, syntp, it, tc):
         super(StandardList, self).__init__(syntp, tc)
 
         self.nil = ~paths.Lists.nil

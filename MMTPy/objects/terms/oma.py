@@ -11,6 +11,18 @@ class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
 
         self.fun = fun
         self.args = list(args)
+    def uncall(self, **kwargs):
+        """
+        Unpacks an object into its construction parameters
+        """
+
+        if "lf" in kwargs and kwargs["lf"]:
+            from MMTPy.objects import path
+            lf_apply = path.Path.parse("http://cds.omdoc.org/urtheories?LF?apply")
+
+            if self.fun == ~lf_apply:
+                return (self.args[0], self.args[1:])
+        return (self.fun, self.args)
     def map(self, fn):
         f = self.fun.map(fn)
         a = list(map(lambda s:s.map(fn), self.args))

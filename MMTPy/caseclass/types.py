@@ -17,12 +17,7 @@ def verify(args, types):
     """
     ispattern = False
 
-    from . import matching
-
     for (a, t) in zip(args, types):
-        if isinstance(a, typetype) or a == matching.MatchEverything():
-            ispattern = True
-            continue
         if isinstance(t, list):
             if not isinstance(a, list):
                 raise TypeError("'%s' is not of type List[%s]" % (a, t[0]))
@@ -35,7 +30,6 @@ def verify(args, types):
         else:
             if not isinstance(a, t):
                 raise TypeError("'%s' is not of type %s" % (a, t))
-    return ispattern
 def verifyK(args, types):
     """Same as verify(), but for dictionaries instead of lists. """
 
@@ -57,4 +51,4 @@ def verifyK(args, types):
             raise TypeError("received unexpected keyword argument %s" % (key))
 
     # recurse into the list version
-    return verify(arglist, typelist)
+    verify(arglist, typelist)

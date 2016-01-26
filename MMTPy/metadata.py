@@ -11,6 +11,15 @@ class MetaData(object):
     def toMetaDataXML(self):
         # create an element for each meta-datum
         return xml.make_element("metadata", *[d.toXML() for d in self.metadata])
+    def getMeta(self, key):
+        """
+        Returns a meta-data item with the given key
+        """
+        for md in self.metadata:
+            if key == md.key:
+                return md
+        return None
+
 
     @staticmethod
     def parseMetaDataNode(node):
@@ -31,7 +40,7 @@ class MetaData(object):
 
             # if so, remove the node and parse it
             if m:
-                mds.extend(MetaData.parseMetaDataNode(md))
+                mds += MetaData.parseMetaDataNode(md)
                 node.remove(c)
 
         # return that
@@ -87,7 +96,7 @@ class Tag(caseclass.make(path.GlobalName), MetaDatum):
 
 class Meta(caseclass.make(path.GlobalName, object), MetaDatum):
     def __init__(self, key, value):
-        super(Meta, self).__init__(key, uri)
+        super(Meta, self).__init__(key, value)
         self.key = key
         self.value = value
     def toXML(self):
