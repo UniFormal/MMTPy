@@ -1,5 +1,6 @@
 from MMTPy.connection import connection
 from MMTPy.query import builder, result
+from MMTPy.dependencies import etree
 
 class QMTClient(object):
     """
@@ -16,8 +17,15 @@ class QMTClient(object):
             self.connection = url_or_connection
         else:
             self.connection = connection.Connection(url_or_connection)
+    def queryT(self, url):
+        (status, txt) = self.connection.getText(url)
 
-    def query(self, query):
+        if status == 200:
+            return txt
+        else:
+            return None
+
+    def query(self, query, auto=True):
         """
         Sends a query to the MMT QMT API and returns a (possibly empty) result object
         """
@@ -25,16 +33,16 @@ class QMTClient(object):
         (status, x) = self.connection.getXML(":query", post_xml=query.toXML())
 
         if status == 200:
-            return result.Result.fromXML(x)
+            return result.Result.fromXML(x, auto=auto)
         else:
-            return result.Result([])
+            return result.Result([], auto=auto)
 
-    def queryOne(self, query):
+    def queryOne(self, query, auto=True):
         """
         Sends a query to the MMT QMT API and returns a single result or None
         """
 
-        q = self.query(query)
+        q = self.query(query, auto=auto)
 
         if len(q) >= 1:
             return q[0]
@@ -59,6 +67,16 @@ class QMTClient(object):
             return decl.df
         else:
             return None
+    def handleLine(self, line):
+        """
+        Handles a shell command for MMT
+        """
+        return self.queryT(":action?"+line)
+    def present(self, tm, presenter):
+        """
+        Presents a object (an MMT term) with the specefied presenter
+        """
+        return self.queryOne(builder.presentation(tm, presenter), auto=False)
 
     def parse(self, s, thy):
         """

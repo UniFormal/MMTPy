@@ -27,7 +27,7 @@ class Obj(metadata.MetaData):
         return oma.OMA(self, *args)
     def uncall(self, **kwargs):
         """
-        Turns an application into a list of terms.
+        Unpacks an object into its construction parameters
         """
 
         from MMTPy.objects.terms import oma

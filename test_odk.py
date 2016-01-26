@@ -25,8 +25,7 @@ o1l = literals.ctx(o1)
 (f1, args1) = o1l.uncall(lf=True)
 
 o2l = literals.ctx(o2)
-(f2, args2) = o1l.uncall(lf=True)
-
+(f2, args2) = o2l.uncall(lf=True)
 
 # we want to have a certain codec
 sl_si = q.parse("standardList(standardInt)", paths.Codecs)

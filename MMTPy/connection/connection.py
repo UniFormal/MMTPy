@@ -39,3 +39,10 @@ class Connection():
 
         (code, txt) = self.get(pth, post_xml=post_xml)
         return (code, etree.fromstring(txt))
+
+    def getText(self, pth, post_xml=None):
+        """
+        Makes GET request to MMT, parses it as HTML and returns (statusCode, text)
+        """
+        (code, x) = self.getXML(pth, post_xml=post_xml)
+        return (code, xml.textcontent(x))

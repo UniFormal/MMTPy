@@ -103,7 +103,7 @@ class Literal(caseclass.make(object), Query):
             lox = xml.make_element("string")
             lox.text = self.literal
         elif isinstance(self.literal, obj.Obj):
-            lox = xml.make_element("object", self.literal.toXML())
+            lox = xml.make_element("object", self.literal.toOBJXML())
         elif isinstance(self.literal, etree_type):
             lox = xml.make_element("xml", xml.copy(self.literal))
         else:
