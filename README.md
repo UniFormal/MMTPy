@@ -1,6 +1,8 @@
-## Dependencies
-  * requests
-  * lxml
+# Install
+
+```
+python setup.py install
+```
 
 ## License
 ```
