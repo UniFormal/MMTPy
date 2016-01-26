@@ -31,4 +31,4 @@ etree_type = type(etree.Element("dummy"))
 try:
     import requests
 except ImportError:
-    print("Unablem to import the requests module. Some functionality might not work. ")
+    print("Unable to import the requests module. Some functionality might not work. ")
