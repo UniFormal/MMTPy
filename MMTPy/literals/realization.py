@@ -1,9 +1,14 @@
+from MMTPy.objects.terms import omlit
+
 class RealizedType(object):
+    """
+    A RealizedType represents a mapping between a single semantic type (an
+    arbitrary MMT Term) and a semantic type (a native python type).
+    """
     def __init__(self, semtp, syntp):
         self.semtp = semtp
         self.syntp = syntp
     def applies(self, tm):
-        from MMTPy.objects.terms import omlit
         if isinstance(tm, omlit.UnknownOMLIT):
             return self.syntp == tm.syntp
         return False
@@ -12,6 +17,13 @@ class RealizedType(object):
             raise ValueError("RealizedType does not apply")
 
         return tm.toOMLIT(self.semtp)
+    def realizes(self, o):
+        return self.semtp.valid(o)
+    def realize(self, o):
+        if not self.realizes(o):
+            raise ValueError("RealizedType does not apply")
+
+        return omlit.OMLIT(self.semtp, self.syntp, o)
     def tryApply(self, tm):
         if self.applies(tm):
             return self.apply(tm)
@@ -22,7 +34,7 @@ class RealizedType(object):
     def __call__(self, tm):
         return self.applyR(tm)
 
-class RealizedContext(object):
+class LiteralContext(object):
     def __init__(self, lrts):
         self.lrts = lrts
     def applies(self, tm):
@@ -36,7 +48,6 @@ class RealizedContext(object):
         for rt in self.lrts:
             if rt.applies(tm):
                 return rt.apply(tm)
-        raise ValueError("something went horribly wrong")
     def tryApply(self, tm):
         if self.applies(tm):
             return self.apply(tm)
@@ -44,5 +55,17 @@ class RealizedContext(object):
             return tm
     def applyR(self, tm):
         return tm.map(self.tryApply)
+    def realizes(self, o):
+        for rt in self.lrts:
+            if rt.realizes(o):
+                return True
+        return False
+    def realize(self, o):
+        if not self.realizes(o):
+            raise ValueError("RealizedType does not apply")
+
+        for rt in self.lrts:
+            if rt.realizes(o):
+                return rt.realize(o)
     def __call__(self, tm):
         return self.applyR(tm)

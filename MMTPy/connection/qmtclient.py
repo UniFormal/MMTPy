@@ -23,7 +23,7 @@ class QMTClient(object):
         """
 
         (status, x) = self.connection.getXML(":query", post_xml=query.toXML())
-        
+
         if status == 200:
             return result.Result.fromXML(x)
         else:
@@ -65,7 +65,7 @@ class QMTClient(object):
         Parses a string with respect to a certain theory.
         """
 
-        return self.queryOne(builder.parsing(obj, thy))
+        return self.queryOne(builder.parsing(s, thy))
 
     def infer(self, obj, fnd):
         """

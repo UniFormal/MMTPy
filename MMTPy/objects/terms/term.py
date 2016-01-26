@@ -62,7 +62,7 @@ class Term(obj.Obj):
             return omattr.OMATTR.fromXML(node)
 
         # in case of OMBINDC
-        (m, ombindc) = xml.match(node, xml.omt("OMBINDC"))
+        (m, ombindc) = xml.match(node, xml.omt("OMBIND"))
         if m:
             from MMTPy.objects.terms import ombindc
             return ombindc.OMBINDC.fromXML(node)

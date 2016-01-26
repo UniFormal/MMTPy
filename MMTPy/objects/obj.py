@@ -21,10 +21,27 @@ class Obj(metadata.MetaData):
 
         if "lf" in kwargs and kwargs["lf"]:
             from MMTPy.objects import path
-            lf_apply = path.path.fromString("http://cds.omdoc.org/urtheories?LF?apply")
+            lf_apply = path.Path.parse("http://cds.omdoc.org/urtheories?LF?apply")
             return lf_apply(self, *args)
-        return oma.OMA(self, *args)
 
+        return oma.OMA(self, *args)
+    def uncall(self, **kwargs):
+        """
+        Turns an application into a list of terms.
+        """
+
+        from MMTPy.objects.terms import oma
+
+        if not isinstance(self, oma.OMA):
+            raise ValueError("not an OMA")
+
+        if "lf" in kwargs and kwargs["lf"]:
+            from MMTPy.objects import path
+            lf_apply = path.Path.parse("http://cds.omdoc.org/urtheories?LF?apply")
+
+            if self.fun == ~lf_apply:
+                return (self.args[0], self.args[1:])
+        return (self.fun, self.args)
     def toTerm(self):
         return self
     def __invert__(self):

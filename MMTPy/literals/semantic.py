@@ -1,8 +1,13 @@
 from MMTPy.caseclass import types
 class SemanticType(object):
     """
-    A SemanticType represents a native python type that can be used with literals
+    A SemanticType represents a native python type that can be used as a literal
+    inside MMT via an OMLIT element directly.
+
+    In order to be serialisable / deserialisable to / from XML this type must
+    have toString / fromString methods. 
     """
+
     def __init__(self):
         pass
     def fromString(self, obj):

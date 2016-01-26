@@ -2,9 +2,13 @@ from . import types
 
 class StaticCaseClass(object):
     """
-    Generic case class Implementation
+    Super class for all case classes
     """
     def __init__(self, cargs, kcwargs):
+        """
+        Initialises case class parameters
+        """
+
         #: The name of this case class
         self.__cc_name__ = self.__class__.__name__
 
@@ -18,6 +22,10 @@ class StaticCaseClass(object):
         # should be overwritten by any subclass
         self.__cc_pattern__ = False
     def __eq__(self, other):
+        """
+        Implements equality between case classes. Two case class instances are
+        equal if their parameters are equal and their classes are equal.
+        """
         # check if the given object  is indeed an instance of this case class
         if not isinstance(other, StaticCaseClass):
             return False
@@ -41,10 +49,13 @@ class StaticCaseClass(object):
                 return False
 
         return True
-    def __neq__(self, other):
+    def __ne__(self, other):
         return not self.__eq__(other)
     def __repr__(self):
-
+        """
+        Implements a representation for Case classes. This is given by the class
+        name and the representation of all the parameters.
+        """
         # string representations of the arguments and keyword arguments
         alist = list(map(lambda a:"%r" % (a), self.__cc_args__))
         kwarglist = list(map(lambda p:"%s=%r" % (p), self.__cc_kwargs__.items()))
@@ -91,7 +102,7 @@ def make(*args, **kwargs):
 
         # check that we have the right number of arguments
         if len(cargs) != len(args):
-            raise TypeError("__init__() takes %d positional argument(s) but %d were given" % (len(args) + 1, len(cargs + 1)))
+            raise TypeError("__init__() takes %d positional argument(s) but %d were given" % (len(args) + 1, len(cargs) + 1))
 
 
 
