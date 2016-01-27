@@ -3,6 +3,8 @@ from MMTPy.caseclass import types
 
 from MMTPy.objects import URI
 
+from MMTPy.utils import ustr
+
 """
     This file defines Paths for MMT.
 
@@ -22,7 +24,7 @@ from MMTPy.objects import URI
 class LNStep():
     @staticmethod
     def parse(s):
-        s = str(s)
+        s = ustr(s)
         if s.startswith("[") and s.endswith("]"):
             return ComplexStep(Path.parseM(s[1:-1]))
         else:
@@ -42,9 +44,9 @@ class LocalName(caseclass.make([LNStep])):
         super(LocalName, self).__init__(steps)
         self.steps = steps
     def __str__(self):
-        return "/".join(map(str, self.steps))
+        return "/".join(map(ustr, self.steps))
     def __repr__(self):
-        return "LocalName[%r]" % (str(self))
+        return "LocalName[%r]" % (ustr(self))
     @staticmethod
     def split(s):
 
@@ -92,7 +94,7 @@ class Path(object):
             (documentURI, moduleURI, symbolName, componentName)
         """
         # make sure the thing to split is a string
-        left = str(s)
+        left = ustr(s)
 
         # have an array of return values
         comp = ["", "", "", ""] # (uri, mod, name, comp)
@@ -218,13 +220,13 @@ class Path(object):
         """
         Adds a new component with a "?" at the end of this
         """
-        return Path.parse("%s?%s" %(self, other))
+        return Path.parse("%s?%s" %(ustr(self), ustr(other)))
 
     def __div__(self, other):
         """
         Adds a new component with a "/" at the end of this
         """
-        return Path.parse("%s/%s" %(self, other))
+        return Path.parse("%s/%s" %(ustr(self), ustr(other)))
 
     def __truediv__(self, other):
         """
@@ -248,7 +250,7 @@ class Path(object):
         """
         Adds a path at the end of this
         """
-        return Path.parse("%s%s" %(self, other))
+        return Path.parse("%s%s" %(ustr(self), ustr(other)))
 
 def m(base):
     """
@@ -261,9 +263,9 @@ class DPath(caseclass.make(URI.URI), Path):
         super(DPath, self).__init__(uri)
         self.uri = uri
     def __str__(self):
-        return "%s" % self.uri
+        return "%s" % ustr(self.uri)
     def __repr__(self):
-        return "DPath[%r]" % (str(self))
+        return "DPath[%r]" % (ustr(self))
 
 class ContentPath(DPath):
     def toTerm(self):
@@ -291,7 +293,7 @@ class CPath(caseclass.make(ContentPath, types.strtype), Path):
     def __str__(self):
         return "%s?%s" % (self.parent, self.component)
     def __repr__(self):
-        return "CPath[%r]" % (str(self))
+        return "CPath[%r]" % (ustr(self))
 
 class MPath(caseclass.make(DPath, LocalName), ContentPath):
     def __init__(self, parent, name):
@@ -304,7 +306,7 @@ class MPath(caseclass.make(DPath, LocalName), ContentPath):
     def __str__(self):
         return "%s?%s" % (self.parent, self.name)
     def __repr__(self):
-        return "MPath[%r]" % (str(self))
+        return "MPath[%r]" % (ustr(self))
 
 class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
     def __init__(self, module, name):
@@ -314,7 +316,7 @@ class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
     def __str__(self):
         return "%s?%s" % (self.module, self.name)
     def __repr__(self):
-        return "GlobalName[%r]" % (str(self))
+        return "GlobalName[%r]" % (ustr(self))
 
 class ComplexStep(caseclass.make(MPath), LNStep):
     def __init__(self, path):
@@ -323,4 +325,4 @@ class ComplexStep(caseclass.make(MPath), LNStep):
     def __str__(self):
         return "[%s]" % self.path
     def __repr__(self):
-        return "ComplexStep[%r]" % (str(self))
+        return "ComplexStep[%r]" % (ustr(self))

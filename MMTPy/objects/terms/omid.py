@@ -4,6 +4,8 @@ from MMTPy.objects import path
 from MMTPy.caseclass import caseclass
 from MMTPy.objects.terms import term
 
+from MMTPy.utils import ustr
+
 class OMID(caseclass.make(path.ContentPath), term.Term):
     def __init__(self, path):
         super(OMID, self).__init__(path)
@@ -15,7 +17,7 @@ class OMID(caseclass.make(path.ContentPath), term.Term):
     def map(self, fn):
         return fn(OMID(self.path))
     def __repr__(self):
-        return "OMID[%r]" % (str(self.path))
+        return "OMID[%r]" % (ustr(self.path))
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)

@@ -46,10 +46,7 @@ class Theory(caseclass.make(path.DPath, path.LocalName, (path.MPath,), [declarat
             decls = []
 
             for c in node:
-                try:
-                    decls.append(declaration.Declaration.fromXML(c))
-                except ValueError:
-                    pass
+                decls.append(declaration.Declaration.fromXML(c))
 
             parsed = Theory(base, name, meta, decls)
             parsed.metadata = md

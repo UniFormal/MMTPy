@@ -1,6 +1,8 @@
 from MMTPy.objects.terms import oma, omid
 from MMTPy.objects import path
 
+from MMTPy import ustr
+
 class RealizedCodec(object):
     """
     A RealizedCodec represents a mapping between an object in the MMT object
@@ -92,6 +94,6 @@ class CodecContext(object):
         for d in args[1:]:
             name = d.vd.name
             cd = thy.getConstantDeclaration(name).getMeta(self.codec)
-            out[str(name)] = self.get(cd.value).decode(d.vd.df)
+            out[ustr(name)] = self.get(cd.value).decode(d.vd.df)
 
         return out

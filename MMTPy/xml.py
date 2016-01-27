@@ -1,6 +1,8 @@
 from MMTPy.caseclass import types, caseclass
 from MMTPy.dependencies import etree, etree_type
 
+from MMTPy.utils import ustr
+
 from copy import deepcopy
 
 def match_tag(node, pattern):
@@ -152,9 +154,9 @@ def make_element(tag, *children, **attributes):
     # set the attributes
     for (a, v) in attributes.items():
         if a == "":
-            me.text = str(v)
+            me.text = ustr(v)
         else:
-            me.set(a, str(v))
+            me.set(a, ustr(v))
 
     # now iterate through the children
     for c in children:
