@@ -17,11 +17,9 @@ class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
         """
 
         if "lf" in kwargs and kwargs["lf"]:
-            from MMTPy.objects import path
-            lf_apply = path.Path.parse("http://cds.omdoc.org/urtheories?LF?apply")
+            from MMTPy.library.lf import wrappers
+            return wrappers.lf_unapply(tm)
 
-            if self.fun == ~lf_apply:
-                return (self.args[0], self.args[1:])
         return (self.fun, self.args)
     def map(self, fn):
         f = self.fun.map(fn)

@@ -67,6 +67,16 @@ class QMTClient(object):
             return decl.df
         else:
             return None
+    def getType(self, pth):
+        """
+        Gets the definitonal type of an object from the MMT API
+        """
+        decl = self.getDeclaration(pth)
+        
+        if decl:
+            return decl.tp
+        else:
+            return None
     def handleLine(self, line):
         """
         Handles a shell command for MMT

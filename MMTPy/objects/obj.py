@@ -20,9 +20,8 @@ class Obj(metadata.MetaData):
         from MMTPy.objects.terms import oma
 
         if "lf" in kwargs and kwargs["lf"]:
-            from MMTPy.objects import path
-            lf_apply = path.Path.parse("http://cds.omdoc.org/urtheories?LF?apply")
-            return lf_apply(self, *args)
+            from MMTPy.library.lf import wrappers
+            return wrappers.lf_apply(self, *args)
 
         return oma.OMA(self, *args)
     def uncall(self):
