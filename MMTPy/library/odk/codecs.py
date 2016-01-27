@@ -1,6 +1,7 @@
 from MMTPy.codecs import codec, realization
 from MMTPy.objects.terms import omlit, oma
 from MMTPy.library.odk import literals, ODK
+from MMTPy.library.lf import wrappers
 
 class LiteralCodec(codec.Codec):
     """
@@ -47,9 +48,9 @@ class StandardList(codec.CodecOperator):
 
         self.tc = tc
     def encode(self, o):
-        sofar = self.nil(self.tc.syntp, lf=True)
+        sofar = wrappers.lf_apply(self.nil, self.tc.syntp)
         for e in reversed(o):
-            sofar = self.cons(self.tc.syntp, self.tc.encode(e), sofar, lf=True)
+            sofar = wrapper.lf_apply(self.cons, self.tc.syntp, self.tc.encode(e), sofar)
 
         return sofar
     def decode(self, tm):
@@ -59,7 +60,7 @@ class StandardList(codec.CodecOperator):
             raise codec.CodingError()
 
         # we unapply and need to take care of two different case
-        (f, args) = tm.uncall(lf=True)
+        (f, args) = wrappers.lf_unapply(tm)
 
         # we need to be of the right type
         if args[0] != self.tc.syntp:

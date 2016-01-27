@@ -63,8 +63,11 @@ def lf_unpack_function_types(tm):
 
     tps = []
 
+    # unpack all the OMAs
     while(isinstance(tm, oma.OMA)):
+
         (f, args) = tm.uncall()
+
         if f == ~LF.arrow:
             tps.append(args[0])
             tm = args[1]

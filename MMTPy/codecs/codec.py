@@ -15,7 +15,11 @@ class Codec(object):
         Encodes an object as an MMT Term using this Codec.
         """
         raise NotImplementedError
+
 class IdentityCodec(Codec):
+    """
+    The identityCodec codes any object as an Python MMT Term. 
+    """
     def __init__(self, syntp):
         super(IdentityCodec, self).__init__(syntp=syntp)
     def decode(self, tm):

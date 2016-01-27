@@ -25,14 +25,5 @@ o2 = q.getDefinition(odk_elliptic_curves_35a2)
 o1s = q.simplify(o1, lmfdb_elliptic_curves)
 o2s = q.simplify(o2, lmfdb_elliptic_curves)
 
-# read some of the literals, wrap them in native python objects
-# and unpack the arguments
-o1l = literals.ctx(o1)
-(f1, args1) = o1l.uncall(lf=True)
-
-o2l = literals.ctx(o2)
-(f2, args2) = o2l.uncall(lf=True)
-
 # try to decode stuff
 o1o = codecs.ctx.decodeRecord(o1l, lmfdb_elliptic_curves_schema_t)
-print(o1o)

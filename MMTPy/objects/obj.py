@@ -18,21 +18,10 @@ class Obj(metadata.MetaData):
         """
 
         from MMTPy.objects.terms import oma
-
-        if "lf" in kwargs and kwargs["lf"]:
-            from MMTPy.library.lf import wrappers
-            return wrappers.lf_apply(self, *args)
-
         return oma.OMA(self, *args)
-    def uncall(self):
+    def uninit(self):
         """
-        Returns the arguments given to this term.
+        Returns the list of arguments used to construct this Term. See the
+        specific implementations for details of the return times.
         """
         return self.__uninit__()
-    def toTerm(self):
-        return self
-    def __invert__(self):
-        """
-        Alias of toTerm(self)
-        """
-        return self.toTerm()

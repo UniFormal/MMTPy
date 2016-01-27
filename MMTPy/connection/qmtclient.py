@@ -18,6 +18,9 @@ class QMTClient(object):
         else:
             self.connection = connection.Connection(url_or_connection)
     def queryT(self, url):
+        """
+        Sends a query to the MMT QMT API and returns html-based text content. 
+        """
         (status, txt) = self.connection.getText(url)
 
         if status == 200:
@@ -72,7 +75,7 @@ class QMTClient(object):
         Gets the definitonal type of an object from the MMT API
         """
         decl = self.getDeclaration(pth)
-        
+
         if decl:
             return decl.tp
         else:

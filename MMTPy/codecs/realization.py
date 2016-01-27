@@ -1,7 +1,8 @@
 from MMTPy.objects.terms import oma, omid
 from MMTPy.objects import path
+from MMTPy.library.lf import wrappers
 
-from MMTPy import ustr
+from MMTPy.utils import ustr
 
 class RealizedCodec(object):
     """
@@ -57,7 +58,7 @@ class CodecContext(object):
         elif isinstance(tm, oma.OMA):
 
             # extract the arguments from the term
-            (f, args) = tm.uncall(lf=True)
+            (f, args) = wrappers.lf_unapply(tm)
 
             # we can no go recursively to apply the arguments properly
             return self.getSingleCodec(f)(*[self.get(t) for t in args])
