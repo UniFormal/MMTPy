@@ -1,7 +1,7 @@
 from MMTPy.objects import path
 from MMTPy.connection import qmtclient
 
-from MMTPy.odk import literals, codecs, paths
+from MMTPy.library.odk import literals, codecs, ODK
 
 
 # create a QMT Clienth
@@ -9,12 +9,12 @@ q = qmtclient.QMTClient("http://localhost:8080/")
 
 
 # paths to the elliptic curves
-lmfdb_elliptic_curves = path.m("http://www.lmfdb.org/db/elliptic_curves")
+lmfdb_elliptic_curves = path.Path.parse("http://www.lmfdb.org/db/elliptic_curves")
 odk_elliptic_curves_11a1 = lmfdb_elliptic_curves.curves["11a1"]
 odk_elliptic_curves_35a2 = lmfdb_elliptic_curves.curves["35a2"]
 
 # the curves
-lmfdb_elliptic_curves_schema = path.m("http://www.lmfdb.org/schema/elliptic_curves").curves
+lmfdb_elliptic_curves_schema = path.Path.parse("http://www.lmfdb.org/schema/elliptic_curves").curves
 lmfdb_elliptic_curves_schema_t = q.getDeclaration(lmfdb_elliptic_curves_schema)
 
 # get two definitions from the API

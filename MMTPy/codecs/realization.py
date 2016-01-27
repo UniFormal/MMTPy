@@ -23,8 +23,8 @@ class CodecContext(object):
     """
     def __init__(self, codecs):
         self.codecs = codecs
-        self.record = path.m("http://cds.omdoc.org/urtheories").Records.record
-        self.codec = path.m("http://www.lmfdb.org/").Metadata.codec
+        self.record = path.Path.parse("http://cds.omdoc.org/urtheories").Records.record
+        self.codec = path.Path.parse("http://www.lmfdb.org/").Metadata.codec
     def getSingleCodec(self, tm):
         """
         Retrieves a single RealizedCodec (non-composite) from this CodecContext.

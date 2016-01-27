@@ -1,6 +1,6 @@
 from MMTPy.codecs import codec, realization
 from MMTPy.objects.terms import omlit, oma
-from MMTPy.odk import literals, paths
+from MMTPy.library.odk import literals, ODK
 
 class LiteralCodec(codec.Codec):
     """
@@ -19,30 +19,31 @@ class StandardString(LiteralCodec): pass
 
 class StandardBool(codec.Codec):
     def encode(self, o):
-        return ~paths.Logic.true if o else ~paths.Logic.false
+        return ~ODK.Logic.true if o else ~ODK.Logic.false
     def decode(self, tm):
-        if tm == ~paths.Logic.true:
+        if tm == ~ODK.Logic.true:
             return True
-        if tm == ~paths.Logic.false:
+        if tm == ~ODK.Logic.false:
             return False
         raise codec.CodingError()
 
 class BoolAsInt(codec.Codec):
     def encode(self, o):
-        return ~paths.Logic.true if o==1 else ~paths.Logic.false
+        return ~ODK.Logic.true if o==1 else ~ODK.Logic.false
     def decode(self, tm):
-        if tm == ~paths.Logic.true:
+        if tm == ~ODK.Logic.true:
             return 1
-        if tm == ~paths.Logic.false:
+        if tm == ~ODK.Logic.false:
             return 0
         raise codec.CodingError()
 
 class StandardList(codec.CodecOperator):
-    def __init__(self, syntp, it, tc):
+    def __init__(self, syntp, st, tc):
         super(StandardList, self).__init__(syntp, tc)
 
-        self.nil = ~paths.Lists.nil
-        self.cons = ~paths.Lists.cons
+        self.st = st
+        self.nil = ~ODK.Lists.nil
+        self.cons = ~ODK.Lists.cons
 
         self.tc = tc
     def encode(self, o):
@@ -77,9 +78,9 @@ class StandardList(codec.CodecOperator):
             raise codec.CodingError()
 
 ctx = realization.CodecContext([
-    realization.RealizedCodec(StandardInt, ~paths.Int.int, ~paths.Codecs.standardInt),
-    realization.RealizedCodec(StandardString, ~paths.Strings.string, ~paths.Codecs.standardString),
-    realization.RealizedCodec(StandardBool, ~paths.Logic.bool, ~paths.Codecs.standardBool),
-    realization.RealizedCodec(BoolAsInt, ~paths.Logic.bool, ~paths.Codecs.boolAsInt),
-    realization.RealizedCodec(StandardList, ~paths.Lists.list, ~paths.Codecs.standardList)
+    realization.RealizedCodec(StandardInt, ~ODK.Int.int, ~ODK.Codecs.standardInt),
+    realization.RealizedCodec(StandardString, ~ODK.Strings.string, ~ODK.Codecs.standardString),
+    realization.RealizedCodec(StandardBool, ~ODK.Logic.bool, ~ODK.Codecs.standardBool),
+    realization.RealizedCodec(BoolAsInt, ~ODK.Logic.bool, ~ODK.Codecs.boolAsInt),
+    realization.RealizedCodec(StandardList, ~ODK.Lists.list, ~ODK.Codecs.standardList)
 ])

@@ -227,44 +227,28 @@ class Path(object):
         return Path.parse("%s/%s" %(self, other))
 
     def __truediv__(self, other):
+        """
+        Same as __div__(self, other)
+        """
         return self.__div__(other)
+
+    def __getattr__(self, key):
+        """
+        Same as __getitem__, but might not work for all paths.
+        """
+        return self[key]
+
+    def __getitem__(self, key):
+        """
+            Same as __mod__(self, key)
+        """
+        return self % key
 
     def __mul__(self, other):
         """
         Adds a path at the end of this
         """
         return Path.parse("%s%s" %(self, other))
-
-class PathBuilder(Path, object):
-    """
-    Represents a path builder object that wraps around a standard Path object
-    """
-
-    def __init__(self, built):
-        self.__built__ = built if isinstance(built, Path) else Path.parse(built)
-        setattr(self, "__mro__", (PathBuilder, self.__built__.__class__, Path, object))
-
-    def __getattr__(self, key):
-        if hasattr(self.__built__, key):
-            return getattr(self.__built__, key)
-        else:
-            return self[key]
-    def __getitem__(self, key):
-        return PathBuilder(self.__built__ % key)
-
-    # pseudo-inherited methods
-    def __eq__(self, other):
-        return self.__built__ == other
-    def __call__(self, *args, **kwargs):
-        return self.__built__(*args, **kwargs)
-    def __div__(self, key):
-        return PathBuilder(self.__built__ / key)
-    def __invert__(self):
-        return ~self.__built__
-    def __repr__(self):
-        return repr(self.__built__)+"*"
-    def __str__(self):
-        return str(self.__built__)
 
 def m(base):
     """
