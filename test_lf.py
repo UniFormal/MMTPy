@@ -9,12 +9,15 @@ from MMTPy.declarations import declaration
 # init client
 q = qmtclient.QMTClient("http://localhost:8080/")
 
-# paths
+# find the path to latin math
 latin_math = path.Path.parse("http://latin.omdoc.org")/"math"
-magma_op = latin_math.Magma[u"∘"]
 
-# get the type of the operation itself
-op_tp = q.getType(magma_op)
+# function for magma type
+op_tp = q.getType(latin_math.Magma[u"∘"])
+(op_bd, op_tps, op_rt) = wrappers.lf_unpack_function_types(op_tp)
+op_tp_p = wrappers.lf_pack_function_types(op_bd, op_tps, op_rt)
 
-(bd, tps, rt) = wrappers.lf_unpack_function_types(op_tp)
-op_tp_p = wrappers.lf_pack_function_types(bd, tps, rt)
+# function for symmetric type
+sym_tp = q.getType(latin_math.Symmetric.sym)
+(sym_bd, sym_tps, sym_rt) = wrappers.lf_unpack_function_types(sym_tp)
+sym_tp_p = wrappers.lf_pack_function_types(sym_bd, sym_tps, sym_rt)

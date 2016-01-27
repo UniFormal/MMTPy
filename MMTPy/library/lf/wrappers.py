@@ -1,5 +1,6 @@
 from MMTPy.library.lf import LF
 from MMTPy.objects.terms import oma, ombindc
+from MMTPy.objects import context
 
 def lf_apply(f, *args):
     """
@@ -21,7 +22,7 @@ def lf_unapply(tm):
 
     raise ValueError("not an LF-apply")
 
-def lf_pack_function_types(pi, args, rt):
+def lf_pack_function_types(pis, args, rt):
     """
     Packages an LF argument type
     """
@@ -33,9 +34,9 @@ def lf_pack_function_types(pi, args, rt):
     for a in reversed(args):
         tm = (~LF.arrow)(a, tm)
 
-    # TODO: Handle the context and OMBINDC
-    if pi:
-        raise NotImplementedError
+    # add all the pis back
+    for p in reversed(pis):
+        tm = ombindc.OMBINDC(~LF.Pi, context.Context([p]), [tm])
 
     # and return it
     return tm
@@ -45,11 +46,20 @@ def lf_unpack_function_types(tm):
     Unpackages an LF argument into a pair or (pi, tps)
     """
 
-    if isinstance(tm, ombindc.OMBINDC):
-        pi = {}
-    else:
-        pi = {}
+    pis = []
 
+    # look in the OMBINDC context
+    while isinstance(tm, ombindc.OMBINDC):
+
+        # if it is a pi
+        if tm.binder != ~LF.Pi:
+            break
+
+        # read the variables
+        pis += tm.ctx.variables
+
+        # and continue with the next scope
+        tm = tm.scopes[0]
 
     tps = []
 
@@ -61,4 +71,4 @@ def lf_unpack_function_types(tm):
         else:
             break
 
-    return (pi, args, tm)
+    return (pis, tps, tm)
