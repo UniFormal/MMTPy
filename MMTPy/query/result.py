@@ -32,7 +32,7 @@ class Result(object):
     def fromSingleXML(node, auto=True):
 
         if xml.matches(node, "uri"):
-            from MMTPy.objects import path
+            from MMTPy.paths import path
             return path.Path.parse(node.attrib.get("path"))
         elif xml.matches(node, "object"):
             from MMTPy.objects import obj

@@ -1,4 +1,4 @@
-from MMTPy.objects.terms import omlit
+from MMTPy.content.objects.terms import omlit
 
 class RealizedType(object):
     """

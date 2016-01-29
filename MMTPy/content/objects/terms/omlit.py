@@ -1,8 +1,8 @@
 from MMTPy import xml, metadata
 
-from MMTPy.objects import path
+from MMTPy.paths import path
 from MMTPy.caseclass import caseclass, types
-from MMTPy.objects.terms import term, omid
+from MMTPy.content.objects.terms import term, omid
 
 from MMTPy.literals import semantic
 

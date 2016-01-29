@@ -1,4 +1,6 @@
 from MMTPy.caseclass import types
+from MMTPy.paths import uri
+
 class SemanticType(object):
     """
     A SemanticType represents a native python type that can be used as a literal
@@ -190,10 +192,9 @@ class StandardDouble(RepresentationType):
         super(StandardDouble, self).__init__(float)
         self.name = "Double"
 
-from MMTPy.objects import URI
 class URILiteral(RepresentationType):
     def __init__(self):
-        super(URILiteral, self).__init__(URI.URI)
+        super(URILiteral, self).__init__(uri.URI)
         self.name = "URI"
     def fromString(self, obj):
         return URI.URI.fromString(obj)

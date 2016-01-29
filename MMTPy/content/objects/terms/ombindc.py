@@ -2,7 +2,7 @@ from MMTPy import xml, metadata
 
 from MMTPy.objects import context
 from MMTPy.caseclass import caseclass
-from MMTPy.objects.terms import term
+from MMTPy.content.objects.terms import term
 
 class OMBINDC(caseclass.make(term.Term, context.Context, [term.Term]), term.Term):
     def __init__(self, binder, ctx, scopes):

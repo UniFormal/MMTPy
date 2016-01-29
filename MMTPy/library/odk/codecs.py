@@ -1,5 +1,5 @@
 from MMTPy.codecs import codec, realization
-from MMTPy.objects.terms import omlit, oma
+from MMTPy.content.objects.terms import omlit, oma
 from MMTPy.library.odk import literals, ODK
 from MMTPy.library.lf import wrappers
 

@@ -1,5 +1,5 @@
-from MMTPy.objects.terms import oma, omid
-from MMTPy.objects import path
+from MMTPy.content.objects.terms import oma, omid
+from MMTPy.paths import path
 from MMTPy.library.lf import wrappers
 
 from MMTPy.utils import ustr

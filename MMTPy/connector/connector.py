@@ -1,7 +1,7 @@
 from MMTPy.caseclass import types
 from MMTPy.connection import qmtclient
-from MMTPy.objects import path
-from MMTPy.objects.terms import term
+from MMTPy.paths import path
+from MMTPy.content.objects.terms import term
 from MMTPy.utils import ustr
 
 class Connector(object):

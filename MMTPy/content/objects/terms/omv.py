@@ -1,7 +1,7 @@
 from MMTPy import xml, metadata
 
-from MMTPy.objects import path
-from MMTPy.objects.terms import term
+from MMTPy.paths import path
+from MMTPy.content.objects.terms import term
 from MMTPy.caseclass import caseclass
 
 class OMV(caseclass.make(path.LocalName), term.Term):

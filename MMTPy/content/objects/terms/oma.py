@@ -1,8 +1,8 @@
 from MMTPy import xml, metadata
 
-from MMTPy.objects import path
+from MMTPy.paths import path
 from MMTPy.caseclass import caseclass
-from MMTPy.objects.terms import term
+from MMTPy.content.objects.terms import term
 
 class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
     def __init__(self, fun, *args):

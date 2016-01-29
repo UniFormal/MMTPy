@@ -1,9 +1,9 @@
 from MMTPy import xml, metadata
 
-from MMTPy.objects import path
+from MMTPy.paths import path
 from MMTPy.caseclass import caseclass
 from MMTPy.objects import context
-from MMTPy.objects.terms import term
+from MMTPy.content.objects.terms import term
 
 class OML(caseclass.make(context.VarDecl), term.Term):
     def __init__(self, vd):

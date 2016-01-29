@@ -1,6 +1,6 @@
 from MMTPy import xml
 
-from MMTPy.objects.URI import URI
+from MMTPy.paths import uri
 from MMTPy.dependencies import requests, etree, etree_type
 
 class Connection():
@@ -10,7 +10,7 @@ class Connection():
     def __init__(self, baseURI):
 
         # parse the baseURI
-        uriobj = URI.parse(baseURI)
+        uriobj = uri.URI.parse(baseURI)
 
         # and extract only the parts we want
         self.base = uriobj.scheme + "://" + uriobj.authority + "/"

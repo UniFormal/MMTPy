@@ -1,5 +1,5 @@
 from MMTPy.library.lf import LF
-from MMTPy.objects.terms import oma, ombindc
+from MMTPy.content.objects.terms import oma, ombindc
 from MMTPy.objects import context
 
 def lf_apply(f, *args):

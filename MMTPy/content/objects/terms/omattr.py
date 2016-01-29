@@ -1,7 +1,7 @@
 from MMTPy import xml, metadata
 
 from MMTPy.caseclass import caseclass
-from MMTPy.objects.terms import term, omid
+from MMTPy.content.objects.terms import term, omid
 
 class OMATTR(caseclass.make(term.Term, omid.OMID, term.Term), term.Term):
     def __init__(self, arg, key, value):

@@ -1,4 +1,4 @@
-from MMTPy.objects import path
+from MMTPy.paths import path
 from MMTPy.connection import qmtclient
 
 from MMTPy.library.odk import literals, codecs, ODK

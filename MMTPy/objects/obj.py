@@ -9,7 +9,7 @@ class Obj(metadata.MetaData):
         return xml.make_element(xml.omt("OMOBJ"), nowrapnode)
     @staticmethod
     def fromXML(node):
-        from MMTPy.objects.terms import term
+        from MMTPy.content.objects.terms import term
         return term.Term.fromXML(node)
     def __call__(self, *args, **kwargs):
         """
@@ -17,7 +17,7 @@ class Obj(metadata.MetaData):
         oma.OMA(self, *args).
         """
 
-        from MMTPy.objects.terms import oma
+        from MMTPy.content.objects.terms import oma
         return oma.OMA(self, *args)
     def uninit(self):
         """

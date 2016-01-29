@@ -1,7 +1,7 @@
 from MMTPy.caseclass import caseclass
 from MMTPy.caseclass import types
 
-from MMTPy.objects import URI
+from MMTPy.paths import uri
 
 from MMTPy.utils import ustr
 
@@ -144,7 +144,7 @@ class Path(object):
             (documentURI, moduleURI, symbolName, componentName) = Path.split(s)
 
         # parse all the proper objects
-        dpath = DPath(URI.URI.parse(documentURI)) if documentURI else None
+        dpath = DPath(uri.URI.parse(documentURI)) if documentURI else None
         mpath = MPath(dpath, LocalName.parse(moduleURI)) if (documentURI and moduleURI) else None
         spath = GlobalName(mpath, LocalName.parse(symbolName)) if (documentURI and moduleURI and symbolName) else None
         cpath = CPath(spath if spath else mpath, componentName) if componentName else None
@@ -258,10 +258,10 @@ def m(base):
     """
     return PathBuilder(base)
 
-class DPath(caseclass.make(URI.URI), Path):
-    def __init__(self, uri):
-        super(DPath, self).__init__(uri)
-        self.uri = uri
+class DPath(caseclass.make(uri.URI), Path):
+    def __init__(self, u):
+        super(DPath, self).__init__(u)
+        self.uri = u
     def __str__(self):
         return "%s" % ustr(self.uri)
     def __repr__(self):
@@ -272,7 +272,7 @@ class ContentPath(DPath):
         """
         Turns this ContentPath into a term by wrapping it in an OMID
         """
-        from MMTPy.objects.terms import omid
+        from MMTPy.content.objects.terms import omid
         return omid.OMID(self)
     def __call__(self, *args, **kwargs):
         """

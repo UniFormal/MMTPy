@@ -8,7 +8,8 @@ from MMTPy.query.prop import Prop
 from MMTPy.query.unary import Unary
 from MMTPy.query.relationexp import RelationExp
 
-from MMTPy.objects import obj, path, position
+from MMTPy.paths import path
+from MMTPy.objects import obj, position
 from MMTPy.dependencies import etree_type
 
 class BigUnion(caseclass.make(Query, Query), Query):

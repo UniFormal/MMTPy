@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from MMTPy.objects import path
+from MMTPy.paths import path
 from MMTPy.connection import qmtclient
 from MMTPy.library.lf import wrappers
 from MMTPy.declarations import declaration

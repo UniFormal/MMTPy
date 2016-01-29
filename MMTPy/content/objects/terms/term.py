@@ -40,43 +40,43 @@ class Term(obj.Obj):
         # in case of OMV
         (m, omv) = xml.match(node, xml.omt("OMV"))
         if m:
-            from MMTPy.objects.terms import omv
+            from MMTPy.content.objects.terms import omv
             return omv.OMV.fromXML(node)
 
         # In case of an OMID
         (m, oms) = xml.match(node, xml.omt("OMS"))
         if m:
-            from MMTPy.objects.terms import omid
+            from MMTPy.content.objects.terms import omid
             return omid.OMID.fromXML(node)
 
         # In case of an OMA
         (m, oma) = xml.match(node, xml.omt("OMA"))
         if m:
-            from MMTPy.objects.terms import oma
+            from MMTPy.content.objects.terms import oma
             return oma.OMA.fromXML(node)
 
         # in case of OMATTR
         (m, omattr) = xml.match(node, xml.omt("OMATTR"))
         if m:
-            from MMTPy.objects.terms import omattr
+            from MMTPy.content.objects.terms import omattr
             return omattr.OMATTR.fromXML(node)
 
         # in case of OMBINDC
         (m, ombindc) = xml.match(node, xml.omt("OMBIND"))
         if m:
-            from MMTPy.objects.terms import ombindc
+            from MMTPy.content.objects.terms import ombindc
             return ombindc.OMBINDC.fromXML(node)
 
         # in case of OMLIT
         (m, omlit) = xml.match(node, xml.omt("OMLIT"))
         if m:
-            from MMTPy.objects.terms import omlit
+            from MMTPy.content.objects.terms import omlit
             return omlit.UnknownOMLIT.fromXML(node)
 
         # in case of an OML
         (m, oml) = xml.match(node, xml.omt("OML"))
         if m:
-            from MMTPy.objects.terms import oml
+            from MMTPy.content.objects.terms import oml
             return oml.OML.fromXML(node)
 
         raise ValueError("Either not a well-formed term or unsupported")
