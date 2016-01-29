@@ -2,10 +2,10 @@ from MMTPy import xml, metadata
 
 from MMTPy.paths import path
 from MMTPy.caseclass import caseclass
-from MMTPy.objects import context
+from MMTPy.content import vardecl
 from MMTPy.content.objects.terms import term
 
-class OML(caseclass.make(context.VarDecl), term.Term):
+class OML(caseclass.make(vardecl.VarDecl), term.Term):
     def __init__(self, vd):
         super(OML, self).__init__(vd)
         self.__initmd__()
@@ -25,7 +25,7 @@ class OML(caseclass.make(context.VarDecl), term.Term):
         if m:
             oml.tag = xml.omt("OMV")
 
-            parsed = OML(context.VarDecl.fromXML(oml))
+            parsed = OML(vardecl.VarDecl.fromXML(oml))
             parsed.metadata = md
 
             return parsed

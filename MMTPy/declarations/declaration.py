@@ -1,6 +1,6 @@
 from MMTPy import xml, metadata
 
-from MMTPy.objects import obj
+from MMTPy.content.objects import obj
 
 class Declaration(metadata.MetaData):
     def __init__(self):

@@ -20,7 +20,7 @@ class Structure(caseclass.make(path.MPath), declaration.Declaration):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)
         if xml.matches(node, "import"):
 
-            parsed = Structure(path.Path.parseM(node.attrib.get("name")))
+            parsed = Structure(path.Path.parseM(node.attrib.get("from")))
             parsed.metadata = md
 
             return parsed

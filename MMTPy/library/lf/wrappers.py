@@ -1,6 +1,6 @@
 from MMTPy.library.lf import LF
 from MMTPy.content.objects.terms import oma, ombindc
-from MMTPy.objects import context
+from MMTPy.content.objects import context
 
 def lf_apply(f, *args):
     """

@@ -1,6 +1,6 @@
 from MMTPy import xml
 
-from MMTPy.objects import obj
+from MMTPy.content.objects import obj
 
 class Term(obj.Obj):
     def __init__(self):

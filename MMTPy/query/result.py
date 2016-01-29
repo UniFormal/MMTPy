@@ -35,23 +35,24 @@ class Result(object):
             from MMTPy.paths import path
             return path.Path.parse(node.attrib.get("path"))
         elif xml.matches(node, "object"):
-            from MMTPy.objects import obj
+            from MMTPy.content.objects import obj
             return obj.Obj.fromXML(node[0])
         elif xml.matches(node, "xml"):
 
             if auto:
 
                 try:
-                    from MMTPy.objects import obj
+                    from MMTPy.content.objects import obj
                     return obj.Obj.fromXML(node[0])
                 except ValueError:
                     pass
+                
                 try:
                     from MMTPy.declarations import declaration
                     return declaration.Declaration.fromXML(node[0])
                 except ValueError:
                     pass
-
+            
             return node[0]
         elif xml.matches(node, "string"):
             return node.text

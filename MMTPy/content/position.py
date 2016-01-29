@@ -1,5 +1,5 @@
 from MMTPy.caseclass import caseclass
-from MMTPy.objects import obj
+from MMTPy.content.objects import obj
 
 class Position(caseclass.make([int])):
     def __init__(self, indices):

@@ -1,7 +1,7 @@
 from MMTPy import xml
 
 from MMTPy.caseclass import caseclass, types
-from MMTPy.objects import componentkey
+from MMTPy.content import componentkey
 
 from MMTPy.query.query import Query
 from MMTPy.query.prop import Prop
@@ -9,7 +9,8 @@ from MMTPy.query.unary import Unary
 from MMTPy.query.relationexp import RelationExp
 
 from MMTPy.paths import path
-from MMTPy.objects import obj, position
+from MMTPy.content.objects import obj
+from MMTPy.content import position
 from MMTPy.dependencies import etree_type
 
 class BigUnion(caseclass.make(Query, Query), Query):

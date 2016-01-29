@@ -1,6 +1,6 @@
 from MMTPy import xml, metadata
 
-from MMTPy.objects import context
+from MMTPy.content.objects import context
 from MMTPy.caseclass import caseclass
 from MMTPy.content.objects.terms import term
 

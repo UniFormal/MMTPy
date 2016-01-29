@@ -1,6 +1,6 @@
 from MMTPy import xml, metadata
 from MMTPy.caseclass import caseclass
-from MMTPy.objects import obj
+from MMTPy.content.objects import obj
 from MMTPy.paths import path
 from MMTPy.content.objects.terms import term
 
@@ -75,23 +75,3 @@ class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(No
             return parsed
         else:
             raise ValueError("Not a well-formed variable declaration")
-
-class Context(caseclass.make([VarDecl]), obj.Obj):
-    def __init__(self, variables):
-        super(Context, self).__init__(variables)
-        self.variables = variables
-    def toXML(self):
-        return xml.make_element(xml.omt("OMBVAR"), self.toMetaDataXML(), *map(lambda v:v.toXML(), variables))
-
-    @staticmethod
-    def fromXML(onode):
-        (md, node) = metadata.MetaData.extractMetaDataXML(onode)
-
-        (m, (omv, decls)) = xml.match(node, (xml.omt("OMBVAR"), None))
-        if m:
-            parsed = Context(list(map(VarDecl.fromXML, decls)))
-            parsed.metadata = md
-
-            return parsed
-        else:
-            raise ValueError("Not a well-formed context")
