@@ -7,6 +7,10 @@ from MMTPy.content.objects.terms import term
 from MMTPy.utils import ustr
 
 class OMID(caseclass.make(path.ContentPath), term.Term):
+    """
+    An OMID is a case class that references MMT Content by a ContentPath.
+    """
+    
     def __init__(self, path):
         super(OMID, self).__init__(path)
         self.__initmd__()

@@ -6,6 +6,9 @@ from MMTPy.content import vardecl
 from MMTPy.content.objects.terms import term
 
 class OML(caseclass.make(vardecl.VarDecl), term.Term):
+    """
+    An OML wraps a VarDeclaration
+    """
     def __init__(self, vd):
         super(OML, self).__init__(vd)
         self.__initmd__()

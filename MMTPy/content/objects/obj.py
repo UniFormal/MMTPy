@@ -9,19 +9,24 @@ class Obj(metadata.MetaData):
         return xml.make_element(xml.omt("OMOBJ"), nowrapnode)
     @staticmethod
     def fromXML(node):
-        from MMTPy.content.objects.terms import term
-        return term.Term.fromXML(node)
-    def __call__(self, *args, **kwargs):
         """
-        Applies this term to a list of other terms. Equivalent to
-        oma.OMA(self, *args).
+        Parses an XML node into an Obj
         """
+        # an OMV can either be a context or an OMV term
+        if xml.matches(node, xml.omt("OMV")):
+            try:
+                from MMTPy.content.objects import vardecl
+                return vardecl.VarDecl.fromXML(node)
+            except ValueError:
+                from MMTPy.content.objects.terms import omv
+                return omv.OMV.fromXML(node)
 
-        from MMTPy.content.objects.terms import oma
-        return oma.OMA(self, *args)
-    def uninit(self):
-        """
-        Returns the list of arguments used to construct this Term. See the
-        specific implementations for details of the return times.
-        """
-        return self.__uninit__()
+        # an OMBVAR represents a context
+        elif xml.matches(node, xml.omt("OMBVAR")):
+            from MMTPy.content.objects import context
+            return context.Context.fromXML(node)
+
+        # everything else is a term
+        else:
+            from MMTPy.content.objects.terms import term
+            return term.Term.fromXML(node)

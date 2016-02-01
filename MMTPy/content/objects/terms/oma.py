@@ -5,6 +5,9 @@ from MMTPy.caseclass import caseclass
 from MMTPy.content.objects.terms import term
 
 class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
+    """
+    An OMA represents an application of a list of terms on another term
+    """
     def __init__(self, fun, *args):
         super(OMA, self).__init__(fun, list(args))
         self.__initmd__()
