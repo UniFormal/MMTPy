@@ -1,10 +1,12 @@
 from MMTPy import xml, metadata
 
-from MMTPy.content.objects import obj
+from MMTPy.content.structural.content import contentelement
 
-class Declaration(metadata.MetaData):
+
+class Declaration(contentelement.ContentElement):
     def __init__(self):
         super(Declaration, self).__init__()
+        self.__initmd__()
         self.decls = []
     def map(self, fn):
         """
@@ -18,7 +20,7 @@ class Declaration(metadata.MetaData):
         Gets a constant declaration of the specific name
         """
 
-        from MMTPy.declarations import constant
+        from MMTPy.content.structural.content.declarations import constant
 
         for d in self.decls:
             if isinstance(d, constant.Constant):
@@ -42,29 +44,19 @@ class Declaration(metadata.MetaData):
     @staticmethod
     def fromXML(node):
 
-        # in case of a theory
-        if xml.matches(node, "theory"):
-            from MMTPy.declarations import theory
-            return theory.Theory.fromXML(node)
-
-        # in case of a view
-        if xml.matches(node, "view"):
-            from MMTPy.declarations import view
-            return view.View.fromXML(node)
-
         # in case of an import
         if xml.matches(node, "import"):
-            from MMTPy.declarations import structure
+            from MMTPy.content.structural.content.declarations import structure
             return structure.Structure.fromXML(node)
 
         # in case of a constant
         if xml.matches(node, "constant"):
-            from MMTPy.declarations import constant
+            from MMTPy.content.structural.content.declarations import constant
             return constant.Constant.fromXML(node)
 
         # parse a rule constant
         if xml.matches(node, "ruleconstant"):
-            from MMTPy.declarations import ruleconstant
+            from MMTPy.content.structural.content.declarations import ruleconstant
             return ruleconstant.RuleConstant.fromXML(node)
 
         raise ValueError("Not a well-formed declaration")

@@ -4,7 +4,7 @@
 from MMTPy.paths import path
 from MMTPy.connection import qmtclient
 from MMTPy.library.lf import wrappers
-from MMTPy.declarations import declaration
+from MMTPy.content.structural.content.declarations import declaration
 
 # Create a client to connect to MMT
 q = qmtclient.QMTClient("http://localhost:8080/")

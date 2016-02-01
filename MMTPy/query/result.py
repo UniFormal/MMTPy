@@ -46,13 +46,13 @@ class Result(object):
                     return obj.Obj.fromXML(node[0])
                 except ValueError:
                     pass
-                
+
                 try:
-                    from MMTPy.declarations import declaration
-                    return declaration.Declaration.fromXML(node[0])
+                    from MMTPy.content.structural.content import contentelement
+                    return contentelement.ContentElement.fromXML(node[0])
                 except ValueError:
                     pass
-            
+
             return node[0]
         elif xml.matches(node, "string"):
             return node.text

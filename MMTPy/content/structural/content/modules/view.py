@@ -2,9 +2,9 @@ from MMTPy import xml, metadata
 
 from MMTPy.paths import path
 from MMTPy.caseclass import caseclass
-from MMTPy.declarations import declaration
+from MMTPy.content.structural.content.modules import module
 
-class View(caseclass.make(path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration]), declaration.Declaration):
+class View(caseclass.make(path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration]), module.Module):
     def __init__(self, base, name, frm, to, decls):
         super(View, self).__init__(base, name, frm, to, decls)
         self.__initmd__()

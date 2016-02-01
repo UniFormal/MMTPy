@@ -2,7 +2,7 @@ from MMTPy import xml, metadata
 
 from MMTPy.paths import path
 from MMTPy.caseclass import caseclass
-from MMTPy.declarations import declaration
+from MMTPy.content.structural.content.declarations import declaration
 
 class RuleConstant(caseclass.make(path.LocalName), declaration.Declaration):
     def __init__(self, name):

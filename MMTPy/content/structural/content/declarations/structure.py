@@ -2,7 +2,7 @@ from MMTPy import xml, metadata
 
 from MMTPy.paths import path
 from MMTPy.caseclass import caseclass
-from MMTPy.declarations import declaration
+from MMTPy.content.structural.content.declarations import declaration
 
 class Structure(caseclass.make(path.MPath), declaration.Declaration):
     def __init__(self, frm):
