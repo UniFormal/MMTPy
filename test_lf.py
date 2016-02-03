@@ -1,31 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from MMTPy.paths import path
-from MMTPy.connection import qmtclient
-from MMTPy.library.lf import wrappers
-from MMTPy.content.structural.content.declarations import declaration
-from MMTPy.library.lf import LF
 from MMTPy.bridge import bridge
 
-# Create a client to connect to MMT
-q = qmtclient.QMTClient("http://localhost:8080/")
-b = bridge.Bridge.create(q)
+# Create a new Namespace Bridge()
+ns = bridge.Bridge.create("http://localhost:8080/", "http://latin.omdoc.org/math")
 
-# This is the namespace of the LATIN Math library
-latin_math = path.Path.parse("http://latin.omdoc.org")/"math"
+# get the magma theory
+magma_theory = ns.getTheory("Magma")
 
-# We will now retrieve the types of an operation within that archive
+# get the types of the circle operator
+magma_op_type = magma_theory.getDeclaration(u"∘").getType()
+magma_op_args = magma_op_type.getArgumentTypes()
+magma_op_return = magma_op_type.getReturnType()
 
-# build the path to the constant, in this case "∘", and request its type via MMT
-op_tp = q.getType(latin_math.Magma[u"∘"])
+# get the universe type - this is the same throughout http://latin.omdoc.org/math
+universe_type = ns.getTheory("Universe").getDeclaration("u").toTerm()
 
-# next we can unpack this function type into a triple of
-#(Type Variables, argument types, return type)
-(op_bd, op_tps, op_rt) = wrappers.lf_unpack_function_types(op_tp)
-
-# op_tp_p = wrappers.lf_pack_function_types(op_bd, op_tps, op_rt)
-
-# we now do the same for something which actually has Type Variables
-sym_tp = q.getType(latin_math.Symmetric.sym)
-(sym_bd, sym_tps, sym_rt) = wrappers.lf_unpack_function_types(sym_tp)
+# check if the return type is actually the universe
+op_returns_universe = (universe_type == magma_op_return)

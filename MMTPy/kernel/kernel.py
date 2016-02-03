@@ -1,5 +1,5 @@
 from ipykernel.kernelbase import Kernel
-from MMTPy.connection import qmtclient
+from MMTPy.backend import qmtbackend
 
 class MMTKernel(Kernel):
     implementation = 'MMT Kernel'
@@ -22,7 +22,7 @@ class MMTKernel(Kernel):
 
         uri = code[len(CONNECT_PREFIX):]
         try:
-            self.q = qmtclient.QMTClient(uri)
+            self.q = qmtbackend.QMTBackend(uri)
             self.connected = True
             return (True, "Connected to MMT instance at %s" % uri)
         except Exception as e:

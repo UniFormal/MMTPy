@@ -1,11 +1,11 @@
 from MMTPy.paths import path
-from MMTPy.connection import qmtclient
+from MMTPy.backend import qmtbackend
 
 from MMTPy.library.odk import literals, codecs, ODK
 
 
 # create a QMT Clienth
-q = qmtclient.QMTClient("http://localhost:8080/")
+q = qmtbackend.QMTBackend("http://localhost:8080/")
 
 
 # paths to the elliptic curves

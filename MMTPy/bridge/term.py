@@ -7,7 +7,7 @@ class Term(bridge.Bridge):
     An Term() object represents a Bridge() that wraps an MMT Object.
     """
 
-    def __init__(self, qclient, tm, previous = None):
+    def __init__(self, bkend, tm, previous = None):
         """
         Creates a new Term() object for MMT. Note that this function should
         never be called manually but always automatically through another
@@ -15,15 +15,15 @@ class Term(bridge.Bridge):
 
         Arguments:
 
-        qclient
-            A QMTClient object representing the connection to MMT.
+        bkend
+            The Backend object used to retrieve objects from MMT.
         tm
             A Term containing the actual declaration
         previous
             A previous Bridge object (if applicable)
         """
 
-        super(Term, self).__init__(qclient, previous = previous)
+        super(Term, self).__init__(bkend, previous = previous)
 
         if isinstance(tm, term.Term):
             self.__tm = tm
@@ -36,62 +36,10 @@ class Term(bridge.Bridge):
         else:
             self.__gn = None
 
-    def __eq__(self, other):
-        return isinstance(other, Term) and other.__tm == self.__tm
-
-    def parent(self):
-        """
-        Gets the Declaration() matching this Term().
-        """
-
-        if self.__gn == None:
-            raise bridge.NoParentException()
-
-        return bridge.Bridge.create(self, self.__gn)
-
-    def getDeclaration(self):
-        """
-        Gets the Declaration() matching this Term()
-        """
-
-        return self.parent()
-
-    def getModule(self):
-        """
-        Gets the Module() matching this Term()
-        """
-        return self.getDeclaration().getModule()
-
-    def getNamespace(self):
-        """
-        Gets the Namespace() matching this Term()
-        """
-
-        return self.getDeclaration().getModule().getNamespace()
-
-    def get(self):
-        """
-        Gets the underlying term that is wrapped by this Term().
-        """
-
-        return self.__tm
-
-    def toPath(self):
-        """
-        Turns this Term() object into a matching Path() object
-        """
-        return self.__gn
-
-    def navigate(self, pth):
-        """
-        Navigates this bridge to a given path. Not applicable.
-        """
-
-        raise NotImplementedError
-
     #
-    # LF Function Types
+    # OWN METHODS
     #
+
     def asFunctionType(self):
         """
         Assumes this term represents an LF function type and returns a triple
@@ -100,7 +48,7 @@ class Term(bridge.Bridge):
 
         (v, a, r) = wrappers.lf_unpack_function_types(self.get())
 
-        return ([bridge.Bridge.create(self, vv) for vv in v], [bridge.Bridge.create(self, aa) for aa in a], bridge.Bridge.create(self, r))
+        return (v, [self.set(aa) for aa in a], self.set(r))
 
 
     def getArgumentTypes(self):
@@ -132,6 +80,62 @@ class Term(bridge.Bridge):
         (v, a, r) = self.asFunctionType()
         return r
 
+    #
+    # NAVIGATION within the currently wrapped objects
+    #
+
+    def parent(self):
+        """
+        Gets the Declaration() matching this Term().
+        """
+
+        if self.__gn == None:
+            raise bridge.NoParentException()
+
+        return self.set(self.__gn)
+
+    def get(self):
+        """
+        Gets the underlying term that is wrapped by this Term().
+        """
+
+        return self.__tm
+
+    #
+    # turn it into path and Term objects
+    #
+
+    def toPath(self):
+        """
+        Turns this Term() object into a matching Path() object
+        """
+        return self.__gn
+
+    #
+    # NAVIGATION + aliases
+    #
+
+    def navigate(self, pth):
+        """
+        Navigates this bridge to a given path. Not applicable.
+        """
+
+        raise NotImplementedError
+
+    #
+    # STRINGs + EQUALITY
+    #
+    def __str__(self):
+        return "Term[%r]" % (self.get())
+    def __repr__(self):
+        return "Term[%r]" % (self.get())
+    def __eq__(self, other):
+        return isinstance(other, Term) and other.get() == self.get()
+
+    #
+    # CHECKERS for each type of bridge object
+    #
+
     def isBridge():
         """
         Returns True iff this object is a pure Bridge() object.
@@ -144,7 +148,30 @@ class Term(bridge.Bridge):
         """
         return True
 
-    def __str__(self):
-        return "Term[%r]" % (self.get())
-    def __repr__(self):
-        return "Term[%r]" % (self.get())
+    #
+    # GETTERS for each type of bridge object
+    #
+    def getBridge(self):
+        """
+        Gets the Namespace() matching this Term()
+        """
+
+        return self.parent().parent().parent().parent()
+    def getNamespace(self):
+        """
+        Gets the Namespace() matching this Term()
+        """
+
+        return self.parent().parent().parent()
+    def getModule(self):
+        """
+        Gets the Module() matching this Term()
+        """
+        return self.parent().parent()
+
+    def getDeclaration(self):
+        """
+        Gets the Declaration() matching this Term()
+        """
+
+        return self.parent()

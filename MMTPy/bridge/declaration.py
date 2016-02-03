@@ -7,7 +7,7 @@ class Declaration(bridge.Bridge):
     A Declaration() object represents a Bridge() that wraps an MMT Declaration.
     """
 
-    def __init__(self, qclient, gname, previous = None):
+    def __init__(self, bkend, gname, previous = None):
         """
         Creates a new Declaration() object for MMT. Note that this function should
         never be called manually but always automatically through another
@@ -15,68 +15,38 @@ class Declaration(bridge.Bridge):
 
         Arguments:
 
-        qclient
-            A QMTClient object representing the connection to MMT.
+        bkend
+            The Backend object used to retrieve objects from MMT.
         gname
             A GlobalName pointing to the declaration.
         previous
             A previous Bridge object (if applicable)
         """
 
-        super(Declaration, self).__init__(qclient, previous = previous)
+        super(Declaration, self).__init__(bkend, previous = previous)
 
         if isinstance(gname, path.GlobalName):
             self.__path = gname
         else:
             raise TypeError("gname parameter must be an GlobalName()")
-        
+
         # TODO: Think about resolving 'aliases' (MMT side)
         # retrieve the actual declaration from MMT
         try:
-            o = self.getClient().getDeclaration(self.__path)
+            o = self.getBackend().getDeclaration(self.__path)
         except Exception as e:
-            raise ServerSideError(e)
+            print(e)
+            raise bridge.ServerSideError(e)
 
         # raise an Error if this is not a module
         if not isinstance(o, declaration.Declaration):
-            raise ServerSideError(o)
+            raise bridge.ServerSideError(o)
 
         self.__decl = o
 
-    def __eq__(self, other):
-        return isinstance(other, Declaration) and other.__path == self.__path
-
-    def parent(self):
-        """
-        Gets the namespace matching to this Module().
-        """
-        return bridge.Bridge.create(self, self.__path.module)
-
-    def getDeclaration(self):
-        """
-        Gets the Declaration() matching this Term()
-        """
-
-        return self
-
-    def getModule(self):
-        """
-        Gets the Module() matching this Term()
-        """
-        return self.parent()
-
-    def get(self):
-        """
-        Gets the underlying declaration that is wrapped by this Declaration()
-        """
-
-        return self.__decl
-
-    def toPath(self):
-        """
-        Turns this Declaration() object into a matching Path() object
-        """
-        return self.__path
+    #
+    # OWN METHODS
+    #
 
     def getType(self):
         """
@@ -88,7 +58,7 @@ class Declaration(bridge.Bridge):
         if tp_tm == None:
             return None
 
-        return bridge.Bridge.create(self, tp_tm)
+        return self.set(tp_tm)
 
     def getDefinition(self):
         """
@@ -100,7 +70,39 @@ class Declaration(bridge.Bridge):
         if df_tm == None:
             return None
 
-        return bridge.Bridge.create(self, df_tm)
+        return self.set(df_tm)
+
+    #
+    # NAVIGATION within the currently wrapped objects
+    #
+
+    def parent(self):
+        """
+        Gets the Module() matching to this Declaration().
+        """
+
+        return self.set(self.__path.module)
+
+    def get(self):
+        """
+        Gets the underlying declaration that is wrapped by this Declaration()
+        """
+
+        return self.__decl
+
+    #
+    # turn it into path and Term objects
+    #
+
+    def toPath(self):
+        """
+        Turns this Declaration() object into a matching Path() object
+        """
+        return self.__path
+
+    #
+    # NAVIGATION + aliases
+    #
 
     def navigate(self, pth):
         """
@@ -108,6 +110,16 @@ class Declaration(bridge.Bridge):
         """
 
         raise NotImplementedError
+
+    #
+    # STRINGs + EQUALITY
+    #
+    def __eq__(self, other):
+        return isinstance(other, Declaration) and other.toPath() == self.toPath()
+
+    #
+    # CHECKERS for each type of bridge object
+    #
 
     def isBridge():
         """
@@ -120,3 +132,27 @@ class Declaration(bridge.Bridge):
         Returns True iff this object is a Namespace() object.
         """
         return True
+
+    #
+    # GETTERS for each type of bridge object
+    #
+
+    def getBridge(self):
+        """
+        Gets the Bridge() matching this Term()
+        """
+
+        return self.parent().parent()
+
+    def getModule(self):
+        """
+        Gets the Module() matching this Term()
+        """
+        return self.parent()
+
+    def getDeclaration(self):
+        """
+        Gets the Declaration() matching this Term()
+        """
+
+        return self
