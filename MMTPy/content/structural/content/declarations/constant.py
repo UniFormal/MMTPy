@@ -6,15 +6,16 @@ from MMTPy.content.objects.terms import term
 from MMTPy.caseclass import caseclass
 from MMTPy.content.structural.content.declarations import declaration
 
-class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), declaration.Declaration):
+class Constant(caseclass.make(path.LocalName, (path.LocalName,), (term.Term,), (term.Term,), type(None)), declaration.Declaration):
     """
     Represents a Constant that is declared in a theory
     """
-    def __init__(self, name, tp, df, nt):
-        super(Constant, self).__init__(name, tp, df, nt)
+    def __init__(self, name, alias, tp, df, nt):
+        super(Constant, self).__init__(name, alias, tp, df, nt)
         self.__initmd__()
 
         self.name = name
+        self.alias = alias
         self.tp = tp
         self.df = df
         self.nt = nt
@@ -25,13 +26,18 @@ class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(N
         return fn(Constant(self.name, ctp, cdf, self.nt))
     def toXML(self):
         nodes = []
+        attrs = {
+            "name": self.name
+        }
 
-        if self.tp:
+        if self.tp != None:
             nodes += [xml.make_element("type", self.tp.toXML())]
-        if self.df:
+        if self.df != None:
             nodes += [xml.make_element("definition", self.df.toXML())]
+        if self.alias != None:
+            attrs["alias"] = self.alias
 
-        return xml.make_element("constant", self.toMetaDataXML(), *nodes, name=self.name)
+        return xml.make_element("constant", self.toMetaDataXML(), *nodes, **attrs)
 
     @staticmethod
     def fromXML(onode):
@@ -54,7 +60,12 @@ class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(N
             else:
                 df = None
 
-            parsed = Constant(name, tp, df, None)
+            if "alias" in cst.attrib:
+                alias = cst.attrib.get("alias")
+            else:
+                alias = None
+
+            parsed = Constant(name, alias, tp, df, None)
             parsed.metadata = md
 
             return parsed
