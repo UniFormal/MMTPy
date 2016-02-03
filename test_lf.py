@@ -5,9 +5,12 @@ from MMTPy.paths import path
 from MMTPy.connection import qmtclient
 from MMTPy.library.lf import wrappers
 from MMTPy.content.structural.content.declarations import declaration
+from MMTPy.library.lf import LF
+from MMTPy.bridge import bridge
 
 # Create a client to connect to MMT
 q = qmtclient.QMTClient("http://localhost:8080/")
+b = bridge.Bridge.create(q)
 
 # This is the namespace of the LATIN Math library
 latin_math = path.Path.parse("http://latin.omdoc.org")/"math"

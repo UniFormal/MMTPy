@@ -7,6 +7,9 @@ from MMTPy.caseclass import caseclass
 from MMTPy.content.structural.content.declarations import declaration
 
 class Constant(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), declaration.Declaration):
+    """
+    Represents a Constant that is declared in a theory
+    """
     def __init__(self, name, tp, df, nt):
         super(Constant, self).__init__(name, tp, df, nt)
         self.__initmd__()

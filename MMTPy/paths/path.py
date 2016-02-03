@@ -267,7 +267,7 @@ class DPath(caseclass.make(uri.URI), Path):
     def __repr__(self):
         return "DPath[%r]" % (ustr(self))
 
-class ContentPath(DPath):
+class ContentPath(Path):
     def toTerm(self):
         """
         Turns this ContentPath into a term by wrapping it in an OMID
