@@ -1,19 +1,20 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.objects.terms import term
 
 from MMTPy.utils import ustr
 
-class OMID(caseclass.make(path.ContentPath), term.Term):
+@caseclass.caseclass
+@types.argtypes(path.ContentPath)
+class OMID(term.Term):
     """
     An OMID is a case class that references MMT Content by a ContentPath.
     """
     
     def __init__(self, path):
-        super(OMID, self).__init__(path)
-        self.__initmd__()
+        term.Term.__init__(self)
 
         self.path = path
     def toXML(self):

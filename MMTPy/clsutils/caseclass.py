@@ -65,29 +65,16 @@ class StaticCaseClass(object):
         arepr = ",".join(alist+kwarglist)
 
         # and put them after the name of the class
-        return "%s(%s)" % (self.__cc_name__, arepr)
-def make(*args, **kwargs):
+        return "%s[%s]" % (self.__cc_name__, arepr)
+
+def caseclass(cls):
     """
-    Creates a meta-class for a scala-like case class.
-
-    name -- Name of the class
-    args -- Types of parameters. Use (tp) for Option[tp] and [tp] for List[tp]
+    Class Decorator that makes a class a case class. 
+    Note: This breaks super() on case-class instances. 
     """
-
-
-    def __init__(self, *cargs, **kcargs):
-
-        # check that we have the right number of arguments
-        if len(cargs) != len(args):
-            raise TypeError("__init__() takes %d positional argument(s) but %d were given" % (len(args) + 1, len(cargs) + 1))
-
-
-
-        # initialise the StaticCaseClass instance
-        StaticCaseClass.__init__(self, cargs, kcargs)
-
-        # check that we have the right types
-        types.verify(cargs, args)
-        types.verifyK(kcargs, kwargs)
-
-    return type("DynamicCaseClass", (StaticCaseClass, ), {"__init__":__init__})
+    def __init__(self,*args,**kwargs):
+        StaticCaseClass.__init__(self, args, kwargs)
+        return super(tp, self).__init__(*args, **kwargs)
+    
+    tp = type(cls.__name__, (cls,StaticCaseClass,),{"__init__":__init__})
+    return tp

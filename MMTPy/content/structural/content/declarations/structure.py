@@ -1,14 +1,15 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.structural.content.declarations import declaration
 from MMTPy.content.objects.terms import term
 
-class DeclaredStructure(caseclass.make(path.LocalName, path.MPath, bool, [declaration.Declaration]), Structure):
+@caseclass.caseclass
+@types.argtypes(path.LocalName, path.MPath, bool, [declaration.Declaration])
+class DeclaredStructure(Structure):
     def __init__(self, name, frm, isImplicit, decls):
-        super(DeclaredStructure, self).__init__(name, frm, isImplicit, decls)
-        self.__initmd__()
+        Structure.__init__(self)
 
         self.name = name
         self.frm = frm
@@ -19,10 +20,11 @@ class DeclaredStructure(caseclass.make(path.LocalName, path.MPath, bool, [declar
     def toXML(self):
         return xml.make_element("import", self.toMetaDataXML(), *[d.toXML() for d in self.decls], **{"name": self.name, "from": self.frm, "implicit": "true" if self.isImplicit else "false"})
 
-class DefinedStructure(caseclass.make(path.LocalName, path.MPath, bool, term.Term), Structure):
+@caseclass.caseclass
+@types.argtypes(path.LocalName, path.MPath, bool, term.Term)
+class DefinedStructure(Structure):
     def __init__(self, name, frm, isImplicit, df):
-        super(DefinedStructure, self).__init__(name, frm, isImplicit, df)
-        self.__initmd__()
+        Structure.__init__(self)
 
         self.name = name
         self.frm = frm
@@ -34,6 +36,9 @@ class DefinedStructure(caseclass.make(path.LocalName, path.MPath, bool, term.Ter
         return xml.make_element("import", self.toMetaDataXML(), ("definition", self.df.toXML()), **{"name": self.name, "from": self.frm, "implicit": "true" if self.isImplicit else "false"})
 
 class Structure(declaration.Declaration):
+    def __init__(self):
+        declaration.Declaration.__init__(self)
+    
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)

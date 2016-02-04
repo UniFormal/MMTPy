@@ -1,13 +1,12 @@
 from MMTPy import xml
 
 from MMTPy.paths import uri, path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 
 class MetaData(object):
     def __init__(self):
-        self.__initmd__()
-    def __initmd__(self):
         self.metadata = []
+    
     def toMetaDataXML(self):
         # create an element for each meta-datum
         return xml.make_element("metadata", *[d.toXML() for d in self.metadata])
@@ -47,6 +46,9 @@ class MetaData(object):
         return (mds, node)
 
 class MetaDatum(object):
+    def __init__(self):
+        pass
+    
     @staticmethod
     def fromXML(node):
         if xml.matches(node, "link"):
@@ -57,9 +59,13 @@ class MetaDatum(object):
             return Meta.fromXML(node)
 
         raise ValueError("Not a valid meta-datum")
-class Link(caseclass.make(path.GlobalName, uri.URI), MetaDatum):
+
+@caseclass.caseclass
+@types.argtypes(path.GlobalName, uri.URI)
+class Link(MetaDatum):
     def __init__(self, key, u):
-        super(Link, self).__init__(key, u)
+        MetaDatum.__init__(self)
+        
         self.key = key
         self.uri = u
     def toXML(self):
@@ -77,9 +83,12 @@ class Link(caseclass.make(path.GlobalName, uri.URI), MetaDatum):
         # and create a link object
         return Link(key, u)
 
-class Tag(caseclass.make(path.GlobalName), MetaDatum):
+@caseclass.caseclass
+@types.argtypes(path.GlobalName)
+class Tag(MetaDatum):
     def __init__(self, key):
-        super(Tag, self).__init__(key)
+        MetaDatum.__init__(self)
+        
         self.key = key
     def toXML(self):
         return xml.make_element("tag", property=self.key)
@@ -94,9 +103,12 @@ class Tag(caseclass.make(path.GlobalName), MetaDatum):
         # and create a link object
         return Tag(key)
 
-class Meta(caseclass.make(path.GlobalName, object), MetaDatum):
+@caseclass.caseclass
+@types.argtypes(path.GlobalName, object)
+class Meta(MetaDatum):
     def __init__(self, key, value):
-        super(Meta, self).__init__(key, value)
+        MetaDatum.__init__(self)
+        
         self.key = key
         self.value = value
     def toXML(self):

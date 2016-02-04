@@ -1,16 +1,17 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.objects.terms import term
 
-class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
+@caseclass.caseclass
+@types.argtypes(term.Term, [term.Term])
+class OMA(term.Term):
     """
     An OMA represents an application of a list of terms on another term
     """
-    def __init__(self, fun, *args):
-        super(OMA, self).__init__(fun, list(args))
-        self.__initmd__()
+    def __init__(self, fun, args):
+        term.Term.__init__(self)
 
         self.fun = fun
         self.args = list(args)
@@ -28,10 +29,11 @@ class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
         f = self.fun.map(fn)
         a = list(map(lambda s:s.map(fn), self.args))
 
-        return fn(OMA(f, *a))
+        return fn(OMA(f, a))
 
     def toXML(self):
-        return xml.make_element(xml.omt("OMA"), self.toMetaDataXML(), self.fun.toXML(), *map(lambda a:a.toXML(), self.args))
+        return xml.make_element(xml.omt("OMA"), self.toMetaDataXML(), self.fun.toXML(), list(map(lambda a:a.toXML(), self.args)))
+    
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)
@@ -41,7 +43,7 @@ class OMA(caseclass.make(term.Term, [term.Term]), term.Term):
                 raise ValueError("No operator given")
             (fun, args) = (omac[0], omac[1:])
 
-            parsed = OMA(term.Term.__parse__(fun), *map(term.Term.__parse__, args))
+            parsed = OMA(term.Term.__parse__(fun), list(map(term.Term.__parse__, args)))
             parsed.metadata = md
 
             return parsed

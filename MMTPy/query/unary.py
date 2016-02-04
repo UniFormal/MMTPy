@@ -1,6 +1,8 @@
-from MMTPy.caseclass import caseclass, types
+from MMTPy.clsutils import caseclass, types
 
 class Unary(object):
+    def __init__(self):
+        pass
     @staticmethod
     def parse(s):
         if s != "" and s in __classmap__:
@@ -8,84 +10,118 @@ class Unary(object):
         else:
             return CustomUnary(s)
 
-class CustomUnary(caseclass.make(types.strtype), Unary):
+@caseclass.caseclass
+@types.argtypes(types.strtype)
+class CustomUnary(Unary):
     def __init__(self, s):
-        super(CustomUnary, self).__init__(s)
+        Unary.__init__(self)
+        
         self.s = s
-            
-class IsDocument(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsDocument(Unary):
     def __init__(self):
-        super(IsDocument, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsTheory(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsTheory(Unary):
     def __init__(self):
-        super(IsTheory, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class isView(caseclass.make(), Unary):
+@caseclass.caseclass
+@types.argtypes()
+class isView(Unary):
     def __init__(self):
-        super(isView, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class isStyle(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class isStyle(Unary):
     def __init__(self):
-        super(isStyle, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsStructure(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsStructure(Unary):
     def __init__(self):
-        super(IsStructure, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsConstant(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsConstant(Unary):
     def __init__(self):
-        super(IsConstant, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsPattern(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsPattern(Unary):
     def __init__(self):
-        super(IsPattern, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsInstance(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsInstance(Unary):
     def __init__(self):
-        super(IsInstance, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsConAss(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsConAss(Unary):
     def __init__(self):
-        super(IsConAss, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsStrAss(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsStrAss(Unary):
     def __init__(self):
-        super(IsStrAss, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:
                 self.s = k
-class IsNotation(caseclass.make(), Unary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsNotation(Unary):
     def __init__(self):
-        super(IsNotation, self).__init__()
+        Unary.__init__(self)
         
         for (k, v) in __classmap__.items():
             if v == self.__class__:

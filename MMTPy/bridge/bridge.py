@@ -1,4 +1,3 @@
-from MMTPy.caseclass import types
 from MMTPy.backend import backend, qmtbackend
 from MMTPy.paths import path
 from MMTPy.content.objects.terms import term

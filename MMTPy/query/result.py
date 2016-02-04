@@ -1,5 +1,4 @@
 from MMTPy import xml
-from MMTPy.caseclass import caseclass
 
 class Result(object):
     def __init__(self, objects, auto = True):

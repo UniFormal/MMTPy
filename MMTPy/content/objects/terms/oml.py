@@ -1,17 +1,18 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content import vardecl
 from MMTPy.content.objects.terms import term
 
-class OML(caseclass.make(vardecl.VarDecl), term.Term):
+@caseclass.caseclass
+@types.argtypes(vardecl.VarDecl)
+class OML(term.Term):
     """
     An OML wraps a VarDeclaration
     """
     def __init__(self, vd):
-        super(OML, self).__init__(vd)
-        self.__initmd__()
+        term.Term.__init__(self)
 
         self.vd = vd
     def map(self, fn):

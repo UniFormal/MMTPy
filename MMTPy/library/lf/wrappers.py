@@ -7,7 +7,7 @@ def lf_apply(f, *args):
     Applies an lf-function to a term
     """
 
-    return oma.OMA(~LF.apply, f, *args)
+    return oma.OMA(~LF.apply, f, args)
 
 def lf_unapply(tm):
     """

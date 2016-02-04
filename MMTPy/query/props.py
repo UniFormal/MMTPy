@@ -1,13 +1,16 @@
 from MMTPy import xml
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 
 from MMTPy.query.prop import Prop
 from MMTPy.query.query import Query
 from MMTPy.query.unary import Unary
 
-class And(caseclass.make(Prop, Prop), Prop):
+@caseclass.caseclass
+@types.argtypes(Prop, Prop)
+class And(Prop):
     def __init__(self, left, right):
-        super(And, self).__init__(left, right)
+        Prop.__init__(self)
+        
         self.left = left
         self.right = right
     def toXML(self):
@@ -17,9 +20,12 @@ class And(caseclass.make(Prop, Prop), Prop):
         if xml.matches(node, ("and", (None, None))):
             return And(Prop.fromXML(node[0]), Prop.fromXML(node[1]))
 
-class Equal(caseclass.make(Query, Query), Prop):
+@caseclass.caseclass
+@types.argtypes(Query, Query)
+class Equal(Prop):
     def __init__(self, left, right):
-        super(Equal, self).__init__(left, right)
+        Prop.__init__(self)
+        
         self.left = left
         self.right = right
     def toXML(self):
@@ -29,9 +35,12 @@ class Equal(caseclass.make(Query, Query), Prop):
         if xml.matches(node, ("equal", (None, None))):
             return Equal(Query.fromXML(node[0]), Query.fromXML(node[1]))
 
-class Forall(caseclass.make(Query, Prop), Prop):
+@caseclass.caseclass
+@types.argtypes(Query, Prop)
+class Forall(Prop):
     def __init__(self, domain, scope):
-        super(Forall, self).__init__(domain, scope)
+        Prop.__init__(self)
+        
         self.domain = domain
         self.scope = scope
     def toXML(self):
@@ -41,9 +50,12 @@ class Forall(caseclass.make(Query, Prop), Prop):
         if xml.matches(node, ("forall", (None, None))):
             return Forall(Query.fromXML(node[0]), Prop.fromXML(node[1]))
 
-class IsA(caseclass.make(Query, Unary), Prop):
+@caseclass.caseclass
+@types.argtypes(Query, Unary)
+class IsA(Prop):
     def __init__(self, e, t):
-        super(IsA, self).__init__(e, t)
+        Prop.__init__(self)
+        
         self.e = e
         self.t = t
     def toXML(self):
@@ -53,9 +65,12 @@ class IsA(caseclass.make(Query, Unary), Prop):
         if xml.matches(node, ("isa", (None,))):
             return IsA(Query.fromXML(node[0]), Unary.parse(node.attrib.get("concept")))
 
-class IsEmpty(caseclass.make(Query), Prop):
+@caseclass.caseclass
+@types.argtypes(Query)
+class IsEmpty(Prop):
     def __init__(self, r):
-        super(Forall, self).__init__(r)
+        Prop.__init__(self)
+        
         self.r = r
     def toXML(self):
         return xml.make_element("isempty", self.r.toXML())
@@ -64,9 +79,12 @@ class IsEmpty(caseclass.make(Query), Prop):
         if xml.matches(node, ("isempty", (None,))):
             return Equal(Query.fromXML(node[0]))
 
-class IsIn(caseclass.make(Query, Query), Prop):
+@caseclass.caseclass
+@types.argtypes(Query, Query)
+class IsIn(Prop):
     def __init__(self, elem, tp):
-        super(IsIn, self).__init__(elem, tp)
+        Prop.__init__(self)
+        
         self.elem = elem
         self.tp = tp
     def toXML(self):
@@ -76,9 +94,12 @@ class IsIn(caseclass.make(Query, Query), Prop):
         if xml.matches(node, ("isin", (None, None))):
             return IsIn(Query.fromXML(node[0]), Query.fromXML(node[1]))
 
-class Not(caseclass.make(Prop), Prop):
+@caseclass.caseclass
+@types.argtypes(Prop)
+class Not(Prop):
     def __init__(self, arg):
-        super(Not, self).__init__(arg)
+        Prop.__init__(self)
+        
         self.arg = arg
     def toXML(self):
         return xml.make_element("not", self.arg.toXML())
@@ -87,9 +108,12 @@ class Not(caseclass.make(Prop), Prop):
         if xml.matches(node, ("not", (None,))):
             return Not(Prop.fromXML(node[0]))
 
-class PrefixOf(caseclass.make(Query, Query), Prop):
+@caseclass.caseclass
+@types.argtypes(Query, Query)
+class PrefixOf(Prop):
     def __init__(self, short, lg):
-        super(PrefixOf, self).__init__(short, lg)
+        Prop.__init__(self)
+        
         self.short = short
         self.long = lg
     def toXML(self):

@@ -52,3 +52,22 @@ def verifyK(args, types):
 
     # recurse into the list version
     verify(arglist, typelist)
+
+def argtypes(*args, **kwargs):
+    """
+    Class Decorator that ensures argument types. 
+    Syntax is the same as the one for verify and verifyK respectively. 
+    """
+    def wrapper(cls):
+        def __init__(self,*cargs,**kcargs):
+            
+            if len(cargs) != len(args):
+                raise TypeError("__init__() takes %d positional argument(s) but %d were given" % (len(args) + 1, len(cargs) + 1))
+            
+            verify(cargs, args)
+            verifyK(kcargs, kwargs)
+            
+            return cls.__init__(self, *cargs, **kcargs)
+        
+        return type(cls.__name__, (cls,),{"__init__":__init__})
+    return wrapper

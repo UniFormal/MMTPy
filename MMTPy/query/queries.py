@@ -1,6 +1,6 @@
 from MMTPy import xml
 
-from MMTPy.caseclass import caseclass, types
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content import componentkey
 
 from MMTPy.query.query import Query
@@ -13,9 +13,12 @@ from MMTPy.content.objects import obj
 from MMTPy.content import position
 from MMTPy.dependencies import etree_type
 
-class BigUnion(caseclass.make(Query, Query), Query):
+@caseclass.caseclass
+@types.argtypes(Query, Query)
+class BigUnion(Query):
     def __init__(self, domain, of):
-        super(BigUnion, self).__init__(domain, of)
+        Query.__init__(self)
+        
         self.domain = domain
         self.of = of
     def toXML(self):
@@ -28,9 +31,12 @@ class BigUnion(caseclass.make(Query, Query), Query):
         else:
             raise ValueError("not a valid <BIGUNION/>")
 
-class Bound(caseclass.make(int), Query):
+@caseclass.caseclass
+@types.argtypes(int)
+class Bound(Query):
     def __init__(self, index):
-        super(Bound, self).__init__(index)
+        Query.__init__(self)
+        
         self.index = index
     def toXML(self):
         return xml.make_element("bound", index=self.idx)
@@ -41,9 +47,12 @@ class Bound(caseclass.make(int), Query):
         else:
             raise ValueError("not a valid <BOUND/>")
 
-class Closure(caseclass.make(Query), Query):
+@caseclass.caseclass
+@types.argtypes(Query)
+class Closure(Query):
     def __init__(self, of):
-        super(Closure, self).__init__(of)
+        Query.__init__(self)
+        
         self.of = of
     def toXML(self):
         return xml.make_element("closure", self.of.toXML())
@@ -54,9 +63,12 @@ class Closure(caseclass.make(Query), Query):
         else:
             raise ValueError("not a valid <CLOSURE/>")
 
-class Component(caseclass.make(Query, componentkey.ComponentKey), Query):
+@caseclass.caseclass
+@types.argtypes(Query, componentkey.ComponentKey)
+class Component(Query):
     def __init__(self, of, component):
-        super(Component, self).__init__(of, component)
+        Query.__init__(self)
+        
         self.of = of
         self.component = component
     def toXML(self):
@@ -68,9 +80,12 @@ class Component(caseclass.make(Query, componentkey.ComponentKey), Query):
         else:
             raise ValueError("not a valid <COMPONENT/>")
 
-class Comprehension(caseclass.make(Query, Prop), Query):
+@caseclass.caseclass
+@types.argtypes(Query, Prop)
+class Comprehension(Query):
     def __init__(self, domain, pred):
-        super(Comprehension, self).__init__(domain, pred)
+        Query.__init__(self)
+        
         self.domain = domain
         self.pred = pred
     def toXML(self):
@@ -81,9 +96,13 @@ class Comprehension(caseclass.make(Query, Prop), Query):
             return Comprehension(Query.fromXML(node[0]), Prop.fromXML(node[1]))
         else:
             raise ValueError("not a valid <comprehension/>")
-class Let(caseclass.make(Query, Query), Query):
+
+@caseclass.caseclass
+@types.argtypes(Query, Query)
+class Let(Query):
     def __init__(self, value, i):
-        super(Let, self).__init__(value, i)
+        Query.__init__(self)
+        
         self.value = value
         self.i = i
     def toXML(self):
@@ -94,9 +113,13 @@ class Let(caseclass.make(Query, Query), Query):
             return Let(Query.fromXML(node[0]), Query.fromXML(node[1]))
         else:
             raise ValueError("not a valid <LET/>")
-class Literal(caseclass.make(object), Query):
+
+@caseclass.caseclass
+@types.argtypes(object)
+class Literal(Query):
     def __init__(self, literal):
-        super(Literal, self).__init__(literal)
+        Query.__init__(self)
+        
         self.literal = literal
     def toXML(self):
         if isinstance(self.literal, path.Path):
@@ -137,9 +160,12 @@ class Literal(caseclass.make(object), Query):
         else:
             raise ValueError("not a valid <literal/>")
 
-class Paths(caseclass.make(Unary), Query):
+@caseclass.caseclass
+@types.argtypes(Unary)
+class Paths(Query):
     def __init__(self, tp):
-        super(Paths, self).__init__(tp)
+        Query.__init__(self)
+        
         self.tp = tp
     def toXML(self):
         return xml.make_element("uris", concept=self.tp.s)
@@ -150,9 +176,12 @@ class Paths(caseclass.make(Unary), Query):
         else:
             raise ValueError("not a valid <PATHS/>")
 
-class Projection(caseclass.make(Query, int), Query):
+@caseclass.caseclass
+@types.argtypes(Query, int)
+class Projection(Query):
     def __init__(self, of, index):
-        super(Projection, self).__init__(of, index)
+        Query.__init__(self)
+        
         self.of = of
         self.index = index
     def toXML(self):
@@ -164,9 +193,12 @@ class Projection(caseclass.make(Query, int), Query):
         else:
             raise ValueError("not a valid <projection/>")
 
-class QueryFunctionApply(caseclass.make(types.strtype, Query, [types.strtype]), Query):
+@caseclass.caseclass
+@types.argtypes(types.strtype, Query, [types.strtype])
+class QueryFunctionApply(Query):
     def __init__(self, function, argument, params):
-        super(QueryFunctionApply, self).__init__(function, argument, params)
+        Query.__init__(self)
+        
         self.function = function
         self.argument = argument
         self.params = params
@@ -180,9 +212,12 @@ class QueryFunctionApply(caseclass.make(types.strtype, Query, [types.strtype]), 
             raise ValueError("not a valid <projection/>")
 
 
-class Related(caseclass.make(Query, RelationExp), Query):
+@caseclass.caseclass
+@types.argtypes(Query, RelationExp)
+class Related(Query):
     def __init__(self, to, by):
-        super(Related, self).__init__(to, by)
+        Query.__init__(self)
+        
         self.to = to
         self.by = by
     def toXML(self):
@@ -194,9 +229,12 @@ class Related(caseclass.make(Query, RelationExp), Query):
         else:
             raise ValueError("not a valid <related/>")
 
-class Singleton(caseclass.make(Query), Query):
+@caseclass.caseclass
+@types.argtypes(Query)
+class Singleton(Query):
     def __init__(self, e):
-        super(Singleton, self).__init__(e)
+        Query.__init__(self)
+        
         self.e = e
     def toXML(self):
         return xml.make_element("singleton", self.e.toXML())
@@ -207,9 +245,12 @@ class Singleton(caseclass.make(Query), Query):
         else:
             raise ValueError("not a valid <singleton/>")
 
-class SubObject(caseclass.make(Query, position.Position), Query):
+@caseclass.caseclass
+@types.argtypes(Query, position.Position)
+class SubObject(Query):
     def __init__(self, of, position):
-        super(SubObject, self).__init__(of, position)
+        Query.__init__(self)
+        
         self.of = of
         self.position = position
     def toXML(self):
@@ -221,9 +262,12 @@ class SubObject(caseclass.make(Query, position.Position), Query):
         else:
             raise ValueError("not a valid <subobject/>")
 
-class Tuple(caseclass.make([Query]), Query):
+@caseclass.caseclass
+@types.argtypes([Query])
+class Tuple(Query):
     def __init__(self, components):
-        super(Tuple, self).__init__(components)
+        Query.__init__(self)
+        
         self.components = components
     def toXML(self):
         return xml.make_element("tuple", *map(lambda c:c.toXML(), self.components))
@@ -234,9 +278,12 @@ class Tuple(caseclass.make([Query]), Query):
         else:
             raise ValueError("not a valid <tuple/>")
 
-class Unifies(caseclass.make(obj.Obj), Query):
+@caseclass.caseclass
+@types.argtypes(obj.Obj)
+class Unifies(Query):
     def __init__(self, wth):
-        super(Unifies, self).__init__(wth)
+        Query.__init__(self)
+        
         self.wth = wth
     def toXML(self):
         return xml.make_element("unifies", self.wth.toXML())
@@ -247,9 +294,12 @@ class Unifies(caseclass.make(obj.Obj), Query):
         else:
             raise ValueError("not a valid <unifies/>")
 
-class Union(caseclass.make(Query, Query), Query):
+@caseclass.caseclass
+@types.argtypes(Query, Query)
+class Union(Query):
     def __init__(self, left, right):
-        super(Union, self).__init__(left, right)
+        Query.__init__(self)
+        
         self.left = left
         self.right = right
     def toXML(self):

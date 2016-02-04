@@ -1,13 +1,14 @@
 from MMTPy import xml, metadata
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.objects import obj
 from MMTPy.paths import path
 from MMTPy.content.objects.terms import term
 
-class VarDecl(caseclass.make(path.LocalName, (term.Term,), (term.Term,), type(None)), obj.Obj):
+@caseclass.caseclass
+@types.argtypes(path.LocalName, (term.Term,), (term.Term,), type(None))
+class VarDecl(obj.Obj):
     def __init__(self, name, tp, df, nt):
-        super(VarDecl, self).__init__(name, tp, df, nt)
-        self.__initmd__()
+        obj.Obj.__init__(self)
         
         self.name = name
         self.tp = tp

@@ -1,13 +1,14 @@
 from MMTPy import xml, metadata
 
 from MMTPy.content.objects import context
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.objects.terms import term
 
-class OMBINDC(caseclass.make(term.Term, context.Context, [term.Term]), term.Term):
+@caseclass.caseclass
+@types.argtypes(term.Term, context.Context, [term.Term])
+class OMBINDC(term.Term):
     def __init__(self, binder, ctx, scopes):
-        super(OMBINDC, self).__init__(binder, ctx, scopes)
-        self.__initmd__()
+        term.Term.__init__(self)
 
         self.binder = binder
         self.ctx = ctx

@@ -1,15 +1,16 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass, types
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.objects.terms import term, omid
 
 from MMTPy.literals import semantic
 
-class UnknownOMLIT(caseclass.make(term.Term, types.strtype), term.Term):
+@caseclass.caseclass
+@types.argtypes(term.Term, types.strtype)
+class UnknownOMLIT(term.Term):
     def __init__(self, syntp, value):
-        super(UnknownOMLIT, self).__init__(syntp, value)
-        self.__initmd__()
+        term.Term.__init__(self)
 
         self.syntp = syntp
         self.value = value
@@ -52,10 +53,11 @@ class UnknownOMLIT(caseclass.make(term.Term, types.strtype), term.Term):
         else:
             raise ValueError("Not a well-formed <OMLIT/>")
 
-class OMLIT(caseclass.make(semantic.SemanticType, term.Term, object), UnknownOMLIT):
+@caseclass.caseclass
+@types.argtypes(semantic.SemanticType, term.Term, object)
+class OMLIT(UnknownOMLIT):
     def __init__(self, semtp, syntp, o):
-        super(OMLIT, self).__init__(semtp, syntp, o)
-        self.__initmd__()
+        UnknownOMLIT.__init__(self)
 
         if not semtp.valid(o):
             raise ValueError("SemanticType is not valid for the given object")

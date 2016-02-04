@@ -3,16 +3,17 @@ from MMTPy import xml, metadata
 from MMTPy.paths import path
 from MMTPy.content.objects import context
 from MMTPy.content.objects.terms import term
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.structural.content.declarations import declaration
 
-class Constant(caseclass.make(path.LocalName, (path.LocalName,), (term.Term,), (term.Term,), type(None)), declaration.Declaration):
+@caseclass.caseclass
+@types.argtypes(path.LocalName, (path.LocalName,), (term.Term,), (term.Term,), type(None))
+class Constant(declaration.Declaration):
     """
     Represents a Constant that is declared in a theory
     """
     def __init__(self, name, alias, tp, df, nt):
-        super(Constant, self).__init__(name, alias, tp, df, nt)
-        self.__initmd__()
+        declaration.Declaration.__init__(self)
 
         self.name = name
         self.alias = alias

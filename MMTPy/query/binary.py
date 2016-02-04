@@ -1,7 +1,10 @@
-from MMTPy.caseclass import caseclass, types
+from MMTPy.clsutils import caseclass, types
 # TODO: Figure out custom binary
 
 class Binary(object):
+    def __init__(self):
+        pass
+    
     @staticmethod
     def parse(s):
         for (k, v) in __classmapf__.items():
@@ -9,9 +12,12 @@ class Binary(object):
                 return v()
         raise ValueError("Unknown Binary")
 
-class DependsOn(caseclass.make(), Binary):
+@caseclass.caseclass
+@types.argtypes()
+class DependsOn(Binary):
     def __init__(self):
-        super(DependsOn, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -20,9 +26,13 @@ class DependsOn(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class HasMeta(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class HasMeta(Binary):
     def __init__(self):
-        super(HasMeta, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -31,9 +41,13 @@ class HasMeta(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class Includes(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class Includes(Binary):
     def __init__(self):
-        super(Includes, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -42,9 +56,13 @@ class Includes(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class HasDomain(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class HasDomain(Binary):
     def __init__(self):
-        super(HasDomain, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -53,9 +71,13 @@ class HasDomain(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class HasCodomain(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class HasCodomain(Binary):
     def __init__(self):
-        super(HasCodomain, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -64,9 +86,13 @@ class HasCodomain(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class IsInstanceOf(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsInstanceOf(Binary):
     def __init__(self):
-        super(IsInstanceOf, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -75,9 +101,13 @@ class IsInstanceOf(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class RefersTo(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class RefersTo(Binary):
     def __init__(self):
-        super(RefersTo, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -86,9 +116,13 @@ class RefersTo(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class Declares(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class Declares(Binary):
     def __init__(self):
-        super(Declares, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -97,9 +131,13 @@ class Declares(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class IsAliasFor(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsAliasFor(Binary):
     def __init__(self):
-        super(IsAliasFor, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():
@@ -108,9 +146,13 @@ class IsAliasFor(caseclass.make(), Binary):
         for (k, v) in __classmapb__.items():
             if v == self.__class__:
                 self.backwardsDesc = k
-class IsAlignedWith(caseclass.make(), Binary):
+
+@caseclass.caseclass
+@types.argtypes()
+class IsAlignedWith(Binary):
     def __init__(self):
-        super(IsAlignedWith, self).__init__()
+        Binary.__init__(self)
+        
         self.name = self.__class__.__name__
         
         for (k, v) in __classmapf__.items():

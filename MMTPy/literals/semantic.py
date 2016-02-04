@@ -1,4 +1,4 @@
-from MMTPy.caseclass import types
+from MMTPy.clsutils import types
 from MMTPy.paths import uri
 
 class SemanticType(object):

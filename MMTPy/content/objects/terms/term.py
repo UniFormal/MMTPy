@@ -7,7 +7,7 @@ class Term(obj.Obj):
     Represents a term used by MMT
     """
     def __init__(self):
-        super(Term, self).__init__()
+        obj.Obj.__init__(self)
 
     def map(self, fn):
         """
@@ -33,17 +33,12 @@ class Term(obj.Obj):
     def __call__(self, *args, **kwargs):
         """
         Applies this term to a list of other terms. Equivalent to
-        oma.OMA(self, *args).
+        oma.OMA(self, args).
         """
 
         from MMTPy.content.objects.terms import oma
-        return oma.OMA(self, *args)
-    def uninit(self):
-        """
-        Returns the list of arguments used to construct this Term. See the
-        specific implementations for details of the return times.
-        """
-        return self.__uninit__()
+        return oma.OMA(self, args)
+    
     @staticmethod
     def fromXML(node):
         # if we are an OMOBJ we need to ignore the first layer

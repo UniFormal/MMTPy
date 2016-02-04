@@ -14,6 +14,8 @@
 from MMTPy import xml
 
 class RelationExp(object):
+    def __init__(self):
+        pass
     @staticmethod
     def fromXML(node):
         if xml.matches(node, "sequence"):

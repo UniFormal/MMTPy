@@ -1,13 +1,14 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.structural.content.modules import module
 
-class View(caseclass.make(path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration]), module.Module):
+@caseclass.caseclass
+@types.argtypes(path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration])
+class View(module.Module):
     def __init__(self, base, name, frm, to, decls):
-        super(View, self).__init__(base, name, frm, to, decls)
-        self.__initmd__()
+        module.Module.__init__(self)
 
         self.frm = frm
         self.to = to

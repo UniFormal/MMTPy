@@ -1,15 +1,16 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.structural.content.declarations import declaration
 
 from MMTPy.content.structural.content.modules import module
 
-class Theory(caseclass.make(path.DPath, path.LocalName, (path.MPath,), [declaration.Declaration]), module.Module):
+@caseclass.caseclass
+@types.argtypes(path.DPath, path.LocalName, (path.MPath,), [declaration.Declaration])
+class Theory(module.Module):
     def __init__(self, base, name, meta, decls):
-        super(Theory, self).__init__(base, name, meta, decls)
-        self.__initmd__()
+        module.Module.__init__(self)
 
         self.base = base
         self.name = name

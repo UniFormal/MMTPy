@@ -2,12 +2,13 @@ from MMTPy import xml, metadata
 
 from MMTPy.paths import path
 from MMTPy.content.objects.terms import term
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 
-class OMV(caseclass.make(path.LocalName), term.Term):
+@caseclass.caseclass
+@types.argtypes(path.LocalName)
+class OMV(term.Term):
     def __init__(self, name):
-        super(OMV, self).__init__(name)
-        self.__initmd__()
+        term.Term.__init__(self)
 
         self.name = name
     def map(self, fn):

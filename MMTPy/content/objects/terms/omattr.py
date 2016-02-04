@@ -1,12 +1,13 @@
 from MMTPy import xml, metadata
 
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.objects.terms import term, omid
 
-class OMATTR(caseclass.make(term.Term, omid.OMID, term.Term), term.Term):
+@caseclass.caseclass
+@types.argtypes(term.Term, omid.OMID, term.Term)
+class OMATTR(term.Term):
     def __init__(self, arg, key, value):
-        super(OMATTR, self).__init__(arg, key, value)
-        self.__initmd__()
+        term.Term.__init__(self)
 
         self.arg = arg
         self.key = key

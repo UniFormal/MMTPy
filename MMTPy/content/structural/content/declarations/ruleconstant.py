@@ -1,13 +1,14 @@
 from MMTPy import xml, metadata
 
 from MMTPy.paths import path
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.structural.content.declarations import declaration
 
-class RuleConstant(caseclass.make(path.LocalName), declaration.Declaration):
+@caseclass.caseclass
+@types.argtypes(path.LocalName)
+class RuleConstant(declaration.Declaration):
     def __init__(self, name):
-        super(RuleConstant, self).__init__(name)
-        self.__initmd__()
+        declaration.Declaration.__init__(self)
 
         self.name = name
     def map(self, fn):

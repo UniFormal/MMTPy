@@ -1,9 +1,10 @@
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 from MMTPy.content.objects import obj
 
-class Position(caseclass.make([int])):
+@caseclass.caseclass
+@types.argtypes([int])
+class Position(object):
     def __init__(self, indices):
-        super(Position, self).__init__(indices)
         self.indices = indices
         self.indices_str = "_".join(map(str, indices))
     @staticmethod

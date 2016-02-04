@@ -1,11 +1,14 @@
 from MMTPy import xml, metadata
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 
 from MMTPy.content.objects import vardecl, obj
 
-class Context(caseclass.make([vardecl.VarDecl]), obj.Obj):
+@caseclass.caseclass
+@types.argtypes([vardecl.VarDecl])
+class Context(obj.Obj):
     def __init__(self, variables):
-        super(Context, self).__init__(variables)
+        obj.Obj.__init__(self)
+        
         self.variables = variables
     def toXML(self):
         return xml.make_element(xml.omt("OMBVAR"), self.toMetaDataXML(), *map(lambda v:v.toXML(), variables))

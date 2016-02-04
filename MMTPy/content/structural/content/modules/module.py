@@ -5,6 +5,8 @@ class Module(contentelement.ContentElement):
     """
     Represents an MMT module
     """
+    def __init__(self):
+        contentelement.ContentElement.__init__(self)
 
     @staticmethod
     def fromXML(node):

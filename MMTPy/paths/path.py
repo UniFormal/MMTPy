@@ -1,5 +1,4 @@
-from MMTPy.caseclass import caseclass
-from MMTPy.caseclass import types
+from MMTPy.clsutils import caseclass, types
 
 from MMTPy.paths import uri
 
@@ -21,7 +20,10 @@ from MMTPy.utils import ustr
         | GlobalName (module : MPath, name: LocalName)
 """
 
-class LNStep():
+class LNStep(object):
+    def __init__(self):
+        pass
+    
     @staticmethod
     def parse(s):
         s = ustr(s)
@@ -30,18 +32,22 @@ class LNStep():
         else:
             return SimpleStep(s)
 
-class SimpleStep(caseclass.make(types.strtype), LNStep):
+@caseclass.caseclass
+@types.argtypes(types.strtype)
+class SimpleStep(LNStep):
     def __init__(self, name):
-        super(SimpleStep, self).__init__(name)
+        LNStep.__init__(self)
+        
         self.name = name
     def __str__(self):
         return self.name
     def __repr__(self):
         return "SimpleStep[%r]" % (str(self))
 
-class LocalName(caseclass.make([LNStep])):
+@caseclass.caseclass
+@types.argtypes([LNStep])
+class LocalName(object):
     def __init__(self, steps):
-        super(LocalName, self).__init__(steps)
         self.steps = steps
     def __str__(self):
         return "/".join(map(ustr, self.steps))
@@ -87,6 +93,9 @@ class LocalName(caseclass.make([LNStep])):
         return LocalName(list(map(lambda s: LNStep.parse(s), segments)))
 
 class Path(object):
+    def __init__(self):
+        pass
+    
     @staticmethod
     def split(s):
         """
@@ -258,9 +267,12 @@ def m(base):
     """
     return PathBuilder(base)
 
-class DPath(caseclass.make(uri.URI), Path):
+@caseclass.caseclass
+@types.argtypes(uri.URI)
+class DPath(Path):
     def __init__(self, u):
-        super(DPath, self).__init__(u)
+        Path.__init__(self)
+        
         self.uri = u
     def __str__(self):
         return "%s" % ustr(self.uri)
@@ -285,9 +297,12 @@ class ContentPath(Path):
         """
         return self.toTerm()
 
-class CPath(caseclass.make(ContentPath, types.strtype), Path):
+@caseclass.caseclass
+@types.argtypes(ContentPath, types.strtype)
+class CPath(Path):
     def __init__(self, parent, component):
-        super(CPath, self).__init__(parent, component)
+        Path.__init__(self)
+        
         self.parent = parent
         self.component = component
     def __str__(self):
@@ -295,9 +310,12 @@ class CPath(caseclass.make(ContentPath, types.strtype), Path):
     def __repr__(self):
         return "CPath[%r]" % (ustr(self))
 
-class MPath(caseclass.make(DPath, LocalName), ContentPath):
+@caseclass.caseclass
+@types.argtypes(DPath, LocalName)
+class MPath(ContentPath):
     def __init__(self, parent, name):
-        super(MPath, self).__init__(parent, name)
+        ContentPath.__init__(self)
+        
         self.parent = parent
         self.module = self
         self.name = name
@@ -308,9 +326,12 @@ class MPath(caseclass.make(DPath, LocalName), ContentPath):
     def __repr__(self):
         return "MPath[%r]" % (ustr(self))
 
-class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
+@caseclass.caseclass
+@types.argtypes(MPath, LocalName)
+class GlobalName(ContentPath):
     def __init__(self, module, name):
-        super(GlobalName, self).__init__(module, name)
+        ContentPath.__init__(self)
+        
         self.module = module
         self.name = name
     def __str__(self):
@@ -318,9 +339,12 @@ class GlobalName(caseclass.make(MPath, LocalName), ContentPath):
     def __repr__(self):
         return "GlobalName[%r]" % (ustr(self))
 
-class ComplexStep(caseclass.make(MPath), LNStep):
+@caseclass.caseclass
+@types.argtypes(MPath)
+class ComplexStep(LNStep):
     def __init__(self, path):
-        super(ComplexStep, self).__init__(path)
+        LNStep.__init__(self)
+        
         self.path = path
     def __str__(self):
         return "[%s]" % self.path

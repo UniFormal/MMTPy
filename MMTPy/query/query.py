@@ -21,6 +21,9 @@ Query =
 from MMTPy import xml
 
 class Query(object):
+    def __init__(self):
+        pass
+    
     @staticmethod
     def parse(node):
         if xml.matches(node, "bigunion"):

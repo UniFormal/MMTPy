@@ -1,14 +1,16 @@
 from MMTPy import xml
-from MMTPy.caseclass import caseclass
+from MMTPy.clsutils import caseclass, types
 
 
 from MMTPy.query.relationexp import RelationExp
 from MMTPy.query.unary import Unary
 from MMTPy.query.binary import Binary
 
-class ToObject(caseclass.make(Binary), RelationExp):
+@caseclass.caseclass
+@types.argtypes(Binary)
+class ToObject(RelationExp):
     def __init__(self, dep):
-        super(ToObject, self).__init__(dep)
+        RelationExp.__init__(self)
         self.dep = dep
     def __neg__(self):
         return ToSubject(self.dep)
@@ -20,9 +22,13 @@ class ToObject(caseclass.make(Binary), RelationExp):
             return ToObject(Binary.parse(node.attrib.get("relation")))
         else:
             raise ValueError("INVALID <TOOBJECT/>")
-class ToSubject(caseclass.make(Binary), RelationExp):
+
+@caseclass.caseclass
+@types.argtypes(Binary)
+class ToSubject(RelationExp):
     def __init__(self, dep):
-        super(ToSubject, self).__init__(dep)
+        RelationExp.__init__(self)
+        
         self.dep = dep
     def __neg__(self):
         return ToObject(self.dep)
@@ -34,9 +40,13 @@ class ToSubject(caseclass.make(Binary), RelationExp):
             return ToSubject(Binary.parse(node.attrib.get("relation")))
         else:
             raise ValueError("INVALID <TOOBJECT/>")
-class Transitive(caseclass.make(RelationExp), RelationExp):
+
+@caseclass.caseclass
+@types.argtypes(RelationExp)
+class Transitive(RelationExp):
     def __init__(self, q):
-        super(Transitive, self).__init__(q)
+        RelationExp.__init__(self)
+        
         self.q = q
     def __neg__(self):
         return Transitive(-self.q)
@@ -48,9 +58,13 @@ class Transitive(caseclass.make(RelationExp), RelationExp):
             return Transitive(RelationExp.fromXML(node[0]))
         else:
             raise ValueError("INVALID <transitive/>")
-class Choice(caseclass.make([RelationExp]), RelationExp):
+
+@caseclass.caseclass
+@types.argtypes([RelationExp])
+class Choice(RelationExp):
     def __init__(self, qs):
-        super(Choice, self).__init__(qs)
+        RelationExp.__init__(self)
+        
         self.qs = qs
     def __neg__(self):
         return Choice(list(map(lambda s:-s, self.qs)))
@@ -62,9 +76,13 @@ class Choice(caseclass.make([RelationExp]), RelationExp):
             return Choice([RelationExp.fromXML(c) for c in node])
         else:
             raise ValueError("INVALID <choice/>")
-class Sequence(caseclass.make([RelationExp]), RelationExp):
+
+@caseclass.caseclass
+@types.argtypes([RelationExp])
+class Sequence(RelationExp):
     def __init__(self, qs):
-        super(Sequence, self).__init__(qs)
+        RelationExp.__init__(self)
+        
         self.qs = qs
     def __neg__(self):
         return Sequence(list(map(lambda s:-s, self.qs)))
@@ -76,9 +94,12 @@ class Sequence(caseclass.make([RelationExp]), RelationExp):
             return Sequence([RelationExp.fromXML(c) for c in node])
         else:
             raise ValueError("INVALID <sequence/>")
-class Reflexive(caseclass.make(), RelationExp):
+
+@caseclass.caseclass
+@types.argtypes()
+class Reflexive(RelationExp):
     def __init__(self, qs):
-        super(Reflexive, self).__init__()
+        RelationExp.__init__(self)
     def __neg__(self):
         return self
     def toXML(self):
@@ -89,9 +110,12 @@ class Reflexive(caseclass.make(), RelationExp):
             return Reflexive()
         else:
             raise ValueError("INVALID <reflexive/>")
-class HasType(caseclass.make(Unary), RelationExp):
+
+@caseclass.caseclass
+@types.argtypes(Unary)
+class HasType(RelationExp):
     def __init__(self, tp):
-        super(HasType, self).__init__(tp)
+        RelationExp.__init__(self)
         self.tp = tp
     def __neg__(self):
         return self
@@ -103,5 +127,6 @@ class HasType(caseclass.make(Unary), RelationExp):
             return HasType(Unary.parse(node.attrib.get("concept")))
         else:
             raise ValueError("INVALID <reflexive/>")
+
 def Symmetric(q):
     return Choice(q, -q)

@@ -1,17 +1,17 @@
 import re
-from MMTPy.caseclass import caseclass
-from MMTPy.caseclass import types
+from MMTPy.clsutils import caseclass, types
+from MMTPy.clsutils import types
 
 uriexpr = re.compile(r"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?")
 
-class URI(caseclass.make((types.strtype,), (types.strtype,), [types.strtype], bool, (types.strtype,), (types.strtype,))):
+@caseclass.caseclass
+@types.argtypes((types.strtype,), (types.strtype,), [types.strtype], bool, (types.strtype,), (types.strtype,))
+class URI(object):
     """
     An object version of a URI
     """
 
     def __init__(self, scheme, authority, path = [], absolute = False, query = None, fragment = None):
-        super(URI, self).__init__(scheme, authority, path, absolute, query, fragment)
-
         self.absolute = absolute
         self.scheme = scheme
         self.authority = authority
@@ -38,7 +38,7 @@ class URI(caseclass.make((types.strtype,), (types.strtype,), [types.strtype], bo
 
         return uristr
     def __repr__(self):
-        return "URI(%r)" % str(self)
+        return "URI[%r]" % str(self)
 
     @staticmethod
     def parse(uri):
