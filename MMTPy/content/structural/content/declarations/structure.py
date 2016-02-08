@@ -9,7 +9,7 @@ from MMTPy.content.objects.terms import term
 @types.argtypes(path.LocalName, path.MPath, bool, [declaration.Declaration])
 class DeclaredStructure(Structure):
     def __init__(self, name, frm, isImplicit, decls):
-        Structure.__init__(self)
+        super(DeclaredStructure, self).__init__()
 
         self.name = name
         self.frm = frm
@@ -24,7 +24,7 @@ class DeclaredStructure(Structure):
 @types.argtypes(path.LocalName, path.MPath, bool, term.Term)
 class DefinedStructure(Structure):
     def __init__(self, name, frm, isImplicit, df):
-        Structure.__init__(self)
+        super(DefinedStructure, self).__init__()
 
         self.name = name
         self.frm = frm
@@ -36,9 +36,6 @@ class DefinedStructure(Structure):
         return xml.make_element("import", self.toMetaDataXML(), ("definition", self.df.toXML()), **{"name": self.name, "from": self.frm, "implicit": "true" if self.isImplicit else "false"})
 
 class Structure(declaration.Declaration):
-    def __init__(self):
-        declaration.Declaration.__init__(self)
-    
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)

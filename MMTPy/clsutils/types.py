@@ -55,19 +55,45 @@ def verifyK(args, types):
 
 def argtypes(*args, **kwargs):
     """
-    Class Decorator that ensures argument types. 
-    Syntax is the same as the one for verify and verifyK respectively. 
+    Class Decorator that ensures argument types.
+    Syntax is the same as the one for verify and verifyK respectively.
     """
     def wrapper(cls):
-        def __init__(self,*cargs,**kcargs):
-            
+        # get the name of the super class
+        name = cls.__name__
+
+        # get the super classes of the wrapped class
+        mro = cls.__bases__
+
+        # get the methods
+        methods = cls.__dict__.copy()
+
+        # we need to make sure the __init__ calls the CaseClass init
+        # however we also want to call the original __init__
+
+
+        # if we have an __init__ all is fine
+        if "__init__" in methods:
+            oldinit = methods["__init__"]
+
+        # else we need to call the super() __init__
+        else:
+            def oldinit(self, *args, **kwargs):
+                super(tp, self).__init__(*args, **kwargs)
+
+        # make the proper init method
+        def __init__(self, *cargs, **kcargs):
             if len(cargs) != len(args):
                 raise TypeError("__init__() takes %d positional argument(s) but %d were given" % (len(args) + 1, len(cargs) + 1))
-            
+
             verify(cargs, args)
             verifyK(kcargs, kwargs)
-            
-            return cls.__init__(self, *cargs, **kcargs)
-        
-        return type(cls.__name__, (cls,),{"__init__":__init__})
+
+            return oldinit(self, *cargs, **kcargs)
+
+        methods["__init__"] = __init__
+
+        # create the new type
+        tp = type(name, mro, methods)
+        return tp
     return wrapper

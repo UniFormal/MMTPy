@@ -5,8 +5,8 @@ from MMTPy.content.structural.content import contentelement
 
 class Declaration(contentelement.ContentElement):
     def __init__(self):
-        contentelement.ContentElement.__init__(self)
-        
+        super(Declaration, self).__init__()
+
         self.decls = []
     def map(self, fn):
         """

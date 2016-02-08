@@ -13,7 +13,7 @@ class Constant(declaration.Declaration):
     Represents a Constant that is declared in a theory
     """
     def __init__(self, name, alias, tp, df, nt):
-        declaration.Declaration.__init__(self)
+        super(Constant, self).__init__()
 
         self.name = name
         self.alias = alias

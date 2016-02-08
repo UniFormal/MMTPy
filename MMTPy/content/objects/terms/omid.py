@@ -12,9 +12,9 @@ class OMID(term.Term):
     """
     An OMID is a case class that references MMT Content by a ContentPath.
     """
-    
+
     def __init__(self, path):
-        term.Term.__init__(self)
+        super(OMID, self).__init__()
 
         self.path = path
     def toXML(self):

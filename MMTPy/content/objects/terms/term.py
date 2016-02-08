@@ -6,8 +6,6 @@ class Term(obj.Obj):
     """
     Represents a term used by MMT
     """
-    def __init__(self):
-        obj.Obj.__init__(self)
 
     def map(self, fn):
         """
@@ -38,7 +36,7 @@ class Term(obj.Obj):
 
         from MMTPy.content.objects.terms import oma
         return oma.OMA(self, args)
-    
+
     @staticmethod
     def fromXML(node):
         # if we are an OMOBJ we need to ignore the first layer

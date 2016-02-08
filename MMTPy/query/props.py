@@ -9,8 +9,8 @@ from MMTPy.query.unary import Unary
 @types.argtypes(Prop, Prop)
 class And(Prop):
     def __init__(self, left, right):
-        Prop.__init__(self)
-        
+        super(And, self).__init__()
+
         self.left = left
         self.right = right
     def toXML(self):
@@ -24,8 +24,8 @@ class And(Prop):
 @types.argtypes(Query, Query)
 class Equal(Prop):
     def __init__(self, left, right):
-        Prop.__init__(self)
-        
+        super(Equal, self).__init__()
+
         self.left = left
         self.right = right
     def toXML(self):
@@ -39,8 +39,8 @@ class Equal(Prop):
 @types.argtypes(Query, Prop)
 class Forall(Prop):
     def __init__(self, domain, scope):
-        Prop.__init__(self)
-        
+        super(Forall, self).__init__()
+
         self.domain = domain
         self.scope = scope
     def toXML(self):
@@ -54,8 +54,8 @@ class Forall(Prop):
 @types.argtypes(Query, Unary)
 class IsA(Prop):
     def __init__(self, e, t):
-        Prop.__init__(self)
-        
+        super(IsA, self).__init__()
+
         self.e = e
         self.t = t
     def toXML(self):
@@ -69,8 +69,8 @@ class IsA(Prop):
 @types.argtypes(Query)
 class IsEmpty(Prop):
     def __init__(self, r):
-        Prop.__init__(self)
-        
+        super(IsEmpty, self).__init__()
+
         self.r = r
     def toXML(self):
         return xml.make_element("isempty", self.r.toXML())
@@ -83,8 +83,8 @@ class IsEmpty(Prop):
 @types.argtypes(Query, Query)
 class IsIn(Prop):
     def __init__(self, elem, tp):
-        Prop.__init__(self)
-        
+        super(IsIn, self).__init__()
+
         self.elem = elem
         self.tp = tp
     def toXML(self):
@@ -98,8 +98,8 @@ class IsIn(Prop):
 @types.argtypes(Prop)
 class Not(Prop):
     def __init__(self, arg):
-        Prop.__init__(self)
-        
+        super(Not, self).__init__()
+
         self.arg = arg
     def toXML(self):
         return xml.make_element("not", self.arg.toXML())
@@ -112,8 +112,8 @@ class Not(Prop):
 @types.argtypes(Query, Query)
 class PrefixOf(Prop):
     def __init__(self, short, lg):
-        Prop.__init__(self)
-        
+        super(PrefixOf, self).__init__()
+
         self.short = short
         self.long = lg
     def toXML(self):

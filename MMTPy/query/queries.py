@@ -17,8 +17,8 @@ from MMTPy.dependencies import etree_type
 @types.argtypes(Query, Query)
 class BigUnion(Query):
     def __init__(self, domain, of):
-        Query.__init__(self)
-        
+        super(BigUnion, self).__init__()
+
         self.domain = domain
         self.of = of
     def toXML(self):
@@ -35,8 +35,8 @@ class BigUnion(Query):
 @types.argtypes(int)
 class Bound(Query):
     def __init__(self, index):
-        Query.__init__(self)
-        
+        super(Bound, self).__init__()
+
         self.index = index
     def toXML(self):
         return xml.make_element("bound", index=self.idx)
@@ -51,8 +51,8 @@ class Bound(Query):
 @types.argtypes(Query)
 class Closure(Query):
     def __init__(self, of):
-        Query.__init__(self)
-        
+        super(Closure, self).__init__()
+
         self.of = of
     def toXML(self):
         return xml.make_element("closure", self.of.toXML())
@@ -67,8 +67,8 @@ class Closure(Query):
 @types.argtypes(Query, componentkey.ComponentKey)
 class Component(Query):
     def __init__(self, of, component):
-        Query.__init__(self)
-        
+        super(Component, self).__init__()
+
         self.of = of
         self.component = component
     def toXML(self):
@@ -84,8 +84,8 @@ class Component(Query):
 @types.argtypes(Query, Prop)
 class Comprehension(Query):
     def __init__(self, domain, pred):
-        Query.__init__(self)
-        
+        super(Comprehension, self).__init__()
+
         self.domain = domain
         self.pred = pred
     def toXML(self):
@@ -101,8 +101,8 @@ class Comprehension(Query):
 @types.argtypes(Query, Query)
 class Let(Query):
     def __init__(self, value, i):
-        Query.__init__(self)
-        
+        super(Let, self).__init__()
+
         self.value = value
         self.i = i
     def toXML(self):
@@ -118,8 +118,8 @@ class Let(Query):
 @types.argtypes(object)
 class Literal(Query):
     def __init__(self, literal):
-        Query.__init__(self)
-        
+        super(Literal, self).__init__()
+
         self.literal = literal
     def toXML(self):
         if isinstance(self.literal, path.Path):
@@ -164,8 +164,8 @@ class Literal(Query):
 @types.argtypes(Unary)
 class Paths(Query):
     def __init__(self, tp):
-        Query.__init__(self)
-        
+        super(Paths, self).__init__()
+
         self.tp = tp
     def toXML(self):
         return xml.make_element("uris", concept=self.tp.s)
@@ -180,8 +180,8 @@ class Paths(Query):
 @types.argtypes(Query, int)
 class Projection(Query):
     def __init__(self, of, index):
-        Query.__init__(self)
-        
+        super(Projection, self).__init__()
+
         self.of = of
         self.index = index
     def toXML(self):
@@ -197,8 +197,8 @@ class Projection(Query):
 @types.argtypes(types.strtype, Query, [types.strtype])
 class QueryFunctionApply(Query):
     def __init__(self, function, argument, params):
-        Query.__init__(self)
-        
+        super(QueryFunctionApply, self).__init__()
+
         self.function = function
         self.argument = argument
         self.params = params
@@ -216,8 +216,8 @@ class QueryFunctionApply(Query):
 @types.argtypes(Query, RelationExp)
 class Related(Query):
     def __init__(self, to, by):
-        Query.__init__(self)
-        
+        super(Related, self).__init__()
+
         self.to = to
         self.by = by
     def toXML(self):
@@ -233,8 +233,8 @@ class Related(Query):
 @types.argtypes(Query)
 class Singleton(Query):
     def __init__(self, e):
-        Query.__init__(self)
-        
+        super(Singleton, self).__init__()
+
         self.e = e
     def toXML(self):
         return xml.make_element("singleton", self.e.toXML())
@@ -249,8 +249,8 @@ class Singleton(Query):
 @types.argtypes(Query, position.Position)
 class SubObject(Query):
     def __init__(self, of, position):
-        Query.__init__(self)
-        
+        super(SubObject, self).__init__()
+
         self.of = of
         self.position = position
     def toXML(self):
@@ -266,8 +266,8 @@ class SubObject(Query):
 @types.argtypes([Query])
 class Tuple(Query):
     def __init__(self, components):
-        Query.__init__(self)
-        
+        super(Tuple, self).__init__()
+
         self.components = components
     def toXML(self):
         return xml.make_element("tuple", *map(lambda c:c.toXML(), self.components))
@@ -282,8 +282,8 @@ class Tuple(Query):
 @types.argtypes(obj.Obj)
 class Unifies(Query):
     def __init__(self, wth):
-        Query.__init__(self)
-        
+        super(Unifies, self).__init__()
+
         self.wth = wth
     def toXML(self):
         return xml.make_element("unifies", self.wth.toXML())
@@ -298,8 +298,8 @@ class Unifies(Query):
 @types.argtypes(Query, Query)
 class Union(Query):
     def __init__(self, left, right):
-        Query.__init__(self)
-        
+        super(Union, self).__init__()
+
         self.left = left
         self.right = right
     def toXML(self):

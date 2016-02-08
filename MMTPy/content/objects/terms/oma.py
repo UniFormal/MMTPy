@@ -11,7 +11,7 @@ class OMA(term.Term):
     An OMA represents an application of a list of terms on another term
     """
     def __init__(self, fun, args):
-        term.Term.__init__(self)
+        super(OMA, self).__init__()
 
         self.fun = fun
         self.args = list(args)
@@ -33,7 +33,7 @@ class OMA(term.Term):
 
     def toXML(self):
         return xml.make_element(xml.omt("OMA"), self.toMetaDataXML(), self.fun.toXML(), list(map(lambda a:a.toXML(), self.args)))
-    
+
     @staticmethod
     def fromXML(onode):
         (md, node) = metadata.MetaData.extractMetaDataXML(onode)

@@ -21,9 +21,6 @@ from MMTPy.utils import ustr
 """
 
 class LNStep(object):
-    def __init__(self):
-        pass
-    
     @staticmethod
     def parse(s):
         s = ustr(s)
@@ -36,8 +33,8 @@ class LNStep(object):
 @types.argtypes(types.strtype)
 class SimpleStep(LNStep):
     def __init__(self, name):
-        LNStep.__init__(self)
-        
+        super(SimpleStep, self).__init__()
+
         self.name = name
     def __str__(self):
         return self.name
@@ -93,9 +90,6 @@ class LocalName(object):
         return LocalName(list(map(lambda s: LNStep.parse(s), segments)))
 
 class Path(object):
-    def __init__(self):
-        pass
-    
     @staticmethod
     def split(s):
         """
@@ -271,8 +265,8 @@ def m(base):
 @types.argtypes(uri.URI)
 class DPath(Path):
     def __init__(self, u):
-        Path.__init__(self)
-        
+        super(DPath, self).__init__()
+
         self.uri = u
     def __str__(self):
         return "%s" % ustr(self.uri)
@@ -301,8 +295,8 @@ class ContentPath(Path):
 @types.argtypes(ContentPath, types.strtype)
 class CPath(Path):
     def __init__(self, parent, component):
-        Path.__init__(self)
-        
+        super(CPath, self).__init__()
+
         self.parent = parent
         self.component = component
     def __str__(self):
@@ -314,8 +308,8 @@ class CPath(Path):
 @types.argtypes(DPath, LocalName)
 class MPath(ContentPath):
     def __init__(self, parent, name):
-        ContentPath.__init__(self)
-        
+        super(MPath, self).__init__()
+
         self.parent = parent
         self.module = self
         self.name = name
@@ -330,8 +324,8 @@ class MPath(ContentPath):
 @types.argtypes(MPath, LocalName)
 class GlobalName(ContentPath):
     def __init__(self, module, name):
-        ContentPath.__init__(self)
-        
+        super(GlobalName, self).__init__()
+
         self.module = module
         self.name = name
     def __str__(self):
@@ -343,8 +337,8 @@ class GlobalName(ContentPath):
 @types.argtypes(MPath)
 class ComplexStep(LNStep):
     def __init__(self, path):
-        LNStep.__init__(self)
-        
+        super(ComplexStep, self).__init__()
+
         self.path = path
     def __str__(self):
         return "[%s]" % self.path

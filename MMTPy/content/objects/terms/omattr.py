@@ -7,7 +7,7 @@ from MMTPy.content.objects.terms import term, omid
 @types.argtypes(term.Term, omid.OMID, term.Term)
 class OMATTR(term.Term):
     def __init__(self, arg, key, value):
-        term.Term.__init__(self)
+        super(OMATTR, self).__init__()
 
         self.arg = arg
         self.key = key

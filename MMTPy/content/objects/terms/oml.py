@@ -12,7 +12,7 @@ class OML(term.Term):
     An OML wraps a VarDeclaration
     """
     def __init__(self, vd):
-        term.Term.__init__(self)
+        super(OML, self).__init__()
 
         self.vd = vd
     def map(self, fn):

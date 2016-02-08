@@ -10,7 +10,7 @@ from MMTPy.content.structural.content.modules import module
 @types.argtypes(path.DPath, path.LocalName, (path.MPath,), [declaration.Declaration])
 class Theory(module.Module):
     def __init__(self, base, name, meta, decls):
-        module.Module.__init__(self)
+        super(Theory, self).__init__()
 
         self.base = base
         self.name = name

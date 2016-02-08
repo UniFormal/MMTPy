@@ -7,8 +7,8 @@ from MMTPy.content.objects import vardecl, obj
 @types.argtypes([vardecl.VarDecl])
 class Context(obj.Obj):
     def __init__(self, variables):
-        obj.Obj.__init__(self)
-        
+        super(Context, self).__init__()
+
         self.variables = variables
     def toXML(self):
         return xml.make_element(xml.omt("OMBVAR"), self.toMetaDataXML(), *map(lambda v:v.toXML(), variables))

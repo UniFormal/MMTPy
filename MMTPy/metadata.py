@@ -6,7 +6,7 @@ from MMTPy.clsutils import caseclass, types
 class MetaData(object):
     def __init__(self):
         self.metadata = []
-    
+
     def toMetaDataXML(self):
         # create an element for each meta-datum
         return xml.make_element("metadata", *[d.toXML() for d in self.metadata])
@@ -46,9 +46,6 @@ class MetaData(object):
         return (mds, node)
 
 class MetaDatum(object):
-    def __init__(self):
-        pass
-    
     @staticmethod
     def fromXML(node):
         if xml.matches(node, "link"):
@@ -64,8 +61,8 @@ class MetaDatum(object):
 @types.argtypes(path.GlobalName, uri.URI)
 class Link(MetaDatum):
     def __init__(self, key, u):
-        MetaDatum.__init__(self)
-        
+        super(Link, self).__init__()
+
         self.key = key
         self.uri = u
     def toXML(self):
@@ -87,8 +84,8 @@ class Link(MetaDatum):
 @types.argtypes(path.GlobalName)
 class Tag(MetaDatum):
     def __init__(self, key):
-        MetaDatum.__init__(self)
-        
+        super(Tag, self).__init__()
+
         self.key = key
     def toXML(self):
         return xml.make_element("tag", property=self.key)
@@ -107,8 +104,8 @@ class Tag(MetaDatum):
 @types.argtypes(path.GlobalName, object)
 class Meta(MetaDatum):
     def __init__(self, key, value):
-        MetaDatum.__init__(self)
-        
+        super(Meta, self).__init__()
+
         self.key = key
         self.value = value
     def toXML(self):

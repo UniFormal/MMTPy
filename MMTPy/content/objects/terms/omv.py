@@ -8,7 +8,7 @@ from MMTPy.clsutils import caseclass, types
 @types.argtypes(path.LocalName)
 class OMV(term.Term):
     def __init__(self, name):
-        term.Term.__init__(self)
+        super(OMV, self).__init__()
 
         self.name = name
     def map(self, fn):

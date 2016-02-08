@@ -8,8 +8,8 @@ from MMTPy.content.objects.terms import term
 @types.argtypes(path.LocalName, (term.Term,), (term.Term,), type(None))
 class VarDecl(obj.Obj):
     def __init__(self, name, tp, df, nt):
-        obj.Obj.__init__(self)
-        
+        super(VarDecl, self).__init__()
+
         self.name = name
         self.tp = tp
         self.df = df

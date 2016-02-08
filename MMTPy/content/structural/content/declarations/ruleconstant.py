@@ -8,7 +8,7 @@ from MMTPy.content.structural.content.declarations import declaration
 @types.argtypes(path.LocalName)
 class RuleConstant(declaration.Declaration):
     def __init__(self, name):
-        declaration.Declaration.__init__(self)
+        super(RuleConstant, self).__init__()
 
         self.name = name
     def map(self, fn):

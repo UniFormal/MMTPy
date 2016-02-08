@@ -1,9 +1,8 @@
 from MMTPy.clsutils import caseclass, types
 
 class ComponentKey(object):
-    def __init__(self):
-        pass
-    
+    def __init__(self, s):
+        self.s = s
     @staticmethod
     def parse(s):
         if s != "" and s in __classmap__:
@@ -13,87 +12,57 @@ class ComponentKey(object):
         else:
             raise ValueError("Invalid name of declaration component")
 
-
 @caseclass.caseclass
 @types.argtypes(types.strtype)
 class OtherComponent(ComponentKey):
     def __init__(self, s):
-        ComponentKey.__init__(self)
-        
-        self.s = s   
+        super(OtherComponent, self).__init__(s)
 
 @caseclass.caseclass
 @types.argtypes()
 class TypeComponent(ComponentKey):
     def __init__(self):
-        ComponentKey.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(TypeComponent, self).__init__("type")
 
 @caseclass.caseclass
 @types.argtypes()
 class DefComponent(ComponentKey):
     def __init__(self):
-        ComponentKey.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(DefComponent, self).__init__("definition")
 
 @caseclass.caseclass
 @types.argtypes()
 class DomComponent(ComponentKey):
     def __init__(self):
-        ComponentKey.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(DomComponent, self).__init__("domain")
 
 @caseclass.caseclass
 @types.argtypes()
 class CodComponent(ComponentKey):
     def __init__(self):
-        ComponentKey.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(CodComponent, self).__init__("codomain")
 
 @caseclass.caseclass
 @types.argtypes()
 class ParamsComponent(ComponentKey):
     def __init__(self):
-        ComponentKey.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(ParamsComponent, self).__init__("params")
 
 @caseclass.caseclass
 @types.argtypes()
 class PatternBodyComponent(ComponentKey):
     def __init__(self):
-        ComponentKey.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(PatternBodyComponent, self).__init__("pattern-body")
 
 @caseclass.caseclass
 @types.argtypes()
 class MetaDataComponent(ComponentKey):
     def __init__(self):
-        ComponentKey.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(MetaDataComponent, self).__init__("metadata")
+
 __classmap__ = {
     "type": TypeComponent,
-    "definition": DefComponent, 
+    "definition": DefComponent,
     "domain": DomComponent,
     "codomain": CodComponent,
     "params": ParamsComponent,

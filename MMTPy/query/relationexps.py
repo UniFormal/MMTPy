@@ -10,7 +10,8 @@ from MMTPy.query.binary import Binary
 @types.argtypes(Binary)
 class ToObject(RelationExp):
     def __init__(self, dep):
-        RelationExp.__init__(self)
+        super(ToObject, self).__init__()
+
         self.dep = dep
     def __neg__(self):
         return ToSubject(self.dep)
@@ -27,8 +28,8 @@ class ToObject(RelationExp):
 @types.argtypes(Binary)
 class ToSubject(RelationExp):
     def __init__(self, dep):
-        RelationExp.__init__(self)
-        
+        super(ToSubject, self).__init__()
+
         self.dep = dep
     def __neg__(self):
         return ToObject(self.dep)
@@ -45,8 +46,8 @@ class ToSubject(RelationExp):
 @types.argtypes(RelationExp)
 class Transitive(RelationExp):
     def __init__(self, q):
-        RelationExp.__init__(self)
-        
+        super(Transitive, self).__init__()
+
         self.q = q
     def __neg__(self):
         return Transitive(-self.q)
@@ -63,8 +64,8 @@ class Transitive(RelationExp):
 @types.argtypes([RelationExp])
 class Choice(RelationExp):
     def __init__(self, qs):
-        RelationExp.__init__(self)
-        
+        super(Choice, self).__init__()
+
         self.qs = qs
     def __neg__(self):
         return Choice(list(map(lambda s:-s, self.qs)))
@@ -81,8 +82,8 @@ class Choice(RelationExp):
 @types.argtypes([RelationExp])
 class Sequence(RelationExp):
     def __init__(self, qs):
-        RelationExp.__init__(self)
-        
+        super(Sequence, self).__init__()
+
         self.qs = qs
     def __neg__(self):
         return Sequence(list(map(lambda s:-s, self.qs)))
@@ -98,8 +99,6 @@ class Sequence(RelationExp):
 @caseclass.caseclass
 @types.argtypes()
 class Reflexive(RelationExp):
-    def __init__(self, qs):
-        RelationExp.__init__(self)
     def __neg__(self):
         return self
     def toXML(self):
@@ -115,7 +114,8 @@ class Reflexive(RelationExp):
 @types.argtypes(Unary)
 class HasType(RelationExp):
     def __init__(self, tp):
-        RelationExp.__init__(self)
+        super(HasType, self).__init__()
+
         self.tp = tp
     def __neg__(self):
         return self

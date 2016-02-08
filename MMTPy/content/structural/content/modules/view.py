@@ -8,7 +8,7 @@ from MMTPy.content.structural.content.modules import module
 @types.argtypes(path.DPath, path.LocalName, path.MPath, path.MPath, [declaration.Declaration])
 class View(module.Module):
     def __init__(self, base, name, frm, to, decls):
-        module.Module.__init__(self)
+        super(View, self).__init__()
 
         self.frm = frm
         self.to = to

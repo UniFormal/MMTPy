@@ -8,7 +8,7 @@ from MMTPy.content.objects.terms import term
 @types.argtypes(term.Term, context.Context, [term.Term])
 class OMBINDC(term.Term):
     def __init__(self, binder, ctx, scopes):
-        term.Term.__init__(self)
+        super(OMBINDC, self).__init__()
 
         self.binder = binder
         self.ctx = ctx

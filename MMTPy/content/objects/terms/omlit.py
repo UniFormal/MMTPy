@@ -10,7 +10,7 @@ from MMTPy.literals import semantic
 @types.argtypes(term.Term, types.strtype)
 class UnknownOMLIT(term.Term):
     def __init__(self, syntp, value):
-        term.Term.__init__(self)
+        super(UnknownOMLIT, self).__init__()
 
         self.syntp = syntp
         self.value = value
@@ -31,7 +31,7 @@ class UnknownOMLIT(term.Term):
         # create the omlit and ransfer meta data
         lit = OMLIT(semtype, self.syntp, o)
         lit.metadata = self.metadata
-        
+
         return lit
     @staticmethod
     def fromXML(onode):
@@ -57,16 +57,13 @@ class UnknownOMLIT(term.Term):
 @types.argtypes(semantic.SemanticType, term.Term, object)
 class OMLIT(UnknownOMLIT):
     def __init__(self, semtp, syntp, o):
-        UnknownOMLIT.__init__(self)
-
         if not semtp.valid(o):
             raise ValueError("SemanticType is not valid for the given object")
 
         self.o = o
         self.semtp = semtp
-        self.syntp = syntp
 
-        self.value = self.semtp.toString(o)
+        super(OMLIT, self).__init__(syntp, self.semtp.toString(o))
 
     def map(self, fn):
         return fn(OMLIT(self.semtp, self.syntp.map(fn), obj))

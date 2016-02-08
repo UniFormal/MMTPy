@@ -1,8 +1,9 @@
 from MMTPy.clsutils import caseclass, types
 
 class Unary(object):
-    def __init__(self):
-        pass
+    def __init__(self, s):
+        self.s = s
+    
     @staticmethod
     def parse(s):
         if s != "" and s in __classmap__:
@@ -14,128 +15,84 @@ class Unary(object):
 @types.argtypes(types.strtype)
 class CustomUnary(Unary):
     def __init__(self, s):
-        Unary.__init__(self)
-        
-        self.s = s
+        super(CustomUnary, self).__init__(s)
 
 @caseclass.caseclass
 @types.argtypes()
 class IsDocument(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(CustomUnary, self).__init__("document")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsTheory(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsTheory, self).__init__("theory")
+
 @caseclass.caseclass
 @types.argtypes()
 class isView(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(isView, self).__init__("view")
 
 @caseclass.caseclass
 @types.argtypes()
 class isStyle(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(isStyle, self).__init__("style")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsStructure(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsStructure, self).__init__("structure")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsConstant(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsConstant, self).__init__("constant")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsPattern(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsPattern, self).__init__("pattern")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsInstance(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsInstance, self).__init__("instance")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsConAss(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsConAss, self).__init__("conass")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsStrAss(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsStrAss, self).__init__("strass")
 
 @caseclass.caseclass
 @types.argtypes()
 class IsNotation(Unary):
     def __init__(self):
-        Unary.__init__(self)
-        
-        for (k, v) in __classmap__.items():
-            if v == self.__class__:
-                self.s = k
+        super(IsNotation, self).__init__("notation")
+
 __classmap__ = {
-    "document": IsDocument, 
-    "theory": IsTheory, 
-    "view": isView, 
-    "style": isStyle, 
-    "structure": IsStructure, 
-    "constant": IsConstant, 
-    "pattern": IsPattern, 
-    "instance": IsInstance, 
-    "conass": IsConAss, 
+    "document": IsDocument,
+    "theory": IsTheory,
+    "view": isView,
+    "style": isStyle,
+    "structure": IsStructure,
+    "constant": IsConstant,
+    "pattern": IsPattern,
+    "instance": IsInstance,
+    "conass": IsConAss,
     "strass": IsStrAss,
     "notation": IsNotation
 }
