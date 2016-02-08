@@ -1,10 +1,9 @@
-from . import types
+class CaseClass(object):
+    """
+    Class that implements all CaseClass methods.
+    """
 
-class StaticCaseClass(object):
-    """
-    Super class for all case classes
-    """
-    def __init__(self, cargs, kcwargs):
+    def __init__(self, *cargs, **kcwargs):
         """
         Initialises case class parameters
         """
@@ -17,6 +16,9 @@ class StaticCaseClass(object):
 
         #: The keyword arguments given to this case class
         self.__cc_kwargs__ = kcwargs
+
+        # return the new instance
+        return self
     def __uninit__(self):
         """
         Unpacks the parameters originally given to this case class.
@@ -28,7 +30,7 @@ class StaticCaseClass(object):
         equal if their parameters are equal and their classes are equal.
         """
         # check if the given object  is indeed an instance of this case class
-        if not isinstance(other, StaticCaseClass):
+        if not isinstance(other, CaseClass):
             return False
 
         # if the classes are not the same, we return False
@@ -57,6 +59,7 @@ class StaticCaseClass(object):
         Implements a representation for Case classes. This is given by the class
         name and the representation of all the parameters.
         """
+
         # string representations of the arguments and keyword arguments
         alist = list(map(lambda a:"%r" % (a), self.__cc_args__))
         kwarglist = list(map(lambda p:"%s=%r" % (p), self.__cc_kwargs__.items()))
@@ -65,16 +68,52 @@ class StaticCaseClass(object):
         arepr = ",".join(alist+kwarglist)
 
         # and put them after the name of the class
-        return "%s[%s]" % (self.__cc_name__, arepr)
+        return "%s(%s)" % (self.__cc_name__, arepr)
 
 def caseclass(cls):
     """
-    Class Decorator that makes a class a case class. 
-    Note: This breaks super() on case-class instances. 
+    Class Decorator the makes a class a CaseClass
     """
-    def __init__(self,*args,**kwargs):
-        StaticCaseClass.__init__(self, args, kwargs)
-        return super(tp, self).__init__(*args, **kwargs)
-    
-    tp = type(cls.__name__, (cls,StaticCaseClass,),{"__init__":__init__})
+
+    # get the name of the super class
+    name = cls.__name__
+
+    # get the super classes of the wrapped class
+    mro = cls.__bases__
+
+    # insert the case class as a dependency. If the class inhits form object we
+    # need a work around so that we have a proper mro, i. e. we replace the
+    # object inheritance by inheritance from CaseClass
+    if object in mro:
+        idx = mro.index(object)
+
+        mro = mro[:idx] + (CaseClass,) + mro[idx+1:]
+    else:
+        mro += (CaseClass,)
+
+    # get the methods
+    methods = cls.__dict__.copy()
+
+    # we need to make sure the __init__ calls the CaseClass init
+    # however we also want to call the original __init__
+
+
+    # if we have an __init__ all is fine
+    if "__init__" in methods:
+        oldinit = methods["__init__"]
+
+    # else we need to call the super() __init__
+    else:
+        def oldinit(self, *args, **kwargs):
+            super(tp, self).__init__(*args, **kwargs)
+
+    # make the actual case clas
+    def __init__(self, *args, **kwargs):
+        CaseClass.__init__(self, *args, **kwargs)
+        return oldinit(self, *args, **kwargs)
+
+    methods["__init__"] = __init__
+
+    # create the new type
+    tp = type(name, mro, methods)
     return tp
