@@ -24,11 +24,14 @@ except ImportError:
           import elementtree.ElementTree as etree
           etree_implementation = "ElementTree"
         except ImportError:
-          print("Unable to import any known ElementTree implementation. Please install lxml or a similar module. Some functionality might not work. ")
+          print("Unable to import any known ElementTree implementation. " +
+                "Please install lxml or a similar module. Some functionality " +
+                "might not work. ")
 etree_type = type(etree.Element("dummy"))
 
 # Load requests
 try:
     import requests
 except ImportError:
-    print("Unable to import the requests module. Some functionality might not work. ")
+    print("Unable to import the requests module. Some functionality " +
+          "might not work. ")

@@ -1,3 +1,6 @@
+# Import some mor
+from case_class import _Utilities
+
 #: The type of all types
 typetype = type(object)
 # The type of strings
@@ -82,6 +85,7 @@ def argtypes(*args, **kwargs):
                 super(tp, self).__init__(*args, **kwargs)
 
         # make the proper init method
+        @_Utilities.with_signature("__init__", _Utilities.get_signature(oldinit))
         def __init__(self, *cargs, **kcargs):
             if len(cargs) != len(args):
                 raise TypeError("__init__() takes %d positional argument(s) but %d were given" % (len(args) + 1, len(cargs) + 1))

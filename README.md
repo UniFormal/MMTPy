@@ -1,4 +1,5 @@
 # Install
+[![Build Status](https://travis-ci.org/UniFormal/MMTPy.svg?branch=master)](https://travis-ci.org/UniFormal/MMTPy)
 
 ```
 python setup.py install
@@ -8,6 +9,14 @@ Note: If you want to use it with Sage, use
 sage -python setup.py install
 ```
 instead.
+
+## Tests
+
+Run the tests with:
+
+```
+nosetests
+```
 
 ## Installing the Jupyter Kernel
 ```
