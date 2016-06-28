@@ -1,5 +1,7 @@
 from MMTPy.clsutils import types, caseclass
-from MMTPy.dependencies import etree, etree_type
+
+from MMTPy.dependencies import etree_type
+from lxml import etree
 
 from MMTPy.utils import ustr
 

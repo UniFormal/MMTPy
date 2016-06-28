@@ -164,3 +164,5 @@ class URI(CaseClass):
         fragment = m.group(9) if m.group(9) is not None else ""
 
         return URI(scheme, authority, path, absolute, query, fragment)
+
+__all__ = ["URI"]

@@ -69,5 +69,4 @@ class Error(object):
 
     @staticmethod
     def fromXML(node):
-        from MMTPy.dependencies import etree
         return Error(xml.textcontent(node))

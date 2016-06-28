@@ -254,7 +254,7 @@ class SubObject(Query):
         self.of = of
         self.position = position
     def toXML(self):
-        return xml.make_element("subobject", self.of.toXML(), position=self.position.indices_str)
+        return xml.make_element("subobject", self.of.toXML(), position=str(self.position))
     @staticmethod
     def fromXML(node):
         if xml.matches(node, ("subobject", (None,))):

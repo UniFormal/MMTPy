@@ -4,7 +4,10 @@ from MMTPy.paths import uri
 
 from MMTPy.backend import backend
 from MMTPy.query import builder, result
-from MMTPy.dependencies import requests, etree, etree_type
+
+import requests
+from lxml import etree
+from MMTPy.dependencies import etree_type
 
 class QMTBackend(backend.Backend):
     """

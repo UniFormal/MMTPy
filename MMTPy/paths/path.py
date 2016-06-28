@@ -8,15 +8,15 @@
     Path =
           DPath (uri : URI)
         | ContentPath
-        | CPath (parent : ContentPath, component : String)
+        | CPath (parent : ContentPath, component : ComponentKey)
     ContentPath =
           MPath (parent : DPath, name: LocalName)
         | GlobalName (module : MPath, name: LocalName)
 """
 
-from MMTPy.clsutils import types
 from case_class import AbstractCaseClass, CaseClass
 
+from MMTPy.content.componentkey import ComponentKey
 from MMTPy.paths import uri
 from MMTPy.utils import ustr
 
@@ -103,7 +103,7 @@ class Path(AbstractCaseClass):
             if (documentURI and moduleURI) else None
         spath = GlobalName(mpath, LocalName.parse(symbolName)) \
             if (documentURI and moduleURI and symbolName) else None
-        cpath = CPath(spath if spath else mpath, componentName) \
+        cpath = CPath(spath if spath else mpath, ComponentKey.parse(componentName)) \
             if componentName else None
 
         # and return a tuple
@@ -506,13 +506,13 @@ class CPath(Path):
         :type parent: ContentPath
 
         :param component: Name of component to point.
-        :type component: str
+        :type component: ComponentKey
         """
 
         super(CPath, self).__init__()
 
         self.__parent = parent  # type: ContentPath
-        self.__component = component  # type: str
+        self.__component = component  # type: ComponentKey
 
     @property
     def parent(self):
@@ -527,7 +527,7 @@ class CPath(Path):
     def component(self):
         """ Returns the component of this CPath.
 
-        :rtype: str
+        :rtype: ComponentKey
         """
 
         return self.__component

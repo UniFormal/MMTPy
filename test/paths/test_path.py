@@ -2,6 +2,7 @@ import unittest
 
 from MMTPy.paths.path import LNStep, SimpleStep, ComplexStep, DPath, MPath, \
     LocalName, Path, GlobalName, CPath
+from MMTPy.content.componentkey import DefComponent
 from MMTPy.paths.uri import URI
 
 
@@ -49,7 +50,7 @@ class TestPath(unittest.TestCase):
             Path.parseC('http://document?module?symbol?definition'),
                      CPath(GlobalName(MPath(DPath(URI.parse('http://document')),
                            LocalName([SimpleStep('module')])),
-                   LocalName([SimpleStep('symbol')])), 'definition'))
+                   LocalName([SimpleStep('symbol')])), DefComponent()))
 
 
 
@@ -117,7 +118,7 @@ class TestCPath(unittest.TestCase):
         'http://document?module?symbol?definition': CPath(GlobalName(MPath(
             DPath(URI.parse('http://document')),
             LocalName([SimpleStep('module')])),
-            LocalName([SimpleStep('symbol')])), 'definition')
+            LocalName([SimpleStep('symbol')])), DefComponent())
     }
 
     def test___str__(self):
@@ -155,7 +156,7 @@ class TestGlobalName(unittest.TestCase):
 
         for k in TestGlobalName.examples:
             self.assertEqual(str(TestGlobalName.examples[k]), k,
-                             'stringifying a GlobalName. ')
+                             'str() a GlobalName. ')
 
 
 class TestComplexStep(unittest.TestCase):
@@ -169,5 +170,5 @@ class TestComplexStep(unittest.TestCase):
 
         for k in TestComplexStep.examples:
             self.assertEqual(str(TestComplexStep.examples[k]), k,
-                             'stringifying a ComplexStep. ')
+                             'str() a ComplexStep. ')
 
