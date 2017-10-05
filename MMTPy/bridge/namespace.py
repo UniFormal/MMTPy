@@ -69,8 +69,13 @@ class Namespace(bridge.Bridge):
         """
         Navigates this bridge to a given path. Not applicable.
         """
+        pstring = path.Path.parse(str(self.__path) + "?" + pth)
+        try:
+            return self.set(pstring)
+        except Exception as e:
+            print(pstring)
+            raise
 
-        return self.set(path.Path.parse(str(self.__path) + "?" + pth))
 
     def getTheory(self, pth):
         """
@@ -80,10 +85,12 @@ class Namespace(bridge.Bridge):
 
         pt = self.navigate(pth)
 
-        if not pt.isTheory():
-            raise ValueError("Given path does not point to a Theory")
-
+##        if not pt.isTheory():
+#            print(pt)
+#            print(pt.get())
+#            raise ValueError("Given path does not point to a Theory")
         return pt
+
     def getView(self, pth):
         """
         Navigates this bridge to a given path and ensures that the returned
