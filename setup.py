@@ -11,5 +11,5 @@ setup(name='MMTPy',
       install_requires=[
             'requests',
             'lxml',
-            'PythonCaseClass'
+            'case_class'
       ])
