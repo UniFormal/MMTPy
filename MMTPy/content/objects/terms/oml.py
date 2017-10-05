@@ -2,7 +2,7 @@ from MMTPy import xml, metadata
 
 from MMTPy.paths import path
 from MMTPy.clsutils import caseclass, types
-from MMTPy.content import vardecl
+from MMTPy.content.objects import vardecl
 from MMTPy.content.objects.terms import term
 
 @caseclass.caseclass

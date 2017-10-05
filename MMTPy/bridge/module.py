@@ -2,6 +2,9 @@ from MMTPy.bridge import bridge
 from MMTPy.paths import path
 from MMTPy.content.structural.content.modules import module
 
+class ServerSideError(Exception):
+    pass
+
 class Module(bridge.Bridge):
     """
     A Module() object represents a Bridge() that wraps an MMT Module - a theory
@@ -38,8 +41,9 @@ class Module(bridge.Bridge):
             raise ServerSideError(e)
 
         # raise an Error if this is not a module
-        if not isinstance(o, module.Module):
-            raise ServerSideError(o)
+        #if not isinstance(o, module.Module):
+            #print(module.Module)
+            #raise ServerSideError(o)
 
         self.__module = o
 
@@ -120,6 +124,11 @@ class Module(bridge.Bridge):
         Gets the underlying declaration that is wrapped by this Module().
         """
 
+        #all_parents = type(self).__mro__
+        #all_parents = all_parents[all_parents.index(Sub1) + 1:]
+        #print('All my parents are:', ', '.join([
+        #    cls.__name__ for cls in all_parents]))
+        print(type(self).__mro__)
         return self.__module
 
     #
